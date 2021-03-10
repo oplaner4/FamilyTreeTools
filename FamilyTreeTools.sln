@@ -1,0 +1,54 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31025.194
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FamilyTreeTools", "FamilyTreeTools.csproj", "{4FC0F698-A110-4B61-A5AD-BCC5BC465FFD}"
+	ProjectSection(ProjectDependencies) = postProject
+		{4AF70806-EEF9-4C05-B57D-A81FA719236E} = {4AF70806-EEF9-4C05-B57D-A81FA719236E}
+		{0D581CAB-6D61-4753-9E15-1C439B9B134A} = {0D581CAB-6D61-4753-9E15-1C439B9B134A}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FamilyTreeTools.Helpers", "FamilyTreeToolsHelpers\FamilyTreeTools.Helpers.csproj", "{0D581CAB-6D61-4753-9E15-1C439B9B134A}"
+	ProjectSection(ProjectDependencies) = postProject
+		{4AF70806-EEF9-4C05-B57D-A81FA719236E} = {4AF70806-EEF9-4C05-B57D-A81FA719236E}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FamilyTreeTools.Entities", "FamilyTreeTools.Entities\FamilyTreeTools.Entities.csproj", "{4AF70806-EEF9-4C05-B57D-A81FA719236E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FamilyTreeTools.UnitTesting", "FamilyTreeTools.UnitTesting\FamilyTreeTools.UnitTesting.csproj", "{2F31651C-3513-48FC-A32A-C34354F4F40B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{4AF70806-EEF9-4C05-B57D-A81FA719236E} = {4AF70806-EEF9-4C05-B57D-A81FA719236E}
+		{0D581CAB-6D61-4753-9E15-1C439B9B134A} = {0D581CAB-6D61-4753-9E15-1C439B9B134A}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4FC0F698-A110-4B61-A5AD-BCC5BC465FFD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4FC0F698-A110-4B61-A5AD-BCC5BC465FFD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4FC0F698-A110-4B61-A5AD-BCC5BC465FFD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4FC0F698-A110-4B61-A5AD-BCC5BC465FFD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0D581CAB-6D61-4753-9E15-1C439B9B134A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0D581CAB-6D61-4753-9E15-1C439B9B134A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0D581CAB-6D61-4753-9E15-1C439B9B134A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0D581CAB-6D61-4753-9E15-1C439B9B134A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4AF70806-EEF9-4C05-B57D-A81FA719236E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4AF70806-EEF9-4C05-B57D-A81FA719236E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4AF70806-EEF9-4C05-B57D-A81FA719236E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4AF70806-EEF9-4C05-B57D-A81FA719236E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2F31651C-3513-48FC-A32A-C34354F4F40B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F31651C-3513-48FC-A32A-C34354F4F40B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2F31651C-3513-48FC-A32A-C34354F4F40B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2F31651C-3513-48FC-A32A-C34354F4F40B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {68C3A11A-56A1-4EE9-81DA-8C9E8E08A751}
+	EndGlobalSection
+EndGlobal
