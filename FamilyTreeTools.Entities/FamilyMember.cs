@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 
 namespace FamilyTreeTools.Entities
@@ -13,9 +14,33 @@ namespace FamilyTreeTools.Entities
             SetValidStart(BirthDate);
         }
 
-        public List<FamilyMember> Children { get; private set; }
+        [JsonConstructor]
+        public FamilyMember()
+        { }
 
-        public FamilyMember Partner { get; private set; }
+        private List<FamilyMember>  _Children { get; set; }
+
+        [JsonProperty]
+        public List<FamilyMember> Children
+        {
+            get
+            {
+                return _Children;
+            }
+            set
+            {
+                _Children = value ?? throw new Exception("Trying to set null children.");
+            }
+        }
+
+        [JsonProperty]
+        public Guid? PartnerId { get; set; }
+
+        [JsonProperty]
+        public DateTime? ValidStart { get; set; }
+
+        [JsonProperty]
+        public DateTime? ValidEnd { get; set; }
 
         public FamilyMember AddChild(FamilyMember child)
         {
@@ -28,32 +53,18 @@ namespace FamilyTreeTools.Entities
             return this;
         }
 
-        public DateTime? ValidStart { get; private set; }
-        public DateTime? ValidEnd { get; private set; }
-
         public bool HasPartner()
         {
-            return Partner != null;
+            return PartnerId != null;
         }
 
         public FamilyMember SetPartner(FamilyMember arg)
         {
-            if (arg == null)
-            {
-                Partner.Partner = null;
-            }
-
-            Partner = arg;
-
-            if (HasPartner())
-            {
-                arg.Partner = this;
-            }
-
+            PartnerId = arg?.Id;
             return this;
         }
 
-        public FamilyMember RemovePartner ()
+        public FamilyMember RemovePartner()
         {
             return SetPartner(null);
         }
@@ -63,10 +74,6 @@ namespace FamilyTreeTools.Entities
             if (arg == StatusOptions.Married && !HasPartner())
             {
                 throw new ArgumentException("The partner is not defined with status married.", nameof(arg));
-            }
-            else if (HasPartner())
-            {
-                Partner.Status = arg;
             }
 
             Status = arg;
@@ -81,21 +88,6 @@ namespace FamilyTreeTools.Entities
         public FamilyMember GotUnmarried()
         {
             return SetStatus(StatusOptions.Unmarried).RemovePartner();
-        }
-
-        /// <summary>
-        /// Used by history.
-        /// </summary>
-        /// <returns></returns>
-        public FamilyMember Clone ()
-        {
-            return new FamilyMember(FullName, BirthDate)
-            {
-                Id = Id,
-                Partner = Partner,
-                Children = Children,
-                Status = Status
-            };
         }
 
         public FamilyMember SetValidStart(DateTime? arg)
@@ -122,6 +114,11 @@ namespace FamilyTreeTools.Entities
 
         public bool IsValidAt(DateTime d)
         {
+            if (AfterDeath(d))
+            {
+                return true;
+            }
+
             if (ValidStart.HasValue && d < ValidStart)
             {
                 return false;
@@ -133,6 +130,27 @@ namespace FamilyTreeTools.Entities
             }
 
             return true;
+        }
+
+        public bool AfterDeath(DateTime d)
+        {
+            return d > DeathDate;
+        }
+
+        /// <summary>
+        /// Used by history.
+        /// </summary>
+        /// <returns></returns>
+        public FamilyMember Clone()
+        {
+            return new FamilyMember(FullName, BirthDate)
+            {
+                Id = Id,
+                PartnerId = PartnerId,
+                Children = Children,
+                Status = Status,
+                DeathDate = DeathDate
+            };
         }
     }
 }

@@ -1,43 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
 using FamilyTreeTools.Entities;
 
 namespace FamilyTreeTools.Helpers.Generators
 {
-    public static class DataGenerator
+    public static class FamilyGenerator
     {
-        public static Dictionary<Guid, FamilyMemberHistory> GetData()
+        public static Family GetData()
         {
-            return new Dictionary<Guid, FamilyMemberHistory>() {
-                {
-                    Kaleb.Id,
-                    KalebHistory
-                },
-                {
-                    Karishma.Id,
-                    KarishmaHistory
-                },
-                {
-                    Sebastian.Id,
-                    SebastianHistory
-                },
-                {
-                    Korey.Id,
-                    KoreyHistory
-                },
-                {
-                    Heena.Id,
-                    HeenaHistory
-                },
-                {
-                    Fleur.Id,
-                    FleurHistory
-                },
-                {
-                    Rumaysa.Id,
-                    RumaysaHistory
-                }
-            };
+            return new Family()
+                .AddMember(Kaleb)
+                .AddMember(Karishma)
+                .AddMember(Sebastian)
+                .AddMember(Korey)
+                .AddMember(Heena)
+                .AddMember(Fleur)
+                .AddMember(Rumaysa);
         }
 
         public static readonly FamilyMember Kaleb = (FamilyMember)new FamilyMember("Kaleb Field", new DateTime(1939, 1, 5)).SetDeathDate(new DateTime(2010, 12, 4));
@@ -50,7 +27,7 @@ namespace FamilyTreeTools.Helpers.Generators
 
         public static readonly DateTime KalebWeddingDate = new DateTime(1965, 11, 3);
 
-        public static FamilyMemberHistory KalebHistory = new FamilyMemberHistory(Kaleb)
+        public static History KalebHistory = new History(Kaleb)
             .AddChange(m => m
                 .GotMarried(Karishma)
                 .AddChild(Korey)
@@ -61,9 +38,9 @@ namespace FamilyTreeTools.Helpers.Generators
             .AddChange(m => m.GotUnmarried(), new DateTime(1993, 11, 3));
 
         public static FamilyMember Sebastian = (FamilyMember)new FamilyMember("Sebastian Mcdougall", new DateTime(1946, 2, 2)).SetDeathDate(new DateTime(2020, 4, 3));
-        public static FamilyMemberHistory SebastianHistory = new FamilyMemberHistory(Sebastian);
+        public static History SebastianHistory = new History(Sebastian);
 
-        public static FamilyMemberHistory KarishmaHistory = new FamilyMemberHistory(Karishma)
+        public static History KarishmaHistory = new History(Karishma)
             .AddChange(m => m.SetFullName("Karishma Field"), KalebWeddingDate)
             .AddChange(m => m.SetFullName("Karishma Smith"), new DateTime(1993, 11, 3))
             .AddChange(m => m.SetPartner(Sebastian), new DateTime(1994, 3, 4));
@@ -78,7 +55,7 @@ namespace FamilyTreeTools.Helpers.Generators
 
         public static readonly DateTime KoreyWeddingDate = new DateTime(1986, 10, 8);
 
-        public static FamilyMemberHistory KoreyHistory = new FamilyMemberHistory(Korey)
+        public static History KoreyHistory = new History(Korey)
             .AddChange(m => m
                 .GotMarried(Heena)
                 .AddChild(Sonya)
@@ -86,7 +63,7 @@ namespace FamilyTreeTools.Helpers.Generators
                 KoreyWeddingDate
             );
 
-        public static FamilyMemberHistory HeenaHistory = new FamilyMemberHistory(Heena)
+        public static History HeenaHistory = new History(Heena)
             .AddChange(m => m.SetFullName("Heena Smith"), KoreyWeddingDate);
 
 
@@ -101,7 +78,7 @@ namespace FamilyTreeTools.Helpers.Generators
         public static FamilyMember Ismaeel = new FamilyMember("Ismaeel Powell", new DateTime(2004, 7, 3));
 
 
-        public static FamilyMemberHistory RumaysaHistory = new FamilyMemberHistory(Rumaysa)
+        public static History RumaysaHistory = new History(Rumaysa)
             .AddChange(m => m
                 .GotMarried(Fleur)
                 .AddChild(Marian)
@@ -111,7 +88,7 @@ namespace FamilyTreeTools.Helpers.Generators
             );
 
 
-        public static FamilyMemberHistory FleurHistory = new FamilyMemberHistory(Fleur)
+        public static History FleurHistory = new History(Fleur)
             .AddChange(m => m
                 .GotUnmarried().SetPartner(Hailie).AddChild(Ismaeel),
                 new DateTime(2003, 4, 7)

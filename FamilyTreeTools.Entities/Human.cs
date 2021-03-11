@@ -11,6 +11,10 @@ namespace FamilyTreeTools.Entities
             Married,
         }
 
+        [JsonConstructor]
+        public Human ()
+        { }
+
         public Human(string fullName, DateTime birthDate) {
             SetFullName(fullName);
             Status = StatusOptions.Unmarried;
@@ -24,10 +28,40 @@ namespace FamilyTreeTools.Entities
             Id = Guid.NewGuid();
         }
 
-        [JsonProperty]
-        public Guid Id { get; protected set; }
+        private Guid _Id { get; set; }
 
-        public string FullName { get; private set; }
+        [JsonProperty]
+        public Guid Id
+        {
+            get
+            {
+                return _Id;
+            }
+            set
+            {
+                if (value == Guid.Empty)
+                {
+                    throw new Exception("Trying to set empty guid.");
+                }
+
+                _Id = value;
+            }
+        }
+
+        private string _FullName { get; set; }
+
+        [JsonProperty]
+        public string FullName
+        {
+            get
+            {
+                return _FullName;
+            }
+            set
+            {
+                SetFullName(value);
+            }
+        }
 
         public Human SetFullName(string arg)
         {
@@ -36,30 +70,40 @@ namespace FamilyTreeTools.Entities
                 throw new ArgumentNullException("Empty full name not allowed.", nameof(arg));
             }
 
-            FullName = arg;
+            _FullName = arg;
             return this;
         }
 
         public StatusOptions Status { get; set; }
 
-        public DateTime BirthDate { get; private set; }
+        [JsonProperty]
+        public DateTime BirthDate { get; set; }
+
+        private DateTime? _DeathDate { get; set; }
 
         [JsonProperty]
-        public DateTime? DeathDate { get; private set; }
+        public DateTime? DeathDate {
+            get {
+                return _DeathDate;
+            }
+            set {
+                SetDeathDate(value);
+            }
+        }
 
         public bool IsDead()
         {
-            return DeathDate != null;
+            return _DeathDate != null;
         }
 
-        public Human SetDeathDate(DateTime arg)
+        public Human SetDeathDate(DateTime? arg)
         {
             if (arg < BirthDate)
             {
                 throw new ArgumentException("The death date before birth date.", nameof(arg));
             }
 
-            DeathDate = arg;
+            _DeathDate = arg;
             return this;
         }
     }
