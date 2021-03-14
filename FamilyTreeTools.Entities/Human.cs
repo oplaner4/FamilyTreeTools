@@ -3,6 +3,8 @@ using System;
 
 namespace FamilyTreeTools.Entities
 {
+    [Serializable]
+    [JsonObject(MemberSerialization.OptIn)]
     public class Human
     {
         public enum StatusOptions
@@ -16,15 +18,17 @@ namespace FamilyTreeTools.Entities
         { }
 
         public Human(string fullName, DateTime birthDate) {
-            SetFullName(fullName);
-            Status = StatusOptions.Unmarried;
 
-            if (birthDate > DateTime.Now)
+            SetBirthDate(birthDate);
+
+            Status = new PropHistory<StatusOptions>().AddChange(StatusOptions.Unmarried, BirthDate);
+            FullName = new PropHistory<string>((value, _) =>
             {
-                throw new ArgumentException("The birth date not in past.", nameof(birthDate));
-            }
-
-            BirthDate = birthDate;
+                if (string.IsNullOrEmpty(value))
+                {
+                    throw new Exception("Empty full name is not allowed.");
+                }
+            }).AddChange(fullName, BirthDate);
             Id = Guid.NewGuid();
         }
 
@@ -41,43 +45,41 @@ namespace FamilyTreeTools.Entities
             {
                 if (value == Guid.Empty)
                 {
-                    throw new Exception("Trying to set empty guid.");
+                    throw new Exception("Trying to set an empty guid.");
                 }
 
                 _Id = value;
             }
         }
 
-        private string _FullName { get; set; }
+        [JsonProperty]
+        public PropHistory<string> FullName { get; set; }
 
         [JsonProperty]
-        public string FullName
-        {
-            get
-            {
-                return _FullName;
+        public PropHistory<StatusOptions> Status { get; set; }
+
+        private DateTime _BirthDate { get; set; }
+
+        [JsonProperty]
+        public DateTime BirthDate {
+            get {
+                return _BirthDate;
             }
-            set
-            {
-                SetFullName(value);
+            set {
+                SetBirthDate(value);
             }
         }
 
-        public Human SetFullName(string arg)
+        private Human SetBirthDate(DateTime arg)
         {
-            if (string.IsNullOrEmpty(arg))
+            if (arg > DateTime.Now)
             {
-                throw new ArgumentNullException("Empty full name not allowed.", nameof(arg));
+                throw new ArgumentException("The birth date is in the future.", nameof(arg));
             }
 
-            _FullName = arg;
+            _BirthDate = arg;
             return this;
         }
-
-        public StatusOptions Status { get; set; }
-
-        [JsonProperty]
-        public DateTime BirthDate { get; set; }
 
         private DateTime? _DeathDate { get; set; }
 
@@ -87,24 +89,53 @@ namespace FamilyTreeTools.Entities
                 return _DeathDate;
             }
             set {
-                SetDeathDate(value);
+                Died(value);
             }
         }
 
-        public bool IsDead()
+        public bool IsDeadAt (DateTime d)
         {
-            return _DeathDate != null;
+            return DeathDate <= d;
         }
 
-        public Human SetDeathDate(DateTime? arg)
+        public bool AfterDeath(DateTime d)
+        {
+            return d > DeathDate;
+        }
+
+        public Human Died(DateTime? arg)
         {
             if (arg < BirthDate)
             {
-                throw new ArgumentException("The death date before birth date.", nameof(arg));
+                throw new ArgumentException("The death date is before the birth date.", nameof(arg));
+            }
+
+            if (arg > DateTime.Now)
+            {
+                throw new ArgumentException("The death date is in the future.", nameof(arg));
             }
 
             _DeathDate = arg;
             return this;
+        }
+
+        public bool BeforeBirthday (DateTime at)
+        {
+            return at.Month < BirthDate.Month || (at.Month == BirthDate.Month && at.Day < BirthDate.Day);
+        }
+
+        public int GetAge(DateTime? at = null)
+        {
+            DateTime d = at ?? DateTime.Now;
+
+            int result = d.Year - BirthDate.Year;
+
+            if (BeforeBirthday(d))
+            {
+                result--;
+            }
+
+            return result;
         }
     }
 }

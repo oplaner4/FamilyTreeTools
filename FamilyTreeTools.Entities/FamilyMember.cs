@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace FamilyTreeTools.Entities
 {
@@ -10,18 +11,28 @@ namespace FamilyTreeTools.Entities
             string fullName, DateTime birthDate
         ) : base(fullName, birthDate)
         {
-            Children = new List<FamilyMember>();
-            SetValidStart(BirthDate);
+            Children = new List<Guid>();
+
+            PartnerId = new PropHistory<Guid?>().AddChange(null, BirthDate);
+            Status = new PropHistory<StatusOptions>((value, since) =>
+            {
+                if (value == StatusOptions.Married && !HadPartner(since))
+                {
+                    throw new Exception("Cannot get married without any partner.");
+                }
+            }).AddChange(StatusOptions.Unmarried, BirthDate);
+
+            PartnerReference = new PropHistory<FamilyMember>().AddChange(null, birthDate);
         }
 
         [JsonConstructor]
         public FamilyMember()
         { }
 
-        private List<FamilyMember>  _Children { get; set; }
+        private List<Guid> _Children { get; set; }
 
         [JsonProperty]
-        public List<FamilyMember> Children
+        public List<Guid> Children
         {
             get
             {
@@ -34,123 +45,132 @@ namespace FamilyTreeTools.Entities
         }
 
         [JsonProperty]
-        public Guid? PartnerId { get; set; }
+        public PropHistory<Guid?> PartnerId { get; set; }
 
-        [JsonProperty]
-        public DateTime? ValidStart { get; set; }
+        public bool HadPartner(DateTime at, FamilyMember specific = null)
+        {
+            Guid? partnerIdThatTime = PartnerId.ValueAt(at);
 
-        [JsonProperty]
-        public DateTime? ValidEnd { get; set; }
+            return partnerIdThatTime.HasValue && (
+                specific == null || partnerIdThatTime.Value == specific.Id
+            );
+        }
 
-        public FamilyMember AddChild(FamilyMember child)
+        public bool HadAnyPartner()
+        {
+            return PartnerId.Changes.Values.Any(v => v.HasValue);
+        }
+
+        public bool WasEverMarried()
+        {
+            return Status.Changes.Values.Any(v => v == StatusOptions.Married);
+        }
+
+        public bool WasMarried(DateTime at)
+        {
+            return Status.ValueAt(at) == StatusOptions.Married;
+        }
+
+        public FamilyMember HadChild(FamilyMember child)
         {
             if (child.BirthDate < BirthDate)
             {
-                throw new ArgumentException("The child's birth date before parent birth date.", nameof(child));
+                throw new ArgumentException("The child's birth date is before the parent's birth date.", nameof(child));
             }
 
-            Children.Add(child);
+            Children.Add(child.Id);
             return this;
         }
 
-        public bool HasPartner()
+        public FamilyMember WithPartner(FamilyMember arg, DateTime since)
         {
-            return PartnerId != null;
-        }
+            FamilyMember partner = PartnerReference.ValueAt(since);
 
-        public FamilyMember SetPartner(FamilyMember arg)
-        {
-            PartnerId = arg?.Id;
+            if (arg == null)
+            {
+                partner?.PartnerReference.AddChange(null, since);
+                partner?.PartnerId.AddChange(null, since);
+            }
+            else {
+                if (arg.BirthDate > since)
+                {
+                    throw new ArgumentException("Cannot set a partner who was not born that time.", nameof(arg));
+                }
+
+                if (since > arg.DeathDate)
+                {
+                    throw new ArgumentException("Cannot set a partner who is already dead that time.", nameof(arg));
+                }
+
+                arg.PartnerReference.AddChange(this, since);
+                arg.PartnerId.AddChange(Id, since);
+            }
+
+            PartnerId.AddChange(arg?.Id, since);
+            PartnerReference.AddChange(arg, since);
+
             return this;
         }
 
-        public FamilyMember RemovePartner()
+        public FamilyMember WithoutPartner(DateTime since)
         {
-            return SetPartner(null);
-        }
-
-        public FamilyMember SetStatus(StatusOptions arg)
-        {
-            if (arg == StatusOptions.Married && !HasPartner())
+            if (!HadPartner(since))
             {
-                throw new ArgumentException("The partner is not defined with status married.", nameof(arg));
+                throw new ArgumentException("Cannot remove the partner that was not set that time.", nameof(since));
             }
 
-            Status = arg;
+            return WithPartner(null, since);
+        }
+
+        public FamilyMember GotMarried(DateTime since, FamilyMember partner = null)
+        {
+            if (HadPartner(since))
+            {
+                if (!HadPartner(since, partner))
+                {
+                    throw new ArgumentException("Cannot get married with another partner.", nameof(partner));
+                }
+            }
+            else if (partner != null)
+            {
+                WithPartner(partner, since);
+            }
+
+            Status.AddChange(StatusOptions.Married, since);
+            PartnerReference.ValueAt(since)?.Status.AddChange(StatusOptions.Married, since);
             return this;
         }
 
-        public FamilyMember GotMarried(FamilyMember partner)
+        public FamilyMember GotUnmarried(DateTime since)
         {
-            return SetPartner(partner).SetStatus(StatusOptions.Married);
-        }
-
-        public FamilyMember GotUnmarried()
-        {
-            return SetStatus(StatusOptions.Unmarried).RemovePartner();
-        }
-
-        public FamilyMember SetValidStart(DateTime? arg)
-        {
-            if (ValidEnd < arg)
+            if (!PartnerId.ValueAt(since).HasValue)
             {
-                throw new ArgumentException("Valid start date after end date.", nameof(arg));
+                throw new Exception("Cannot get unmarried without any partner.");
             }
 
-            ValidStart = arg;
+            Status.AddChange(StatusOptions.Unmarried, since);
+            PartnerReference.ValueAt(since)?.Status.AddChange(StatusOptions.Unmarried, since);
+
+            return WithoutPartner(since);
+        }
+
+        public FamilyMember ChangedFullName(string arg, DateTime since)
+        {
+            FullName.AddChange(arg, since);
             return this;
         }
 
-        public FamilyMember SetValidEnd(DateTime? arg)
+        private PropHistory<FamilyMember> PartnerReference { get; set; }
+
+        public FamilyMember RepairPartnerReference (PropHistory<FamilyMember> arg)
         {
-            if (ValidStart > arg)
+            if (PartnerReference.GetLatestChangeDate() > BirthDate)
             {
-                throw new ArgumentException("Valid end date before start date.", nameof(arg));
+                throw new Exception("This method is used after the serialization.");
             }
 
-            ValidEnd = arg;
+            PartnerReference = arg;
             return this;
-        }
-
-        public bool IsValidAt(DateTime d)
-        {
-            if (AfterDeath(d))
-            {
-                return true;
-            }
-
-            if (ValidStart.HasValue && d < ValidStart)
-            {
-                return false;
-            }
-
-            if (ValidStart.HasValue && d > ValidEnd)
-            {
-                return false;
-            }
-
-            return true;
-        }
-
-        public bool AfterDeath(DateTime d)
-        {
-            return d > DeathDate;
-        }
-
-        /// <summary>
-        /// Used by history.
-        /// </summary>
-        /// <returns></returns>
-        public FamilyMember Clone()
-        {
-            return new FamilyMember(FullName, BirthDate)
-            {
-                Id = Id,
-                PartnerId = PartnerId,
-                Children = Children,
-                Status = Status,
-                DeathDate = DeathDate
-            };
         }
     }
 }

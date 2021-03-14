@@ -45,13 +45,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Family.cs" />
-    <Compile Include="History.cs" />
+    <Compile Include="PropHistory.cs" />
     <Compile Include="Human.cs" />
     <Compile Include="FamilyMember.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="classes.cd" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
