@@ -1,7 +1,8 @@
-﻿using Newtonsoft.Json;
+﻿using FamilyTreeTools.Entities.Exceptions;
+using Newtonsoft.Json;
 using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace FamilyTreeTools.Entities
 {
@@ -39,12 +40,12 @@ namespace FamilyTreeTools.Entities
         {
             if (Changes.ContainsKey(since))
             {
-                throw new ArgumentException("Trying to replace an existing change.", nameof(since));
+                throw new HistoryViolationException("Trying to replace an existing change.");
             }
 
             if (since > DateTime.Now)
             {
-                throw new ArgumentException("A new change is going to happen in the future.");
+                throw new HistoryViolationException("A new change is going to happen in the future.");
             }
 
             Checker?.Invoke(value, since);

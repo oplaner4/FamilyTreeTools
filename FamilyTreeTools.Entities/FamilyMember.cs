@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using FamilyTreeTools.Entities.Exceptions;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,22 +8,33 @@ namespace FamilyTreeTools.Entities
 {
     public class FamilyMember : Human
     {
-        public FamilyMember(
-            string fullName, DateTime birthDate
-        ) : base(fullName, birthDate)
+        protected override void Initialize()
         {
-            Children = new List<Guid>();
-
-            PartnerId = new PropHistory<Guid?>().AddChange(null, BirthDate);
             Status = new PropHistory<StatusOptions>((value, since) =>
             {
                 if (value == StatusOptions.Married && !HadPartner(since))
                 {
-                    throw new Exception("Cannot get married without any partner.");
+                    throw new HistoryViolationException("Cannot get married without any partner.");
                 }
-            }).AddChange(StatusOptions.Unmarried, BirthDate);
+            });
 
-            PartnerReference = new PropHistory<FamilyMember>().AddChange(null, birthDate);
+            PartnerReference = new PropHistory<FamilyMember>();
+            ChildrenReference = new List<FamilyMember>();
+
+            base.Initialize();
+        }
+
+        public FamilyMember(
+            string fullName, DateTime birthDate
+        ) : base(fullName, birthDate)
+        {
+            Initialize();
+
+            Children = new List<Guid>();
+            Partner = new PropHistory<Guid?>().AddChange(null, BirthDate);
+            Status.AddChange(StatusOptions.Unmarried, BirthDate);
+            PartnerReference.AddChange(null, BirthDate);
+            FullName.AddChange(fullName, BirthDate);
         }
 
         [JsonConstructor]
@@ -45,11 +57,14 @@ namespace FamilyTreeTools.Entities
         }
 
         [JsonProperty]
-        public PropHistory<Guid?> PartnerId { get; set; }
+        public Guid? Parent { get; set; }
+
+        [JsonProperty]
+        public PropHistory<Guid?> Partner { get; set; }
 
         public bool HadPartner(DateTime at, FamilyMember specific = null)
         {
-            Guid? partnerIdThatTime = PartnerId.ValueAt(at);
+            Guid? partnerIdThatTime = Partner.ValueAt(at);
 
             return partnerIdThatTime.HasValue && (
                 specific == null || partnerIdThatTime.Value == specific.Id
@@ -58,7 +73,7 @@ namespace FamilyTreeTools.Entities
 
         public bool HadAnyPartner()
         {
-            return PartnerId.Changes.Values.Any(v => v.HasValue);
+            return Partner.Changes.Values.Any(v => v.HasValue);
         }
 
         public bool WasEverMarried()
@@ -75,51 +90,75 @@ namespace FamilyTreeTools.Entities
         {
             if (child.BirthDate < BirthDate)
             {
-                throw new ArgumentException("The child's birth date is before the parent's birth date.", nameof(child));
+                throw new HistoryViolationException("The child's birth date is before the parent's birth date.");
+            }
+
+            if (child.Parent.HasValue)
+            {
+                throw new HistoryViolationException("Cannot set a child who has already the parent.");
             }
 
             Children.Add(child.Id);
+            ChildrenReference.Add(child);
+            child.Parent = Id;
+            child.ParentReference = this;
             return this;
         }
 
-        public FamilyMember WithPartner(FamilyMember arg, DateTime since)
+        private FamilyMember SetPartner(FamilyMember arg, DateTime since)
         {
             FamilyMember partner = PartnerReference.ValueAt(since);
 
             if (arg == null)
             {
                 partner?.PartnerReference.AddChange(null, since);
-                partner?.PartnerId.AddChange(null, since);
+                partner?.Partner.AddChange(null, since);
             }
-            else {
+            else
+            {
                 if (arg.BirthDate > since)
                 {
-                    throw new ArgumentException("Cannot set a partner who was not born that time.", nameof(arg));
+                    throw new HistoryViolationException("Cannot set a partner who was not born that time.");
                 }
 
                 if (since > arg.DeathDate)
                 {
-                    throw new ArgumentException("Cannot set a partner who is already dead that time.", nameof(arg));
+                    throw new HistoryViolationException("Cannot set a partner who is already dead that time.");
+                }
+
+                if (arg.Partner.ValueAt(since).HasValue)
+                {
+                    throw new HistoryViolationException("Cannot set a partner who had already the partner that time.");
                 }
 
                 arg.PartnerReference.AddChange(this, since);
-                arg.PartnerId.AddChange(Id, since);
+                arg.Partner.AddChange(Id, since);
             }
 
-            PartnerId.AddChange(arg?.Id, since);
+            Partner.AddChange(arg?.Id, since);
             PartnerReference.AddChange(arg, since);
 
             return this;
+        }
+
+        public FamilyMember WithPartner(FamilyMember arg, DateTime since)
+        {
+            if (arg == null)
+            {
+                throw new ArgumentException("Trying to set null partner.");
+            }
+
+            return SetPartner(arg, since);
         }
 
         public FamilyMember WithoutPartner(DateTime since)
         {
             if (!HadPartner(since))
             {
-                throw new ArgumentException("Cannot remove the partner that was not set that time.", nameof(since));
+                throw new HistoryViolationException("Cannot break up with the partner that was not set that time.");
             }
 
-            return WithPartner(null, since);
+            return SetPartner(null, since);
         }
 
         public FamilyMember GotMarried(DateTime since, FamilyMember partner = null)
@@ -128,7 +167,7 @@ namespace FamilyTreeTools.Entities
             {
                 if (!HadPartner(since, partner))
                 {
-                    throw new ArgumentException("Cannot get married with another partner.", nameof(partner));
+                    throw new HistoryViolationException("Cannot get married with another partner.");
                 }
             }
             else if (partner != null)
@@ -143,9 +182,9 @@ namespace FamilyTreeTools.Entities
 
         public FamilyMember GotUnmarried(DateTime since)
         {
-            if (!PartnerId.ValueAt(since).HasValue)
+            if (!Partner.ValueAt(since).HasValue)
             {
-                throw new Exception("Cannot get unmarried without any partner.");
+                throw new HistoryViolationException("Cannot get unmarried without any partner.");
             }
 
             Status.AddChange(StatusOptions.Unmarried, since);
@@ -160,16 +199,58 @@ namespace FamilyTreeTools.Entities
             return this;
         }
 
-        private PropHistory<FamilyMember> PartnerReference { get; set; }
+        public PropHistory<FamilyMember> PartnerReference { get; private set; }
 
-        public FamilyMember RepairPartnerReference (PropHistory<FamilyMember> arg)
+        public FamilyMember ParentReference { get; private set; }
+
+        public List<FamilyMember> ChildrenReference { get; private set; }
+
+        private void RepairInitialization()
         {
-            if (PartnerReference.GetLatestChangeDate() > BirthDate)
+            Dictionary<DateTime, StatusOptions> existingChanges = Status.Changes;
+            Dictionary<DateTime, string> fullNameChanges = FullName.Changes;
+            Initialize();
+            Status.Changes = existingChanges;
+            FullName.Changes = fullNameChanges;
+        }
+
+        private void RepairPartnerReference(Func<Guid, FamilyMember> mapper)
+        {
+            foreach (DateTime since in Partner.Changes.Keys)
             {
-                throw new Exception("This method is used after the serialization.");
+                Guid? partnerId = Partner.Changes[since];
+                if (Partner.Changes[since].HasValue)
+                {
+                    PartnerReference.AddChange(mapper(partnerId.Value), since);
+                }
+                else
+                {
+                    PartnerReference.AddChange(null, since);
+                }
+            }
+        }
+
+        public FamilyMember RepairAfterSerialization(Func<Guid, FamilyMember> mapper)
+        {
+            RepairInitialization();
+
+            if (PartnerReference.Changes.Count() > 0 || ParentReference != null || ChildrenReference.Count() > 0)
+            {
+                throw new Exception("This method can be used only after the serialization.");
             }
 
-            PartnerReference = arg;
+            RepairPartnerReference(mapper);
+
+            if (Parent.HasValue)
+            {
+                ParentReference = mapper(Parent.Value);
+            }
+
+            foreach (Guid childId in Children)
+            {
+                ChildrenReference.Add(mapper(childId));
+            }
+
             return this;
         }
     }

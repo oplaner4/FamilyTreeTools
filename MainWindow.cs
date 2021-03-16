@@ -13,7 +13,7 @@ namespace FamilyTreeTools
 
         private void MainWindow_Load(object sender, System.EventArgs e)
         {
-            
+
         }
     }
 }

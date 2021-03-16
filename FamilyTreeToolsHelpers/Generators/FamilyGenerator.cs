@@ -1,13 +1,13 @@
-﻿using System;
-using FamilyTreeTools.Entities;
+﻿using FamilyTreeTools.Entities;
+using System;
 
-namespace FamilyTreeTools.Helpers.Generators
+namespace FamilyTreeTools.Utilities.Generators
 {
     public static class FamilyGenerator
     {
         public static Family GetData()
         {
-            return new Family()
+            return new Family("Field family")
                 .AddMember(Kaleb).AddMember(Karishma)
                 .AddMember(Sebastian)
                 .AddMember(Klara).AddMember(Rumaysa).AddMember(Korey)
@@ -32,6 +32,8 @@ namespace FamilyTreeTools.Helpers.Generators
         public static readonly DateTime KalebWeddingDate = new DateTime(1965, 11, 3);
 
         public static readonly DateTime HenriettaWeddingDate = new DateTime(2015, 12, 9);
+
+        public static readonly DateTime SebastianWithKarishmaDate = new DateTime(1994, 3, 4);
 
 
         // Sonya's children
@@ -82,7 +84,7 @@ namespace FamilyTreeTools.Helpers.Generators
         public static FamilyMember Ismaeel = new FamilyMember("Ismaeel Garrison", new DateTime(2002, 7, 20))
             .WithPartner(Ashley, new DateTime(2021, 1, 2));
 
-        public static FamilyMember Raja = (FamilyMember) new FamilyMember("Raja Garrison", new DateTime(2003, 9, 8)).Died(new DateTime(2004, 4, 11));
+        public static FamilyMember Raja = (FamilyMember)new FamilyMember("Raja Garrison", new DateTime(2003, 9, 8)).Died(new DateTime(2004, 4, 11));
 
 
         // Klara's children
@@ -134,7 +136,7 @@ namespace FamilyTreeTools.Helpers.Generators
         public static readonly FamilyMember Karishma = ((FamilyMember)new FamilyMember("Karishma Smith", new DateTime(1940, 1, 1)).Died(new DateTime(2011, 11, 8)))
             .ChangedFullName("Karishma Field", KalebWeddingDate)
             .ChangedFullName("Karishma Smith", new DateTime(1993, 11, 3))
-            .WithPartner(Sebastian, new DateTime(1994, 3, 4));
+            .WithPartner(Sebastian, SebastianWithKarishmaDate);
 
         public static readonly FamilyMember Kaleb = ((FamilyMember)new FamilyMember("Kaleb Field", new DateTime(1939, 1, 5)).Died(new DateTime(2010, 12, 19)))
             .GotMarried(KalebWeddingDate, Karishma)

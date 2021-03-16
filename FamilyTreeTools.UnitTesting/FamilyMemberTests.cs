@@ -1,9 +1,10 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using FamilyTreeTools.Helpers.Generators;
-using FamilyTreeTools.Helpers.Serialize;
+﻿using FamilyTreeTools.Entities;
+using FamilyTreeTools.Entities.Exceptions;
+using FamilyTreeTools.Utilities.Generators;
+using FamilyTreeTools.Utilities.Serialize;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
-using FamilyTreeTools.Entities;
 using System.Linq;
 
 namespace FamilyTreeTools.UnitTesting
@@ -21,7 +22,7 @@ namespace FamilyTreeTools.UnitTesting
         public readonly DateTime LailaNormanBirthDate = new DateTime(1992, 1, 30);
 
         public readonly string JazmynWhite = "Jazmyn White";
-        public readonly DateTime JazmynWhiteBirthDate = new DateTime(2014, 8, 22);
+        public readonly DateTime JazmynWhiteBirthDate = new DateTime(1983, 8, 22);
 
         public readonly string PrishaKendall = "Prisha Kendall";
         public readonly DateTime PrishaKendallBirthDate = new DateTime(2016, 4, 4);
@@ -31,7 +32,7 @@ namespace FamilyTreeTools.UnitTesting
         public void InvalidChanges()
         {
             int i = 1;
-            foreach (Func<Human> familyMemberF in new List<Func<Human>>() {
+            foreach (Action familyMemberF in new List<Action>() {
                 () => new FamilyMember(JohnSmith, DateTime.Now.AddDays(3)), /* 1 */
 
                 () => new FamilyMember(JohnSmith, JohnSmithBirthDate) /* 2 */
@@ -57,7 +58,7 @@ namespace FamilyTreeTools.UnitTesting
                         new FamilyMember(JohnSmith, JohnSmithBirthDate.AddYears(24)), HuzaifaMscgrathBirthDate.AddYears(20)
                     ),
 
-                () =>  new FamilyMember(JohnSmith, JohnSmithBirthDate) /* 8 */
+                () => new FamilyMember(JohnSmith, JohnSmithBirthDate) /* 8 */
                     .WithoutPartner(DateTime.Now),
 
                 () => new FamilyMember(JohnSmith, JohnSmithBirthDate).GotMarried( /* 9 */
@@ -94,29 +95,115 @@ namespace FamilyTreeTools.UnitTesting
                         .WithPartner(
                             new FamilyMember(HuzaifaMscgrath, HuzaifaMscgrathBirthDate),
                             JohnSmithBirthDate.AddYears(19)
-                        )
+                        ),
 
-            }) {
-                try
-                {
-                    familyMemberF();
-                }
-                catch
-                {
-                    i++;
-                    continue;
+                () => new FamilyMember(HuzaifaMscgrath, HuzaifaMscgrathBirthDate) /* 15 */
+                        .WithPartner(
+                            new FamilyMember(JohnSmith, JohnSmithBirthDate)
+                                .WithPartner(
+                                    new FamilyMember(ShylaBoyce, ShylaBoyceBirthDate),
+                                    JohnSmithBirthDate.AddYears(25)
+                                ),
+                            JohnSmithBirthDate.AddYears(26)
+                        ),
+
+                () => { /* 16 */
+                    FamilyMember Jazmyn = new FamilyMember(JazmynWhite, JazmynWhiteBirthDate);
+                    new FamilyMember(ShylaBoyce, ShylaBoyceBirthDate).HadChild(Jazmyn);
+                    new FamilyMember(HuzaifaMscgrath, HuzaifaMscgrathBirthDate).HadChild(Jazmyn);
                 }
 
-                throw new Exception(string.Format("{0} Should have thrown an exception", i));
+            })
+            {
+                Assert.ThrowsException<HistoryViolationException>(
+                    () => familyMemberF(),
+                    string.Format("{0} Should have thrown an exception", i++));
             }
         }
 
         [TestMethod]
-        public void SpecialCases()
+        public void References()
         {
+            void check(Family f)
+            {
+                Assert.AreEqual(
+                    f.Members[FamilyGenerator.Kaleb.Id].PartnerReference.ValueAt(FamilyGenerator.KalebWeddingDate).Id,
+                    FamilyGenerator.Karishma.Id
+                );
 
+                Assert.AreEqual(
+                    f.Members[FamilyGenerator.Karishma.Id].PartnerReference.ValueAt(FamilyGenerator.KalebWeddingDate).Id,
+                    FamilyGenerator.Kaleb.Id
+                );
 
+                Assert.AreEqual(
+                    f.Members[FamilyGenerator.Sebastian.Id].PartnerReference.ValueAt(FamilyGenerator.SebastianWithKarishmaDate).Id,
+                    FamilyGenerator.Karishma.Id
+                );
 
+                Assert.AreEqual(
+                    f.Members[FamilyGenerator.Karishma.Id].PartnerReference.ValueAt(FamilyGenerator.SebastianWithKarishmaDate).Id,
+                    FamilyGenerator.Sebastian.Id
+                );
+
+                Assert.AreEqual(
+                    f.Members[FamilyGenerator.Rumaysa.Id].ParentReference.Id,
+                    FamilyGenerator.Kaleb.Id
+                );
+
+                Assert.AreEqual(
+                    f.Members[FamilyGenerator.Korey.Id].ParentReference.Id,
+                    FamilyGenerator.Kaleb.Id
+                );
+
+                Assert.AreEqual(
+                    f.Members[FamilyGenerator.Rumaysa.Id].ParentReference.Id,
+                    FamilyGenerator.Kaleb.Id
+                );
+
+                Assert.AreEqual(
+                    f.Members[FamilyGenerator.Klara.Id].ParentReference
+                        .PartnerReference.ValueAt(FamilyGenerator.KalebWeddingDate).Id,
+                    FamilyGenerator.Karishma.Id
+                );
+
+                Assert.AreEqual(
+                    f.Members[FamilyGenerator.Korey.Id].ParentReference
+                        .PartnerReference.ValueAt(FamilyGenerator.KalebWeddingDate).Id,
+                    FamilyGenerator.Karishma.Id
+                );
+
+                Assert.AreEqual(
+                    f.Members[FamilyGenerator.Kian.Id].ParentReference
+                        .ParentReference.PartnerReference.ValueAt(FamilyGenerator.RumaysaWeddingDate).Id,
+                    FamilyGenerator.Fleur.Id
+                );
+
+                Assert.IsTrue(
+                    f.Members[FamilyGenerator.Fleur.Id].ChildrenReference.Any(ch => ch.Id == FamilyGenerator.Raja.Id)
+                );
+
+                Assert.IsTrue(
+                    f.Members[FamilyGenerator.Korey.Id].ChildrenReference
+                        .Where(ch => ch.Id == FamilyGenerator.Sonya.Id).FirstOrDefault()
+                        .ChildrenReference.Any(ch => ch.Id == FamilyGenerator.Marwah.Id)
+                );
+
+                Assert.AreEqual(
+                    f.Members[FamilyGenerator.Moesha.Id]
+                        .ChildrenReference.Where(ch => ch.Id == FamilyGenerator.Kian.Id).FirstOrDefault()
+                        .ParentReference
+                        .PartnerReference.ValueAt(FamilyGenerator.Kian.BirthDate)
+                        .PartnerReference.ValueAt(FamilyGenerator.Kian.BirthDate)
+                        .ParentReference
+                        .ParentReference
+                        .PartnerReference.ValueAt(FamilyGenerator.KalebWeddingDate).Id,
+                    FamilyGenerator.Karishma.Id
+                );
+            }
+            Family fieldFamily = FamilyGenerator.GetData();
+            check(fieldFamily);
+            check(new FamilySerializeHelper(fieldFamily.Name).Save(fieldFamily).Load());
         }
 
         [TestMethod]
@@ -162,7 +249,6 @@ namespace FamilyTreeTools.UnitTesting
                 Assert.IsFalse(Huzaifa.HadPartner(d));
                 Assert.IsFalse(Shyla.HadPartner(d));
             }
-
 
             Assert.IsTrue(John.HadAnyPartner());
             Assert.IsTrue(Shyla.HadAnyPartner());

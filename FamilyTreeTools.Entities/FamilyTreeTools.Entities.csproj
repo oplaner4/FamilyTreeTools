@@ -44,6 +44,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Exceptions\HistoryViolationException.cs" />
+    <Compile Include="TreeNode.cs" />
     <Compile Include="Family.cs" />
     <Compile Include="PropHistory.cs" />
     <Compile Include="Human.cs" />

@@ -62,9 +62,9 @@
       <Project>{4af70806-eef9-4c05-b57d-a81fa719236e}</Project>
       <Name>FamilyTreeTools.Entities</Name>
     </ProjectReference>
-    <ProjectReference Include="..\FamilyTreeToolsHelpers\FamilyTreeTools.Helpers.csproj">
+    <ProjectReference Include="..\FamilyTreeToolsHelpers\FamilyTreeTools.Utilities.csproj">
       <Project>{0d581cab-6d61-4753-9e15-1c439b9b134a}</Project>
-      <Name>FamilyTreeTools.Helpers</Name>
+      <Name>FamilyTreeTools.Utilities</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
