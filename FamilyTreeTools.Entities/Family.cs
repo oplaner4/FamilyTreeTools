@@ -9,13 +9,16 @@ namespace FamilyTreeTools.Entities
     [JsonObject(MemberSerialization.OptIn)]
     public class Family
     {
+        /// <summary>
+        /// This constructor is used only during deserialization.
+        /// </summary>
         [JsonConstructor]
         public Family()
         { }
 
-        public Family(string name, Dictionary<Guid, FamilyMember> members = null)
+        public Family(string name, Dictionary<Guid, Member> members = null)
         {
-            Members = members ?? new Dictionary<Guid, FamilyMember>();
+            Members = members ?? new Dictionary<Guid, Member>();
             Name = name;
         }
 
@@ -35,10 +38,10 @@ namespace FamilyTreeTools.Entities
             }
         }
 
-        private Dictionary<Guid, FamilyMember> _Members { get; set; }
+        private Dictionary<Guid, Member> _Members { get; set; }
 
         [JsonProperty]
-        public Dictionary<Guid, FamilyMember> Members
+        public Dictionary<Guid, Member> Members
         {
             get
             {
@@ -50,7 +53,7 @@ namespace FamilyTreeTools.Entities
             }
         }
 
-        public Family AddMember(FamilyMember arg)
+        public Family AddMember(Member arg)
         {
             if (arg == null)
             {
@@ -61,83 +64,31 @@ namespace FamilyTreeTools.Entities
             return this;
         }
 
-        public List<FamilyMember> GetBornChildrenOf(Guid member, DateTime at)
+        /// <summary>
+        /// This method is used only after serialization.
+        /// </summary>
+        public Family RepairReferences()
         {
-            List<FamilyMember> result = new List<FamilyMember>();
-
-            foreach (Guid id in Members[member].Children)
+            foreach (Member member in Members.Values)
             {
-                FamilyMember child = Members[id];
-                if (child.IsBorn(at))
-                {
-                    result.Add(child);
-                }
-            }
-
-            return result;
-        }
-
-        public List<FamilyMember> GetOldestAncestors(DateTime at)
-        {
-            return Members.Values.Where(m => !m.Parent.HasValue && m.IsBorn(at)).ToList();
-        }
-
-        public Family RepairAfterSerialization()
-        {
-            foreach (FamilyMember member in Members.Values)
-            {
-                member.RepairAfterSerialization(id => Members[id]);
+                member.RepairReferences(id => Members[id]);
             }
 
             return this;
         }
 
 
-        private void SetTreeNodeChildren(TreeNode node, List<FamilyMember> children, DateTime at)
+        public IEnumerable<Member> GetOldestAncestors(DateTime at, bool canBeDead)
         {
-            foreach (FamilyMember ancestor in children)
-            {
-                node.Children.Add(
-                    new TreeNode(
-                        ancestor.Id, ancestor.FullName.ValueAt(at)
-                    )
+            return Members.Values.Where(m =>
+                    !m.Parent.HasValue &&
+                    m.IsBorn(at, canBeDead)
                 );
-            }
         }
 
-        private void BuidTreeRecurrent(DateTime at, TreeNode actual)
+        /*public FamilyTree BuidTree(DateTime at, bool includeDead = true)
         {
-            foreach (TreeNode child in actual.Children)
-            {
-                SetTreeNodeChildren(child, GetBornChildrenOf(child.Key, at), at);
 
-                foreach (FamilyMember member in Members[child.Key].ChildrenReference.Where(ch => ch.IsBorn(at)))
-                {
-                    child.Children.Add(
-                        new TreeNode(
-                            member.Id, member.FullName.ValueAt(at)
-                        )
-                    );
-                }
-                BuidTreeRecurrent(at, child);
-            }
-        }
-
-        public TreeNode BuidTree(DateTime at)
-        {
-            TreeNode root = new TreeNode(Guid.Empty, Name);
-
-            foreach (FamilyMember ancestor in GetOldestAncestors(at))
-            {
-                root.Children.Add(
-                    new TreeNode(
-                        ancestor.Id, ancestor.FullName.ValueAt(at)
-                    )
-                );
-            }
-
-            BuidTreeRecurrent(at, root);
-            return root;
-        }
+        }*/
     }
 }

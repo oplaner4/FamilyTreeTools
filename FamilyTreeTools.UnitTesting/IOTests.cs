@@ -18,7 +18,7 @@ namespace FamilyTreeTools.UnitTesting
             Family deserializedFamily = new FamilySerializeHelper(fieldFamily.Name)
                 .Save(fieldFamily).Load();
 
-            foreach (FamilyMember member in new List<FamilyMember>() {
+            foreach (Member member in new List<Member>() {
                 FamilyGenerator.Kaleb,
                 FamilyGenerator.Karishma
             })
@@ -63,9 +63,12 @@ namespace FamilyTreeTools.UnitTesting
         public void FamilyTreeSerialize()
         {
             Family fieldFamily = FamilyGenerator.GetData();
-            TreeNode root = fieldFamily.BuidTree(FamilyGenerator.KoreyWeddingDate);
 
-            new TreeSerializeHelper(fieldFamily.Name).Save(root);
+            new FamilyTreeSerializeHelper(fieldFamily.Name).Save(
+                new Tree(fieldFamily, DateTime.Now) {
+                    CanBeDead = true
+                }.Build()
+            );
 
         }
     }

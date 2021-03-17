@@ -45,14 +45,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Exceptions\HistoryViolationException.cs" />
-    <Compile Include="TreeNode.cs" />
+    <Compile Include="Tree.cs" />
+    <Compile Include="Node.cs" />
     <Compile Include="Family.cs" />
     <Compile Include="PropHistory.cs" />
     <Compile Include="Human.cs" />
-    <Compile Include="FamilyMember.cs" />
+    <Compile Include="Member.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="diagram.cd" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

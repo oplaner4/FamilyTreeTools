@@ -44,7 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Serialize\TreeSerializeHelper.cs" />
+    <Compile Include="Serialize\FamilyTreeSerializeHelper.cs" />
     <Compile Include="Serialize\SerializeHelper.cs" />
     <Compile Include="Serialize\FamilySerializeHelper.cs" />
     <Compile Include="Generators\FamilyGenerator.cs" />

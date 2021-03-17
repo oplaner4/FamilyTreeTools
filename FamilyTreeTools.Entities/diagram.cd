@@ -1,0 +1,113 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="NameAndType">
+  <Comment CommentText="Methods returning Member are chainable.">
+    <Position X="4.247" Y="8.411" Height="0.3" Width="2.628" />
+  </Comment>
+  <Comment CommentText="Methods returning Family are chainable.">
+    <Position X="4.249" Y="2.753" Height="0.3" Width="2.509" />
+  </Comment>
+  <Class Name="FamilyTreeTools.Entities.Exceptions.HistoryViolationException">
+    <Position X="12" Y="3.5" Width="2" />
+    <Members>
+      <Method Name="HistoryViolationException" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Exceptions\HistoryViolationException.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FamilyTreeTools.Entities.Family">
+    <Position X="4.25" Y="0.5" Width="3.25" />
+    <Members>
+      <Property Name="_Members" Hidden="true" />
+      <Property Name="_Name" Hidden="true" />
+      <Method Name="Family" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAACAAIAQAAQAAAAhAAAAEAAAAAAA=</HashCode>
+      <FileName>Family.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FamilyTreeTools.Entities.Human">
+    <Position X="0.5" Y="0.5" Width="2.75" />
+    <Members>
+      <Property Name="_BirthDate" Hidden="true" />
+      <Property Name="_DeathDate" Hidden="true" />
+      <Property Name="_Id" Hidden="true" />
+      <Method Name="Human" Hidden="true" />
+      <Method Name="Initialize" Hidden="true" />
+      <Method Name="SetBirthDate" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Enum Name="FamilyTreeTools.Entities.Human.StatusOptions">
+        <TypeIdentifier>
+          <NewMemberFileName>Human.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AIACAAAEAABAAYAAAAAAUAQAAAAAAAAAAQQAAAoEgAA=</HashCode>
+      <FileName>Human.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FamilyTreeTools.Entities.Member">
+    <Position X="4.25" Y="3.5" Width="3" />
+    <Members>
+      <Method Name="Initialize" Hidden="true" />
+      <Method Name="Member" Hidden="true" />
+      <Method Name="RepairInitialization" Hidden="true" />
+      <Method Name="RepairPartnerReference" Hidden="true" />
+      <Method Name="SetPartner" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AgAAAABAAEABAQCAACAUQGAAKAAIEAJABAQAAAIAAAg=</HashCode>
+      <FileName>Member.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FamilyTreeTools.Entities.Node">
+    <Position X="12" Y="0.5" Width="2" />
+    <Members>
+      <Method Name="Node" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAEAQAAAAEAAAAAAEAAAAAAAAgAAAAAAg=</HashCode>
+      <FileName>Node.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FamilyTreeTools.Entities.PropHistory&lt;T&gt;">
+    <Position X="8.25" Y="3.5" Width="2.75" />
+    <Members>
+      <Property Name="_Changes" Hidden="true" />
+      <Property Name="Checker" Hidden="true" />
+    </Members>
+    <NestedTypes>
+      <Delegate Name="FamilyTreeTools.Entities.PropHistory&lt;T&gt;.CorrectValueChecker" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>PropHistory.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Delegate>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAgAAAIgAAAAAAAggAAAAAAIAAAAAAA=</HashCode>
+      <FileName>PropHistory.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FamilyTreeTools.Entities.Tree">
+    <Position X="8.25" Y="0.5" Width="1.75" />
+    <Members>
+      <Property Name="AddedPartners" Hidden="true" />
+      <Method Name="AddChildrenWithPartner" Hidden="true" />
+      <Method Name="BuildRecurrent" Hidden="true" />
+      <Property Name="Family" Hidden="true" />
+      <Method Name="Tree" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAgAAAAAAACCgAAAAAAAAAAAAgIAAAAAAAAAAhAA=</HashCode>
+      <FileName>Tree.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

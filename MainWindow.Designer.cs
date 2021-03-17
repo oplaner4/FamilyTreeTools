@@ -40,6 +40,7 @@ namespace FamilyTreeTools
             this.cdToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.efToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cdToolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
+            this.familyTree = new System.Windows.Forms.TreeView();
             this.contextMenuStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -119,15 +120,24 @@ namespace FamilyTreeTools
             this.cdToolStripMenuItem2.Size = new System.Drawing.Size(87, 22);
             this.cdToolStripMenuItem2.Text = "cd";
             // 
+            // familyTree
+            // 
+            this.familyTree.Location = new System.Drawing.Point(12, 41);
+            this.familyTree.Name = "familyTree";
+            this.familyTree.Size = new System.Drawing.Size(275, 321);
+            this.familyTree.TabIndex = 2;
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.familyTree);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "MainWindow";
             this.Text = "Family tree tools";
+            this.Load += new System.EventHandler(this.MainWindowOnLoad);
             this.contextMenuStrip1.ResumeLayout(false);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
@@ -148,6 +158,7 @@ namespace FamilyTreeTools
         private System.Windows.Forms.ToolStripMenuItem cdToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem efToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem cdToolStripMenuItem2;
+        private System.Windows.Forms.TreeView familyTree;
     }
 }
 

@@ -33,84 +33,84 @@ namespace FamilyTreeTools.UnitTesting
         {
             int i = 1;
             foreach (Action familyMemberF in new List<Action>() {
-                () => new FamilyMember(JohnSmith, DateTime.Now.AddDays(3)), /* 1 */
+                () => new Member(JohnSmith, DateTime.Now.AddDays(3)), /* 1 */
 
-                () => new FamilyMember(JohnSmith, JohnSmithBirthDate) /* 2 */
+                () => new Member(JohnSmith, JohnSmithBirthDate) /* 2 */
                     .Died(JohnSmithBirthDate.AddDays(-4)),
 
-                () => new FamilyMember(JohnSmith, JohnSmithBirthDate) /* 3 */
+                () => new Member(JohnSmith, JohnSmithBirthDate) /* 3 */
                     .Died(DateTime.Now.AddHours(18)),
 
-                () => new FamilyMember(JohnSmith, JohnSmithBirthDate).WithPartner( /* 4 */
-                        new FamilyMember(HuzaifaMscgrath, HuzaifaMscgrathBirthDate),
+                () => new Member(JohnSmith, JohnSmithBirthDate).WithPartner( /* 4 */
+                        new Member(HuzaifaMscgrath, HuzaifaMscgrathBirthDate),
                         DateTime.Now.AddYears(20)
                     ),
 
-                () => new FamilyMember(HuzaifaMscgrath, HuzaifaMscgrathBirthDate) /* 5 */
+                () => new Member(HuzaifaMscgrath, HuzaifaMscgrathBirthDate) /* 5 */
                     .GotUnmarried(HuzaifaMscgrathBirthDate.AddYears(28)),
 
-                () => new FamilyMember(HuzaifaMscgrath, HuzaifaMscgrathBirthDate).HadChild( /* 6 */
-                        new FamilyMember(JohnSmith, JohnSmithBirthDate)
+                () => new Member(HuzaifaMscgrath, HuzaifaMscgrathBirthDate).HadChild( /* 6 */
+                        new Member(JohnSmith, JohnSmithBirthDate)
                     ),
 
-                () => new FamilyMember(HuzaifaMscgrath, HuzaifaMscgrathBirthDate) /* 7 */
+                () => new Member(HuzaifaMscgrath, HuzaifaMscgrathBirthDate) /* 7 */
                     .WithPartner(
-                        new FamilyMember(JohnSmith, JohnSmithBirthDate.AddYears(24)), HuzaifaMscgrathBirthDate.AddYears(20)
+                        new Member(JohnSmith, JohnSmithBirthDate.AddYears(24)), HuzaifaMscgrathBirthDate.AddYears(20)
                     ),
 
-                () => new FamilyMember(JohnSmith, JohnSmithBirthDate) /* 8 */
+                () => new Member(JohnSmith, JohnSmithBirthDate) /* 8 */
                     .WithoutPartner(DateTime.Now),
 
-                () => new FamilyMember(JohnSmith, JohnSmithBirthDate).GotMarried( /* 9 */
+                () => new Member(JohnSmith, JohnSmithBirthDate).GotMarried( /* 9 */
                         HuzaifaMscgrathBirthDate.AddDays(-20),
-                        new FamilyMember(HuzaifaMscgrath, HuzaifaMscgrathBirthDate)
+                        new Member(HuzaifaMscgrath, HuzaifaMscgrathBirthDate)
                     ),
 
-                () => new FamilyMember(JohnSmith, JohnSmithBirthDate).GotMarried( /* 10 */
+                () => new Member(JohnSmith, JohnSmithBirthDate).GotMarried( /* 10 */
                         HuzaifaMscgrathBirthDate.AddDays(-20),
-                        new FamilyMember(HuzaifaMscgrath, HuzaifaMscgrathBirthDate)
+                        new Member(HuzaifaMscgrath, HuzaifaMscgrathBirthDate)
                     ),
 
-                () => new FamilyMember(JohnSmith, JohnSmithBirthDate) /* 11 */
+                () => new Member(JohnSmith, JohnSmithBirthDate) /* 11 */
                     .WithPartner(
-                        new FamilyMember(ShylaBoyce, ShylaBoyceBirthDate),
+                        new Member(ShylaBoyce, ShylaBoyceBirthDate),
                         JohnSmithBirthDate.AddYears(19)
                     )
                     .GotMarried(
                         JohnSmithBirthDate.AddYears(20),
-                        new FamilyMember(HuzaifaMscgrath, HuzaifaMscgrathBirthDate)
+                        new Member(HuzaifaMscgrath, HuzaifaMscgrathBirthDate)
                     ),
 
-                () => new FamilyMember(JohnSmith, JohnSmithBirthDate)
+                () => new Member(JohnSmith, JohnSmithBirthDate)
                         .ChangedFullName("", DateTime.Now), /* 12 */
 
-                () => new FamilyMember(ShylaBoyce, ShylaBoyceBirthDate) /* 13 */
+                () => new Member(ShylaBoyce, ShylaBoyceBirthDate) /* 13 */
                         .GotMarried(DateTime.Now),
 
-                () => new FamilyMember(JohnSmith, JohnSmithBirthDate) /* 14 */
+                () => new Member(JohnSmith, JohnSmithBirthDate) /* 14 */
                         .WithPartner(
-                            new FamilyMember(ShylaBoyce, ShylaBoyceBirthDate),
+                            new Member(ShylaBoyce, ShylaBoyceBirthDate),
                             JohnSmithBirthDate.AddYears(19)
                         )
                         .WithPartner(
-                            new FamilyMember(HuzaifaMscgrath, HuzaifaMscgrathBirthDate),
+                            new Member(HuzaifaMscgrath, HuzaifaMscgrathBirthDate),
                             JohnSmithBirthDate.AddYears(19)
                         ),
 
-                () => new FamilyMember(HuzaifaMscgrath, HuzaifaMscgrathBirthDate) /* 15 */
+                () => new Member(HuzaifaMscgrath, HuzaifaMscgrathBirthDate) /* 15 */
                         .WithPartner(
-                            new FamilyMember(JohnSmith, JohnSmithBirthDate)
+                            new Member(JohnSmith, JohnSmithBirthDate)
                                 .WithPartner(
-                                    new FamilyMember(ShylaBoyce, ShylaBoyceBirthDate),
+                                    new Member(ShylaBoyce, ShylaBoyceBirthDate),
                                     JohnSmithBirthDate.AddYears(25)
                                 ),
                             JohnSmithBirthDate.AddYears(26)
                         ),
 
                 () => { /* 16 */
-                    FamilyMember Jazmyn = new FamilyMember(JazmynWhite, JazmynWhiteBirthDate);
-                    new FamilyMember(ShylaBoyce, ShylaBoyceBirthDate).HadChild(Jazmyn);
-                    new FamilyMember(HuzaifaMscgrath, HuzaifaMscgrathBirthDate).HadChild(Jazmyn);
+                    Member Jazmyn = new Member(JazmynWhite, JazmynWhiteBirthDate);
+                    new Member(ShylaBoyce, ShylaBoyceBirthDate).HadChild(Jazmyn);
+                    new Member(HuzaifaMscgrath, HuzaifaMscgrathBirthDate).HadChild(Jazmyn);
                 }
 
             })
@@ -218,14 +218,14 @@ namespace FamilyTreeTools.UnitTesting
             DateTime timeMarriedWithShyla = JohnSmithBirthDate.AddYears(45).AddMonths(5).AddDays(30);
             DateTime timeSecondUnmarried = JohnSmithBirthDate.AddYears(50).AddMonths(3).AddDays(9);
 
-            FamilyMember Huzaifa = new FamilyMember(HuzaifaMscgrath, HuzaifaMscgrathBirthDate);
-            FamilyMember Shyla = new FamilyMember(ShylaBoyce, ShylaBoyceBirthDate);
-            FamilyMember Laila = new FamilyMember(LailaNorman, LailaNormanBirthDate);
+            Member Huzaifa = new Member(HuzaifaMscgrath, HuzaifaMscgrathBirthDate);
+            Member Shyla = new Member(ShylaBoyce, ShylaBoyceBirthDate);
+            Member Laila = new Member(LailaNorman, LailaNormanBirthDate);
 
             Assert.IsFalse(Laila.WasEverMarried());
             Assert.IsFalse(Laila.HadAnyPartner());
 
-            FamilyMember John = new FamilyMember(JohnSmith, JohnSmithBirthDate)
+            Member John = new Member(JohnSmith, JohnSmithBirthDate)
                 .WithPartner(Huzaifa, timeWithHuzaifa)
                 .GotMarried(timeMarriedWithHuzaifa)
                 .GotUnmarried(timeFirstUnmarried)

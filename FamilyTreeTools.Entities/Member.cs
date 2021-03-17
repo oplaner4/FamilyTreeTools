@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace FamilyTreeTools.Entities
 {
-    public class FamilyMember : Human
+    public class Member : Human
     {
         protected override void Initialize()
         {
@@ -18,13 +18,13 @@ namespace FamilyTreeTools.Entities
                 }
             });
 
-            PartnerReference = new PropHistory<FamilyMember>();
-            ChildrenReference = new List<FamilyMember>();
+            PartnerReference = new PropHistory<Member>();
+            ChildrenReference = new List<Member>();
 
             base.Initialize();
         }
 
-        public FamilyMember(
+        public Member(
             string fullName, DateTime birthDate
         ) : base(fullName, birthDate)
         {
@@ -37,8 +37,11 @@ namespace FamilyTreeTools.Entities
             FullName.AddChange(fullName, BirthDate);
         }
 
+        /// <summary>
+        /// This constructor is used only during deserialization.
+        /// </summary>
         [JsonConstructor]
-        public FamilyMember()
+        public Member()
         { }
 
         private List<Guid> _Children { get; set; }
@@ -62,7 +65,7 @@ namespace FamilyTreeTools.Entities
         [JsonProperty]
         public PropHistory<Guid?> Partner { get; set; }
 
-        public bool HadPartner(DateTime at, FamilyMember specific = null)
+        public bool HadPartner(DateTime at, Member specific = null)
         {
             Guid? partnerIdThatTime = Partner.ValueAt(at);
 
@@ -86,7 +89,7 @@ namespace FamilyTreeTools.Entities
             return Status.ValueAt(at) == StatusOptions.Married;
         }
 
-        public FamilyMember HadChild(FamilyMember child)
+        public Member HadChild(Member child)
         {
             if (child.BirthDate < BirthDate)
             {
@@ -105,9 +108,9 @@ namespace FamilyTreeTools.Entities
             return this;
         }
 
-        private FamilyMember SetPartner(FamilyMember arg, DateTime since)
+        private Member SetPartner(Member arg, DateTime since)
         {
-            FamilyMember partner = PartnerReference.ValueAt(since);
+            Member partner = PartnerReference.ValueAt(since);
 
             if (arg == null)
             {
@@ -141,7 +144,7 @@ namespace FamilyTreeTools.Entities
             return this;
         }
 
-        public FamilyMember WithPartner(FamilyMember arg, DateTime since)
+        public Member WithPartner(Member arg, DateTime since)
         {
             if (arg == null)
             {
@@ -151,7 +154,7 @@ namespace FamilyTreeTools.Entities
             return SetPartner(arg, since);
         }
 
-        public FamilyMember WithoutPartner(DateTime since)
+        public Member WithoutPartner(DateTime since)
         {
             if (!HadPartner(since))
             {
@@ -161,7 +164,7 @@ namespace FamilyTreeTools.Entities
             return SetPartner(null, since);
         }
 
-        public FamilyMember GotMarried(DateTime since, FamilyMember partner = null)
+        public Member GotMarried(DateTime since, Member partner = null)
         {
             if (HadPartner(since))
             {
@@ -180,7 +183,7 @@ namespace FamilyTreeTools.Entities
             return this;
         }
 
-        public FamilyMember GotUnmarried(DateTime since)
+        public Member GotUnmarried(DateTime since)
         {
             if (!Partner.ValueAt(since).HasValue)
             {
@@ -193,17 +196,17 @@ namespace FamilyTreeTools.Entities
             return WithoutPartner(since);
         }
 
-        public FamilyMember ChangedFullName(string arg, DateTime since)
+        public Member ChangedFullName(string arg, DateTime since)
         {
             FullName.AddChange(arg, since);
             return this;
         }
 
-        public PropHistory<FamilyMember> PartnerReference { get; private set; }
+        public PropHistory<Member> PartnerReference { get; private set; }
 
-        public FamilyMember ParentReference { get; private set; }
+        public Member ParentReference { get; private set; }
 
-        public List<FamilyMember> ChildrenReference { get; private set; }
+        public List<Member> ChildrenReference { get; private set; }
 
         private void RepairInitialization()
         {
@@ -214,7 +217,7 @@ namespace FamilyTreeTools.Entities
             FullName.Changes = fullNameChanges;
         }
 
-        private void RepairPartnerReference(Func<Guid, FamilyMember> mapper)
+        private void RepairPartnerReference(Func<Guid, Member> mapper)
         {
             foreach (DateTime since in Partner.Changes.Keys)
             {
@@ -230,7 +233,10 @@ namespace FamilyTreeTools.Entities
             }
         }
 
-        public FamilyMember RepairAfterSerialization(Func<Guid, FamilyMember> mapper)
+        /// <summary>
+        /// This method is used only after serialization.
+        /// </summary>
+        public Member RepairReferences(Func<Guid, Member> mapper)
         {
             RepairInitialization();
 

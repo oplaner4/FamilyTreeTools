@@ -23,7 +23,7 @@ namespace FamilyTreeTools.Utilities.Serialize
         {
             return JsonConvert.DeserializeObject<Family>(
                 File.ReadAllText(GetFullFileName(Extension))
-            ).RepairAfterSerialization();
+            ).RepairReferences();
         }
     }
 }

@@ -14,6 +14,9 @@ namespace FamilyTreeTools.Entities
             Married,
         }
 
+        /// <summary>
+        /// This constructor is used only during deserialization.
+        /// </summary>
         [JsonConstructor]
         public Human()
         { }
@@ -106,14 +109,9 @@ namespace FamilyTreeTools.Entities
             }
         }
 
-        public bool IsDead(DateTime d)
+        public bool IsDead(DateTime at)
         {
-            return DeathDate <= d;
-        }
-
-        public bool AfterDeath(DateTime d)
-        {
-            return d > DeathDate;
+            return DeathDate <= at;
         }
 
         public Human Died(DateTime? arg)
@@ -151,9 +149,9 @@ namespace FamilyTreeTools.Entities
             return result;
         }
 
-        public bool IsBorn(DateTime at)
+        public bool IsBorn(DateTime at, bool canBeDead = false)
         {
-            return BirthDate <= at;
-        } 
+            return BirthDate <= at && (canBeDead || !IsDead(at));
+        }
     }
 }

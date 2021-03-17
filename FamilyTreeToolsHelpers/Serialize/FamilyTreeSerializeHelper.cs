@@ -4,16 +4,16 @@ using System.IO;
 
 namespace FamilyTreeTools.Utilities.Serialize
 {
-    public class TreeSerializeHelper : SerializeHelper
+    public class FamilyTreeSerializeHelper : SerializeHelper
     {
         public readonly string Extension = "json";
 
-        public TreeSerializeHelper(string fileName) : base(fileName) { }
+        public FamilyTreeSerializeHelper(string fileName) : base(fileName) { }
 
-        public TreeSerializeHelper Save(TreeNode root)
+        public FamilyTreeSerializeHelper Save(Tree tree)
         {
             File.WriteAllText(GetFullFileName(Extension),
-                JsonConvert.SerializeObject(root)
+                JsonConvert.SerializeObject(tree)
             );
 
             return this;
