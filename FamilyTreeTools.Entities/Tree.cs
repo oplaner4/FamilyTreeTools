@@ -1,7 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace FamilyTreeTools.Entities
 {
@@ -9,91 +8,88 @@ namespace FamilyTreeTools.Entities
     [JsonObject(MemberSerialization.OptIn)]
     public class Tree
     {
-        public Tree(Family family, DateTime dateAt)
+        public Tree(Family family, SearchSettings settings = null)
         {
-            DateAt = dateAt;
+            Settings = settings ?? new SearchSettings();
             Family = family;
-
-            Root = new Node(Guid.Empty, Family.Name);
         }
 
-        private void AddChildrenWithPartner(Node node, IEnumerable<Member> children)
+        private IEnumerable<Member> UseChildren(Node node)
         {
-            Member partner = null;
-            Node partnerNode = null;
-            bool married = false;
-
-            if (Family.Members.ContainsKey(node.Key))
+            if (node.Key == Root.Key)
             {
-                partner = Family.Members[node.Key].PartnerReference.ValueAt(DateAt);
-                if (partner != null)
+                return Family.GetRootAncestors(Settings);
+            }
+
+            return Family.Members[node.Key].GetChildrenWithSpouse(Settings);
+        }
+
+        private Tree UpdatePartner(Node node)
+        {
+            Member partner = Family.Members[node.Key].Partner.Value(Settings.At);
+
+            if (partner != null)
+            {
+                if (AddedMembers.Contains(partner.Id))
                 {
-                    partnerNode = new Node(
+                    node.PartnerReference = partner.Id;
+                }
+                else {
+                    node.Partner = new Node(
                         partner.Id,
-                        partner.FullName.ValueAt(DateAt)
+                        partner.FullName.Value(Settings.At)
                     );
 
-                    married = partner.WasMarried(DateAt);
+                    AddedMembers.Add(partner.Id);
+
+                    UpdateChildren(node.Partner).BuildRecurrent(node.Partner);
                 }
             }
 
-            foreach (Member child in children)
-            {
-                Node childNode = new Node(child.Id, child.FullName.ValueAt(DateAt));
+            return this;
+        }
+
+        private Tree UpdateChildren(Node node)
+        {
+            foreach (Member child in UseChildren(node)) {
+                Node childNode = new Node(child.Id, child.FullName.Value(Settings.At));
                 node.AddChild(childNode);
-
-                if (married)
-                {
-                    partnerNode.AddChild(childNode);
-                }
             }
 
-            if (partner != null && !AddedPartners.Contains(partner.Id))
-            {
-                AddedPartners.Add(partner.Id);
-                node.AddPartner(partnerNode);
-            }
+            return this;
         }
 
         public Tree Build()
         {
-            AddedPartners = new HashSet<Guid>();
+            AddedMembers = new HashSet<Guid>();
+            Root = new Node(Guid.Empty, Family.Name);
 
-            AddChildrenWithPartner(
-                Root,
-                Family.GetOldestAncestors(DateAt, CanBeDead)
-            );
-
+            UpdateChildren(Root);
+            AddedMembers.Add(Root.Key);
             BuildRecurrent(Root);
             return this;
         }
 
-        private void BuildRecurrent(Node actual)
+        private Tree BuildRecurrent(Node actual)
         {
-            foreach (Node child in actual.Children)
+            foreach (Node node in actual.Children.Values)
             {
-                AddChildrenWithPartner(
-                    child,
-                    Family.Members[child.Key].ChildrenReference.Where(
-                        ch => ch.IsBorn(DateAt, CanBeDead)
-                    )
-                );
-
-                BuildRecurrent(child);
+                if (!AddedMembers.Contains(node.Key)) {
+                    UpdateChildren(node).UpdatePartner(node).BuildRecurrent(node);
+                }
             }
+
+            return this;
         }
 
         [JsonProperty]
-        public bool CanBeDead { get; set; }
-
-        [JsonProperty]
-        public DateTime DateAt { get; private set; }
+        public SearchSettings Settings { get; set; }
 
         [JsonProperty]
         public Node Root { get; private set; }
 
         private Family Family { get; set; }
 
-        private HashSet<Guid> AddedPartners { get; set; }
+        private HashSet<Guid> AddedMembers { get; set; }
     }
 }

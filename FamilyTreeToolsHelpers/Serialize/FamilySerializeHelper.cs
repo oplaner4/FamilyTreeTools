@@ -6,13 +6,11 @@ namespace FamilyTreeTools.Utilities.Serialize
 {
     public class FamilySerializeHelper : SerializeHelper
     {
-        public readonly string Extension = "json";
-
-        public FamilySerializeHelper(string fileName) : base(fileName) { }
+        public FamilySerializeHelper(string fileName) : base(fileName, "ftt") { }
 
         public FamilySerializeHelper Save(Family family)
         {
-            File.WriteAllText(GetFullFileName(Extension),
+            File.WriteAllText(FullFileName,
                 JsonConvert.SerializeObject(family)
             );
 
@@ -22,7 +20,7 @@ namespace FamilyTreeTools.Utilities.Serialize
         public Family Load()
         {
             return JsonConvert.DeserializeObject<Family>(
-                File.ReadAllText(GetFullFileName(Extension))
+                File.ReadAllText(FullFileName)
             ).RepairReferences();
         }
     }

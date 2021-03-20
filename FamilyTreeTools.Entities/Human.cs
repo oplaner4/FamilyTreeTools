@@ -62,11 +62,35 @@ namespace FamilyTreeTools.Entities
             }
         }
 
-        [JsonProperty]
-        public PropHistory<string> FullName { get; set; }
+        private PropHistory<string> _FullName { get; set; }
 
         [JsonProperty]
-        public PropHistory<StatusOptions> Status { get; set; }
+        public PropHistory<string> FullName
+        {
+            get
+            {
+                return _FullName;
+            }
+            set
+            {
+                _FullName = value ?? throw new Exception("Trying to set null fullname.");
+            }
+        }
+
+        private PropHistory<StatusOptions> _Status { get; set; }
+
+        [JsonProperty]
+        public PropHistory<StatusOptions> Status
+        {
+            get
+            {
+                return _Status;
+            }
+            set
+            {
+                _Status = value ?? throw new Exception("Trying to set null status.");
+            }
+        }
 
         private DateTime _BirthDate { get; set; }
 

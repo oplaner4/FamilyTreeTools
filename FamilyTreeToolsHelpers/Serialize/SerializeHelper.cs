@@ -1,21 +1,20 @@
-﻿using FamilyTreeTools.Entities;
-using Newtonsoft.Json;
-using System.IO;
+﻿using System.Text.RegularExpressions;
 
 namespace FamilyTreeTools.Utilities.Serialize
 {
     public abstract class SerializeHelper
     {
-        public SerializeHelper(string fileName)
+        public SerializeHelper(string fileName, string extension)
         {
-            FileName = fileName;
+            FullFileName = string.Format("{0}.{1}",
+                new Regex(@"[\s,:\?\*]+").Replace(
+                    fileName,
+                    _ => "_"
+                ),
+                extension
+            );
         }
 
-        public string FileName { get; private set; }
-
-        public string GetFullFileName (string extension)
-        {
-            return string.Format("{0}.{1}", FileName, extension);
-        }
+        public string FullFileName { get; private set; }
     }
 }

@@ -10,7 +10,8 @@ namespace FamilyTreeTools.Entities
     {
         public Node(Guid key, string value)
         {
-            Children = new List<Node>();
+            Children = new Dictionary<Guid, Node>();
+            ChildrenReference = new List<Guid>();
             Key = key;
             Value = value;
         }
@@ -22,20 +23,20 @@ namespace FamilyTreeTools.Entities
         public Guid Key { get; private set; }
 
         [JsonProperty]
-        public List<Node> Children { get; private set; }
+        public Dictionary<Guid, Node> Children { get; private set; }
 
         [JsonProperty]
-        public Node Partner { get; private set; }
+        public List<Guid> ChildrenReference { get; private set; }
+
+        [JsonProperty]
+        public Node Partner { get; set; }
+
+        [JsonProperty]
+        public Guid? PartnerReference { get; set; }
 
         public Node AddChild(Node arg)
         {
-            Children.Add(arg);
-            return this;
-        }
-
-        public Node AddPartner(Node arg)
-        {
-            Partner = arg;
+            Children.Add(arg.Key, arg);
             return this;
         }
     }

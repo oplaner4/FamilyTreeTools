@@ -58,16 +58,16 @@ namespace FamilyTreeTools.Entities
             return Changes.Keys.Max();
         }
 
-        public T ValueAt(DateTime d)
+        public T Value(DateTime at)
         {
             try
             {
-                DateTime useChange = Changes.Keys.Where(since => d >= since).OrderBy(since => d - since).First();
+                DateTime useChange = Changes.Keys.Where(since => at >= since).OrderBy(since => at - since).First();
                 return Changes[useChange];
             }
             catch (InvalidOperationException e)
             {
-                throw new ArgumentException("Unable to find a value in the history", nameof(d), e);
+                throw new ArgumentException("Unable to find a value in the history.", nameof(at), e);
             }
         }
     }

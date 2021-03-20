@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="NameAndType">
   <Comment CommentText="Methods returning Member are chainable.">
-    <Position X="4.247" Y="8.411" Height="0.3" Width="2.628" />
+    <Position X="4.216" Y="8.828" Height="0.3" Width="2.628" />
   </Comment>
   <Comment CommentText="Methods returning Family are chainable.">
     <Position X="4.249" Y="2.753" Height="0.3" Width="2.509" />
@@ -49,7 +49,7 @@
       </Enum>
     </NestedTypes>
     <TypeIdentifier>
-      <HashCode>AIACAAAEAABAAYAAAAAAUAQAAAAAAAAAAQQAAAoEgAA=</HashCode>
+      <HashCode>AIACAAIEAABAAYQAAAAAUAQAAAAAAAAAAQQAAAoEgAA=</HashCode>
       <FileName>Human.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -63,7 +63,7 @@
       <Method Name="SetPartner" Hidden="true" />
     </Members>
     <TypeIdentifier>
-      <HashCode>AgAAAABAAEABAQCAACAUQGAAKAAIEAJABAQAAAIAAAg=</HashCode>
+      <HashCode>AgAAAABAAEABAQCAACAUQGAQKAAIEAJABAQAAAMAAAg=</HashCode>
       <FileName>Member.cs</FileName>
     </TypeIdentifier>
   </Class>

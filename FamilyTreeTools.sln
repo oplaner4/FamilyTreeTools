@@ -25,6 +25,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B7E3FF9C-C553-45B5-8E49-37B3B6DA2355}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
+		FamilyTreeTools.Entities\diagram.cd = FamilyTreeTools.Entities\diagram.cd
 	EndProjectSection
 EndProject
 Global

@@ -45,6 +45,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Exceptions\HistoryViolationException.cs" />
+    <Compile Include="SearchSettings.cs" />
+    <Compile Include="Member.References.cs" />
     <Compile Include="Tree.cs" />
     <Compile Include="Node.cs" />
     <Compile Include="Family.cs" />

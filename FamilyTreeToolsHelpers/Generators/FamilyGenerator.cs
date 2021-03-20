@@ -25,6 +25,8 @@ namespace FamilyTreeTools.Utilities.Generators
                 .AddMember(Ahsan);
         }
 
+        // important dates
+
         public static readonly DateTime RumaysaWeddingDate = new DateTime(1989, 7, 22);
 
         public static readonly DateTime KoreyWeddingDate = new DateTime(1986, 10, 18);
@@ -105,7 +107,7 @@ namespace FamilyTreeTools.Utilities.Generators
             .HadChild(Raja);
 
         public static Member Heena = new Member("Heena Mohamed", new DateTime(1964, 4, 2))
-            .ChangedFullName("Heena Smith", KoreyWeddingDate);
+            .ChangedFullName("Heena Field", KoreyWeddingDate);
 
 
         // Kaleb + Karishma's children
@@ -131,7 +133,7 @@ namespace FamilyTreeTools.Utilities.Generators
         public static Member Sebastian = (Member)new Member("Sebastian Mcdougall", new DateTime(1946, 2, 2)).Died(new DateTime(2020, 4, 3));
 
 
-        // Oldest ancestors -- Kaleb + Karishma
+        // Kaleb + Karishma
 
         public static readonly Member Karishma = ((Member)new Member("Karishma Smith", new DateTime(1940, 1, 1)).Died(new DateTime(2011, 11, 8)))
             .ChangedFullName("Karishma Field", KalebWeddingDate)
@@ -143,6 +145,6 @@ namespace FamilyTreeTools.Utilities.Generators
             .HadChild(Korey)
             .HadChild(Rumaysa)
             .HadChild(Klara)
-            .GotUnmarried(new DateTime(1993, 11, 30));
+            .GotUnmarried(new DateTime(1993, 10, 30));
     }
 }

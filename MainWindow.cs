@@ -18,7 +18,7 @@ namespace FamilyTreeTools
         {
             Family fieldFamily = FamilyGenerator.GetData();
 
-            Tree fieldFamilyTree = new Tree(fieldFamily, DateTime.Now);
+            Tree fieldFamilyTree = new Tree(fieldFamily, new SearchSettings());
 
             familyTree.BeginUpdate();
             familyTree.Nodes.Add("Parent");

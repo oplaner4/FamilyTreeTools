@@ -31,7 +31,7 @@ namespace FamilyTreeTools.Entities
             set {
                 if (string.IsNullOrEmpty(value))
                 {
-                    throw new Exception("Trying to set no name of the family.");
+                    throw new Exception("Trying to set null name.");
                 }
 
                 _Name = value;
@@ -77,18 +77,13 @@ namespace FamilyTreeTools.Entities
             return this;
         }
 
-
-        public IEnumerable<Member> GetOldestAncestors(DateTime at, bool canBeDead)
+        public IEnumerable<Member> GetRootAncestors(SearchSettings settings)
         {
-            return Members.Values.Where(m =>
-                    !m.Parent.HasValue &&
-                    m.IsBorn(at, canBeDead)
-                );
+            IEnumerable<Member> result = Members.Values.Where(
+                m => m.IsRootAncestor(settings)
+            );
+
+            return result;
         }
-
-        /*public FamilyTree BuidTree(DateTime at, bool includeDead = true)
-        {
-
-        }*/
     }
 }
