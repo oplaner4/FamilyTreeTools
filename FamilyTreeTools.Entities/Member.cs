@@ -76,7 +76,7 @@ namespace FamilyTreeTools.Entities
         {
             if (child == null)
             {
-                throw new Exception("Trying to set null child.");
+                throw new ArgumentNullException("Trying to set null child.", nameof(child));
             }
 
             if (child.BirthDate < BirthDate)
@@ -93,43 +93,27 @@ namespace FamilyTreeTools.Entities
             return this;
         }
 
-        private void SetNewPartner(Member arg, DateTime since)
-        {
-            if (arg.BirthDate > since)
-            {
-                throw new HistoryViolationException("Cannot set a partner who was not born that time.");
-            }
-
-            if (since > arg.DeathDate)
-            {
-                throw new HistoryViolationException("Cannot set a partner who is already dead that time.");
-            }
-
-            if (arg.References.PartnerId.Value(since).HasValue)
-            {
-                throw new HistoryViolationException("Cannot set a partner who had already the partner that time.");
-            }
-
-            arg.References.Partner.AddChange(this, since);
-            arg.References.PartnerId.AddChange(Id, since);
-        }
-
         private Member SetPartner(Member arg, DateTime since)
         {
-            if (arg == null)
+            if (arg != null)
             {
-                Member actual = References.Partner.Value(since);
-                actual?.References.Partner.AddChange(null, since);
-                actual?.References.PartnerId.AddChange(null, since);
-            }
-            else
-            {
-                SetNewPartner(arg, since);
+                if (arg.BirthDate > since)
+                {
+                    throw new HistoryViolationException("Cannot set a partner who was not born that time.");
+                }
+
+                if (since > arg.DeathDate)
+                {
+                    throw new HistoryViolationException("Cannot set a partner who is already dead that time.");
+                }
+
+                if (arg.References.PartnerId.Value(since).HasValue)
+                {
+                    throw new HistoryViolationException("Cannot set a partner who had already the partner that time.");
+                }
             }
 
-            References.Partner.AddChange(arg, since);
-            References.PartnerId.AddChange(arg?.Id, since);
-
+            References.UpdatePartner(arg, since);
             return this;
         }
 

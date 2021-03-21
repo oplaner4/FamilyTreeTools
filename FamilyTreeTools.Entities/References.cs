@@ -12,7 +12,7 @@ namespace FamilyTreeTools.Entities
         protected void Initialize()
         {
             Partner = new PropHistory<Member>();
-            Children = new List<Member>();
+            Children = new Dictionary<Guid, Member>();
         }
 
         public References(Member source)
@@ -20,7 +20,7 @@ namespace FamilyTreeTools.Entities
             Initialize();
 
             Source = source ?? throw new NullReferenceException("Trying to set null source.");
-            ChildrenIds = new List<Guid>();
+            ChildrenIds = new HashSet<Guid>();
             PartnerId = new PropHistory<Guid?>().AddChange(null, Source.BirthDate);
             Partner.AddChange(null, Source.BirthDate);
         }
@@ -34,10 +34,10 @@ namespace FamilyTreeTools.Entities
 
         public Member Source { get; private set; }
 
-        private List<Guid> _ChildrenIds { get; set; }
+        private HashSet<Guid> _ChildrenIds { get; set; }
 
         [JsonProperty]
-        public List<Guid> ChildrenIds
+        public HashSet<Guid> ChildrenIds
         {
             get
             {
@@ -73,7 +73,14 @@ namespace FamilyTreeTools.Entities
         {
             if (noncycle)
             {
-                Partner.Value(since)?.References.UpdatePartner(arg, since, false);
+                if (arg == null)
+                {
+                    Partner.Value(since)?.References.UpdatePartner(arg, since, false);
+                }
+                else
+                {
+                    arg.References.UpdatePartner(Source, since, false);
+                }
             }
 
             Partner.AddChange(arg, since);
@@ -88,16 +95,16 @@ namespace FamilyTreeTools.Entities
 
         internal References AddChild (Member arg)
         {
-            Children.Add(arg);
+            Children.Add(arg.Id, arg);
             ChildrenIds.Add(arg.Id);
             arg.References.ParentId = Source.Id;
             arg.References.Parent = Source;
             return this;
         }
 
-        internal References RemoveChild(Member arg)
+        public References RemoveChild(Member arg)
         {
-            Children.Remove(arg);
+            Children.Remove(arg.Id);
             ChildrenIds.Remove(arg.Id);
             arg.References.ParentId = null;
             arg.References.Parent = null;
@@ -106,7 +113,7 @@ namespace FamilyTreeTools.Entities
 
         public Member Parent { get; set; }
 
-        public List<Member> Children { get; private set; }
+        public Dictionary<Guid, Member> Children { get; private set; }
 
         private void RepairPartner(Func<Guid, Member> mapper)
         {
@@ -147,7 +154,7 @@ namespace FamilyTreeTools.Entities
 
             foreach (Guid childId in ChildrenIds)
             {
-                Children.Add(mapper(childId));
+                Children.Add(childId, mapper(childId));
             }
 
             return this;
@@ -159,13 +166,13 @@ namespace FamilyTreeTools.Entities
 
             if (Source.WasMarried(settings.At))
             {
-                foreach (Member child in Partner.Value(settings.At).References.Children)
+                foreach (Member child in Partner.Value(settings.At).References.Children.Values)
                 {
                     result.Add(child);
                 }
             }
 
-            result.AddRange(Children);
+            result.AddRange(Children.Values);
             return result.Where(ch => ch.IsBorn(settings.At, settings.CanBeDead));
         }
 

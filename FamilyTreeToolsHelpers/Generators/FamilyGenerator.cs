@@ -50,7 +50,7 @@ namespace FamilyTreeTools.Utilities.Generators
 
         // Henrietta's partner
 
-        public static Member Ahsan = new Member("Ahsan Carty", new DateTime(2001, 3, 19));
+        public static Member Ahsan = new Member("Ahsan Carty", new DateTime(1991, 3, 19));
 
 
         // Korey's children

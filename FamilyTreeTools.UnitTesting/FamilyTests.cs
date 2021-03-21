@@ -306,18 +306,17 @@ namespace FamilyTreeTools.UnitTesting
             );
 
             Assert.IsTrue(
-                f.Members[FamilyGenerator.Fleur.Id].References.Children.Any(ch => ch.Id == FamilyGenerator.Raja.Id)
+                f.Members[FamilyGenerator.Fleur.Id].References.Children.ContainsKey(FamilyGenerator.Raja.Id)
             );
 
             Assert.IsTrue(
-                f.Members[FamilyGenerator.Korey.Id].References.Children
-                    .Where(ch => ch.Id == FamilyGenerator.Sonya.Id).FirstOrDefault()
-                    .References.Children.Any(ch => ch.Id == FamilyGenerator.Marwah.Id)
+                f.Members[FamilyGenerator.Korey.Id].References.Children[FamilyGenerator.Sonya.Id]
+                    .References.Children.ContainsKey(FamilyGenerator.Marwah.Id)
             );
 
             Assert.AreEqual(
                 f.Members[FamilyGenerator.Moesha.Id]
-                    .References.Children.Where(ch => ch.Id == FamilyGenerator.Kian.Id).FirstOrDefault()
+                    .References.Children[FamilyGenerator.Kian.Id]
                     .References.Parent
                     .References.Partner.Value(FamilyGenerator.Kian.BirthDate)
                     .References.Partner.Value(FamilyGenerator.Kian.BirthDate)
@@ -331,8 +330,14 @@ namespace FamilyTreeTools.UnitTesting
         [TestMethod]
         public void References()
         {
-            Family family = FamilyGenerator.GetData();
-            CheckFieldFamilyReferences(family);
+            Family fieldFamily = FamilyGenerator.GetData();
+
+            FamilyGenerator.Rumaysa.References.RemoveChild(FamilyGenerator.Moesha);
+            Assert.AreEqual(1, FamilyGenerator.Rumaysa.References.Children.Count());
+            FamilyGenerator.Rumaysa.HadChild(FamilyGenerator.Moesha);
+            Assert.AreEqual(2, FamilyGenerator.Rumaysa.References.Children.Count());
+
+            CheckFieldFamilyReferences(fieldFamily);
         }
 
     }

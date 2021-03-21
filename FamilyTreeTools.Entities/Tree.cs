@@ -74,8 +74,9 @@ namespace FamilyTreeTools.Entities
         {
             foreach (Node node in actual.Children.Values)
             {
-                if (!AddedMembers.Contains(node.Key)) {
-                    UpdateChildren(node).UpdatePartner(node).BuildRecurrent(node);
+                if (!AddedMembers.Contains(node.Key))
+                {
+                    UpdatePartner(node).UpdateChildren(node).BuildRecurrent(node);
                 }
             }
 
