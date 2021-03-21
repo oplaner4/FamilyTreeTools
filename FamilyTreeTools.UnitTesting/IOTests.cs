@@ -32,13 +32,13 @@ namespace FamilyTreeTools.UnitTesting
                 );
 
                 Assert.AreEqual(
-                    deserializedFamily.Members[member.Id].ParentReference,
-                    fieldFamily.Members[member.Id].ParentReference
+                    deserializedFamily.Members[member.Id].References.ParentId,
+                    fieldFamily.Members[member.Id].References.ParentId
                 );
 
                 Assert.AreEqual(
-                    deserializedFamily.Members[member.Id].ChildrenReference.Count(),
-                    fieldFamily.Members[member.Id].ChildrenReference.Count()
+                    deserializedFamily.Members[member.Id].References.ChildrenIds.Count(),
+                    fieldFamily.Members[member.Id].References.ChildrenIds.Count()
                 );
 
                 foreach (DateTime at in new List<DateTime>() {
@@ -71,7 +71,6 @@ namespace FamilyTreeTools.UnitTesting
             Family fieldFamily = FamilyGenerator.GetData();
 
             int i = 0;
-
             foreach (SearchSettings settings in new List<SearchSettings>()
             {
                 new SearchSettings()

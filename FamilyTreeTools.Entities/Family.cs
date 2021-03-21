@@ -31,7 +31,7 @@ namespace FamilyTreeTools.Entities
             set {
                 if (string.IsNullOrEmpty(value))
                 {
-                    throw new Exception("Trying to set null name.");
+                    throw new NullReferenceException("Trying to set null name.");
                 }
 
                 _Name = value;
@@ -49,7 +49,7 @@ namespace FamilyTreeTools.Entities
             }
             set
             {
-                _Members = value ?? throw new Exception("Trying to set null members.");
+                _Members = value ?? throw new NullReferenceException("Trying to set null members.");
             }
         }
 
@@ -57,7 +57,7 @@ namespace FamilyTreeTools.Entities
         {
             if (arg == null)
             {
-                throw new Exception("Trying to add a null member.");
+                throw new NullReferenceException("Trying to add a null member.");
             }
 
             Members.Add(arg.Id, arg);
@@ -71,7 +71,7 @@ namespace FamilyTreeTools.Entities
         {
             foreach (Member member in Members.Values)
             {
-                member.RepairReferences(id => Members[id]);
+                member.Repair(id => Members[id]);
             }
 
             return this;
@@ -80,7 +80,7 @@ namespace FamilyTreeTools.Entities
         public IEnumerable<Member> GetRootAncestors(SearchSettings settings)
         {
             IEnumerable<Member> result = Members.Values.Where(
-                m => m.IsRootAncestor(settings)
+                m => m.References.IsRootAncestor(settings)
             );
 
             return result;

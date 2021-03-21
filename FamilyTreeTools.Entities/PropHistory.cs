@@ -30,7 +30,7 @@ namespace FamilyTreeTools.Entities
             }
             set
             {
-                _Changes = value ?? throw new Exception("Trying to set null changes.");
+                _Changes = value ?? throw new NullReferenceException("Trying to set null changes.");
             }
         }
 

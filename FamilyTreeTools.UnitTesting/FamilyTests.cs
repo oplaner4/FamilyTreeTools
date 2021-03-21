@@ -2,8 +2,9 @@
 using FamilyTreeTools.Utilities.Generators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
-using System.Collections.Generic;
 using System;
+using System.Collections.Generic;
+using FamilyTreeTools.Entities.Exceptions;
 
 namespace FamilyTreeTools.UnitTesting
 {
@@ -15,6 +16,13 @@ namespace FamilyTreeTools.UnitTesting
         {
             Family fieldFamily = FamilyGenerator.GetData();
 
+
+            Assert.ThrowsException<HistoryViolationException>(
+                () => new SearchSettings() { At = DateTime.Now.AddDays(7) },
+                "Future date should have thrown an exception."
+            );
+
+            int i = 1;
             foreach (KeyValuePair<SearchSettings, List<Member>> expected in new Dictionary<SearchSettings, List<Member>>() {
                 { /* 1 */
                     new SearchSettings() {
@@ -220,13 +228,23 @@ namespace FamilyTreeTools.UnitTesting
 
                 Assert.AreEqual(
                     expected.Value.Count(),
-                    actualAncestors.Count()
+                    actualAncestors.Count(),
+                    string.Format("Different number of ancestors in case {0}.", i)
                 );
 
                 foreach (Member ancestor in expected.Value)
                 {
-                    Assert.IsTrue(actualAncestors.Any(m => m.Id == ancestor.Id));
+                    Assert.IsTrue(
+                        actualAncestors.Any(m => m.Id == ancestor.Id),
+                        string.Format(
+                            "Missing ancestor '{0}' in case {1}.",
+                            ancestor.FullName.Value(expected.Key.At),
+                            i
+                        )
+                    );
                 }
+
+                i++;
             }
 
 
@@ -235,77 +253,77 @@ namespace FamilyTreeTools.UnitTesting
         public static void CheckFieldFamilyReferences (Family f)
         {
             Assert.AreEqual(
-                f.Members[FamilyGenerator.Kaleb.Id].Partner.Value(FamilyGenerator.KalebWeddingDate).Id,
+                f.Members[FamilyGenerator.Kaleb.Id].References.Partner.Value(FamilyGenerator.KalebWeddingDate).Id,
                 FamilyGenerator.Karishma.Id
             );
 
             Assert.AreEqual(
-                f.Members[FamilyGenerator.Karishma.Id].Partner.Value(FamilyGenerator.KalebWeddingDate).Id,
+                f.Members[FamilyGenerator.Karishma.Id].References.Partner.Value(FamilyGenerator.KalebWeddingDate).Id,
                 FamilyGenerator.Kaleb.Id
             );
 
             Assert.AreEqual(
-                f.Members[FamilyGenerator.Sebastian.Id].Partner.Value(FamilyGenerator.SebastianWithKarishmaDate).Id,
+                f.Members[FamilyGenerator.Sebastian.Id].References.Partner.Value(FamilyGenerator.SebastianWithKarishmaDate).Id,
                 FamilyGenerator.Karishma.Id
             );
 
             Assert.AreEqual(
-                f.Members[FamilyGenerator.Karishma.Id].Partner.Value(FamilyGenerator.SebastianWithKarishmaDate).Id,
+                f.Members[FamilyGenerator.Karishma.Id].References.Partner.Value(FamilyGenerator.SebastianWithKarishmaDate).Id,
                 FamilyGenerator.Sebastian.Id
             );
 
             Assert.AreEqual(
-                f.Members[FamilyGenerator.Rumaysa.Id].Parent.Id,
+                f.Members[FamilyGenerator.Rumaysa.Id].References.Parent.Id,
                 FamilyGenerator.Kaleb.Id
             );
 
             Assert.AreEqual(
-                f.Members[FamilyGenerator.Korey.Id].Parent.Id,
+                f.Members[FamilyGenerator.Korey.Id].References.Parent.Id,
                 FamilyGenerator.Kaleb.Id
             );
 
             Assert.AreEqual(
-                f.Members[FamilyGenerator.Rumaysa.Id].Parent.Id,
+                f.Members[FamilyGenerator.Rumaysa.Id].References.Parent.Id,
                 FamilyGenerator.Kaleb.Id
             );
 
             Assert.AreEqual(
-                f.Members[FamilyGenerator.Klara.Id].Parent
-                    .Partner.Value(FamilyGenerator.KalebWeddingDate).Id,
+                f.Members[FamilyGenerator.Klara.Id].References.Parent
+                    .References.Partner.Value(FamilyGenerator.KalebWeddingDate).Id,
                 FamilyGenerator.Karishma.Id
             );
 
             Assert.AreEqual(
-                f.Members[FamilyGenerator.Korey.Id].Parent
-                    .Partner.Value(FamilyGenerator.KalebWeddingDate).Id,
+                f.Members[FamilyGenerator.Korey.Id].References.Parent
+                    .References.Partner.Value(FamilyGenerator.KalebWeddingDate).Id,
                 FamilyGenerator.Karishma.Id
             );
 
             Assert.AreEqual(
-                f.Members[FamilyGenerator.Kian.Id].Parent
-                    .Parent.Partner.Value(FamilyGenerator.RumaysaWeddingDate).Id,
+                f.Members[FamilyGenerator.Kian.Id].References.Parent
+                    .References.Parent.References.Partner.Value(FamilyGenerator.RumaysaWeddingDate).Id,
                 FamilyGenerator.Fleur.Id
             );
 
             Assert.IsTrue(
-                f.Members[FamilyGenerator.Fleur.Id].Children.Any(ch => ch.Id == FamilyGenerator.Raja.Id)
+                f.Members[FamilyGenerator.Fleur.Id].References.Children.Any(ch => ch.Id == FamilyGenerator.Raja.Id)
             );
 
             Assert.IsTrue(
-                f.Members[FamilyGenerator.Korey.Id].Children
+                f.Members[FamilyGenerator.Korey.Id].References.Children
                     .Where(ch => ch.Id == FamilyGenerator.Sonya.Id).FirstOrDefault()
-                    .Children.Any(ch => ch.Id == FamilyGenerator.Marwah.Id)
+                    .References.Children.Any(ch => ch.Id == FamilyGenerator.Marwah.Id)
             );
 
             Assert.AreEqual(
                 f.Members[FamilyGenerator.Moesha.Id]
-                    .Children.Where(ch => ch.Id == FamilyGenerator.Kian.Id).FirstOrDefault()
-                    .Parent
-                    .Partner.Value(FamilyGenerator.Kian.BirthDate)
-                    .Partner.Value(FamilyGenerator.Kian.BirthDate)
-                    .Parent
-                    .Parent
-                    .Partner.Value(FamilyGenerator.KalebWeddingDate).Id,
+                    .References.Children.Where(ch => ch.Id == FamilyGenerator.Kian.Id).FirstOrDefault()
+                    .References.Parent
+                    .References.Partner.Value(FamilyGenerator.Kian.BirthDate)
+                    .References.Partner.Value(FamilyGenerator.Kian.BirthDate)
+                    .References.Parent
+                    .References.Parent
+                    .References.Partner.Value(FamilyGenerator.KalebWeddingDate).Id,
                 FamilyGenerator.Karishma.Id
             );
         }

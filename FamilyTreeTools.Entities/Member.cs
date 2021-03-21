@@ -6,6 +6,8 @@ using System.Linq;
 
 namespace FamilyTreeTools.Entities
 {
+    [Serializable]
+    [JsonObject(MemberSerialization.OptIn)]
     public partial class Member : Human
     {
         protected override void Initialize()
@@ -18,24 +20,18 @@ namespace FamilyTreeTools.Entities
                 }
             });
 
-            Partner = new PropHistory<Member>();
-
-            Children = new List<Member>();
-
             base.Initialize();
         }
 
         public Member(
-            string fullName, DateTime birthDate
-        ) : base(fullName, birthDate)
+            string birthFullName, DateTime birthDate
+        ) : base(birthFullName, birthDate)
         {
             Initialize();
 
-            ChildrenReference = new List<Guid>();
-            PartnerReference = new PropHistory<Guid?>().AddChange(null, BirthDate);
             Status.AddChange(StatusOptions.Unmarried, BirthDate);
-            Partner.AddChange(null, BirthDate);
-            FullName.AddChange(fullName, BirthDate);
+            FullName.AddChange(birthFullName, BirthDate);
+            References = new References(this);
         }
 
         /// <summary>
@@ -45,9 +41,26 @@ namespace FamilyTreeTools.Entities
         public Member()
         { }
 
+        private References _References { get; set; }
+
+        [JsonProperty]
+        public References References
+        {
+            get
+            {
+                return _References;
+            }
+            set
+            {
+                _References = value ?? throw new NullReferenceException(
+                    "Trying to set null references."
+                );
+            }
+        }
+
         public bool HadPartner(DateTime at, Member specific = null)
         {
-            Guid? partnerIdThatTime = PartnerReference.Value(at);
+            Guid? partnerIdThatTime = References.PartnerId.Value(at);
 
             return partnerIdThatTime.HasValue && (
                 specific == null || partnerIdThatTime.Value == specific.Id
@@ -56,35 +69,27 @@ namespace FamilyTreeTools.Entities
 
         public bool HadAnyPartner()
         {
-            return PartnerReference.Changes.Values.Any(v => v.HasValue);
-        }
-
-        public bool WasEverMarried()
-        {
-            return Status.Changes.Values.Any(v => v == StatusOptions.Married);
-        }
-
-        public bool WasMarried(DateTime at)
-        {
-            return Status.Value(at) == StatusOptions.Married;
+            return References.PartnerId.Changes.Values.Any(v => v.HasValue);
         }
 
         public Member HadChild(Member child)
         {
+            if (child == null)
+            {
+                throw new Exception("Trying to set null child.");
+            }
+
             if (child.BirthDate < BirthDate)
             {
                 throw new HistoryViolationException("The child's birth date is before the parent's birth date.");
             }
 
-            if (child.ParentReference.HasValue)
+            if (child.References.ParentId.HasValue)
             {
                 throw new HistoryViolationException("Cannot set a child who has already the parent.");
             }
 
-            Children.Add(child);
-            ChildrenReference.Add(child.Id);
-            child.ParentReference = Id;
-            child.Parent = this;
+            References.AddChild(child);
             return this;
         }
 
@@ -100,30 +105,30 @@ namespace FamilyTreeTools.Entities
                 throw new HistoryViolationException("Cannot set a partner who is already dead that time.");
             }
 
-            if (arg.PartnerReference.Value(since).HasValue)
+            if (arg.References.PartnerId.Value(since).HasValue)
             {
                 throw new HistoryViolationException("Cannot set a partner who had already the partner that time.");
             }
 
-            arg.Partner.AddChange(this, since);
-            arg.PartnerReference.AddChange(Id, since);
+            arg.References.Partner.AddChange(this, since);
+            arg.References.PartnerId.AddChange(Id, since);
         }
 
         private Member SetPartner(Member arg, DateTime since)
         {
             if (arg == null)
             {
-                Member actual = Partner.Value(since);
-                actual?.Partner.AddChange(null, since);
-                actual?.PartnerReference.AddChange(null, since);
+                Member actual = References.Partner.Value(since);
+                actual?.References.Partner.AddChange(null, since);
+                actual?.References.PartnerId.AddChange(null, since);
             }
             else
             {
                 SetNewPartner(arg, since);
             }
 
-            Partner.AddChange(arg, since);
-            PartnerReference.AddChange(arg?.Id, since);
+            References.Partner.AddChange(arg, since);
+            References.PartnerId.AddChange(arg?.Id, since);
 
             return this;
         }
@@ -163,19 +168,19 @@ namespace FamilyTreeTools.Entities
             }
 
             Status.AddChange(StatusOptions.Married, since);
-            Partner.Value(since)?.Status.AddChange(StatusOptions.Married, since);
+            References.Partner.Value(since)?.Status.AddChange(StatusOptions.Married, since);
             return this;
         }
 
         public Member GotUnmarried(DateTime since)
         {
-            if (!PartnerReference.Value(since).HasValue)
+            if (!References.PartnerId.Value(since).HasValue)
             {
                 throw new HistoryViolationException("Cannot get unmarried without any partner.");
             }
 
             Status.AddChange(StatusOptions.Unmarried, since);
-            Partner.Value(since)?.Status.AddChange(StatusOptions.Unmarried, since);
+            References.Partner.Value(since)?.Status.AddChange(StatusOptions.Unmarried, since);
 
             return WithoutPartner(since);
         }
@@ -186,13 +191,15 @@ namespace FamilyTreeTools.Entities
             return this;
         }
 
-        private void RepairInitialization()
+        public Member Repair(Func<Guid, Member> mapper)
         {
             Dictionary<DateTime, StatusOptions> existingChanges = Status.Changes;
             Dictionary<DateTime, string> fullNameChanges = FullName.Changes;
             Initialize();
             Status.Changes = existingChanges;
             FullName.Changes = fullNameChanges;
+            References.Repair(mapper);
+            return this;
         }
     }
 }

@@ -21,12 +21,12 @@ namespace FamilyTreeTools.Entities
                 return Family.GetRootAncestors(Settings);
             }
 
-            return Family.Members[node.Key].GetChildrenWithSpouse(Settings);
+            return Family.Members[node.Key].References.GetChildrenWithSpouse(Settings);
         }
 
         private Tree UpdatePartner(Node node)
         {
-            Member partner = Family.Members[node.Key].Partner.Value(Settings.At);
+            Member partner = Family.Members[node.Key].References.Partner.Value(Settings.At);
 
             if (partner != null)
             {

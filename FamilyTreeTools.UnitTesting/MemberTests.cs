@@ -3,7 +3,6 @@ using FamilyTreeTools.Entities.Exceptions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace FamilyTreeTools.UnitTesting
 {
@@ -110,7 +109,8 @@ namespace FamilyTreeTools.UnitTesting
             {
                 Assert.ThrowsException<HistoryViolationException>(
                     () => familyMemberF(),
-                    string.Format("{0} Should have thrown an exception", i++));
+                    string.Format("Case {0} was not an invalid change.", i++)
+                );
             }
         }
 

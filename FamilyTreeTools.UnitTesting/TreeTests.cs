@@ -12,8 +12,12 @@ namespace FamilyTreeTools.UnitTesting
     public class TreeTests
     {
         [TestMethod]
-        public void CorrectData()
+        public void CorrectBuild()
         {
+            Family fieldFamily = FamilyGenerator.GetData();
+
+
+
 
         }
     }

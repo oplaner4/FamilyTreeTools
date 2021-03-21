@@ -1,6 +1,7 @@
 ﻿using FamilyTreeTools.Entities.Exceptions;
 using Newtonsoft.Json;
 using System;
+using System.Linq;
 
 namespace FamilyTreeTools.Entities
 {
@@ -32,13 +33,13 @@ namespace FamilyTreeTools.Entities
             });
         }
 
-        public Human(string fullName, DateTime birthDate)
+        public Human(string birthFullName, DateTime birthDate)
         {
             Initialize();
 
             SetBirthDate(birthDate);
             Status = new PropHistory<StatusOptions>().AddChange(StatusOptions.Unmarried, BirthDate);
-            FullName.AddChange(fullName, BirthDate);
+            FullName.AddChange(birthFullName, BirthDate);
             Id = Guid.NewGuid();
         }
 
@@ -55,7 +56,7 @@ namespace FamilyTreeTools.Entities
             {
                 if (value == Guid.Empty)
                 {
-                    throw new Exception("Trying to set an empty guid.");
+                    throw new NullReferenceException("Trying to set an empty guid.");
                 }
 
                 _Id = value;
@@ -73,7 +74,7 @@ namespace FamilyTreeTools.Entities
             }
             set
             {
-                _FullName = value ?? throw new Exception("Trying to set null fullname.");
+                _FullName = value ?? throw new NullReferenceException("Trying to set null fullname.");
             }
         }
 
@@ -88,7 +89,7 @@ namespace FamilyTreeTools.Entities
             }
             set
             {
-                _Status = value ?? throw new Exception("Trying to set null status.");
+                _Status = value ?? throw new NullReferenceException("Trying to set null status.");
             }
         }
 
@@ -176,6 +177,16 @@ namespace FamilyTreeTools.Entities
         public bool IsBorn(DateTime at, bool canBeDead = false)
         {
             return BirthDate <= at && (canBeDead || !IsDead(at));
+        }
+
+        public bool WasEverMarried()
+        {
+            return Status.Changes.Values.Any(v => v == StatusOptions.Married);
+        }
+
+        public bool WasMarried(DateTime at)
+        {
+            return Status.Value(at) == StatusOptions.Married;
         }
     }
 }
