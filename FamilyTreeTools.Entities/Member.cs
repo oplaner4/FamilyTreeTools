@@ -31,7 +31,7 @@ namespace FamilyTreeTools.Entities
 
             Status.AddChange(StatusOptions.Unmarried, BirthDate);
             FullName.AddChange(birthFullName, BirthDate);
-            References = new References(this);
+            Refs = new References(this);
         }
 
         /// <summary>
@@ -41,18 +41,18 @@ namespace FamilyTreeTools.Entities
         public Member()
         { }
 
-        private References _References { get; set; }
+        private References _Refs { get; set; }
 
         [JsonProperty]
-        public References References
+        public References Refs
         {
             get
             {
-                return _References;
+                return _Refs;
             }
             set
             {
-                _References = value ?? throw new NullReferenceException(
+                _Refs = value ?? throw new NullReferenceException(
                     "Trying to set null references."
                 );
             }
@@ -60,7 +60,7 @@ namespace FamilyTreeTools.Entities
 
         public bool HadPartner(DateTime at, Member specific = null)
         {
-            Guid? partnerIdThatTime = References.PartnerId.Value(at);
+            Guid? partnerIdThatTime = Refs.PartnerId.Value(at);
 
             return partnerIdThatTime.HasValue && (
                 specific == null || partnerIdThatTime.Value == specific.Id
@@ -69,7 +69,7 @@ namespace FamilyTreeTools.Entities
 
         public bool HadAnyPartner()
         {
-            return References.PartnerId.Changes.Values.Any(v => v.HasValue);
+            return Refs.PartnerId.Changes.Values.Any(v => v.HasValue);
         }
 
         public Member HadChild(Member child)
@@ -84,12 +84,12 @@ namespace FamilyTreeTools.Entities
                 throw new HistoryViolationException("The child's birth date is before the parent's birth date.");
             }
 
-            if (child.References.ParentId.HasValue)
+            if (child.Refs.ParentId.HasValue)
             {
                 throw new HistoryViolationException("Cannot set a child who has already the parent.");
             }
 
-            References.AddChild(child);
+            Refs.AddChild(child);
             return this;
         }
 
@@ -107,13 +107,13 @@ namespace FamilyTreeTools.Entities
                     throw new HistoryViolationException("Cannot set a partner who is already dead that time.");
                 }
 
-                if (arg.References.PartnerId.Value(since).HasValue)
+                if (arg.Refs.PartnerId.Value(since).HasValue)
                 {
                     throw new HistoryViolationException("Cannot set a partner who had already the partner that time.");
                 }
             }
 
-            References.UpdatePartner(arg, since);
+            Refs.UpdatePartner(arg, since);
             return this;
         }
 
@@ -152,19 +152,19 @@ namespace FamilyTreeTools.Entities
             }
 
             Status.AddChange(StatusOptions.Married, since);
-            References.Partner.Value(since)?.Status.AddChange(StatusOptions.Married, since);
+            Refs.Partner.Value(since)?.Status.AddChange(StatusOptions.Married, since);
             return this;
         }
 
         public Member GotUnmarried(DateTime since)
         {
-            if (!References.PartnerId.Value(since).HasValue)
+            if (!Refs.PartnerId.Value(since).HasValue)
             {
                 throw new HistoryViolationException("Cannot get unmarried without any partner.");
             }
 
             Status.AddChange(StatusOptions.Unmarried, since);
-            References.Partner.Value(since)?.Status.AddChange(StatusOptions.Unmarried, since);
+            Refs.Partner.Value(since)?.Status.AddChange(StatusOptions.Unmarried, since);
 
             return WithoutPartner(since);
         }
@@ -182,7 +182,7 @@ namespace FamilyTreeTools.Entities
             Initialize();
             Status.Changes = existingChanges;
             FullName.Changes = fullNameChanges;
-            References.Repair(mapper);
+            Refs.Repair(mapper);
             return this;
         }
     }

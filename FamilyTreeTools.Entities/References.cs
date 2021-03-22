@@ -75,11 +75,11 @@ namespace FamilyTreeTools.Entities
             {
                 if (arg == null)
                 {
-                    Partner.Value(since)?.References.UpdatePartner(arg, since, false);
+                    Partner.Value(since)?.Refs.UpdatePartner(arg, since, false);
                 }
                 else
                 {
-                    arg.References.UpdatePartner(Source, since, false);
+                    arg.Refs.UpdatePartner(Source, since, false);
                 }
             }
 
@@ -97,8 +97,8 @@ namespace FamilyTreeTools.Entities
         {
             Children.Add(arg.Id, arg);
             ChildrenIds.Add(arg.Id);
-            arg.References.ParentId = Source.Id;
-            arg.References.Parent = Source;
+            arg.Refs.ParentId = Source.Id;
+            arg.Refs.Parent = Source;
             return this;
         }
 
@@ -106,8 +106,8 @@ namespace FamilyTreeTools.Entities
         {
             Children.Remove(arg.Id);
             ChildrenIds.Remove(arg.Id);
-            arg.References.ParentId = null;
-            arg.References.Parent = null;
+            arg.Refs.ParentId = null;
+            arg.Refs.Parent = null;
             return this;
         }
 
@@ -160,20 +160,33 @@ namespace FamilyTreeTools.Entities
             return this;
         }
 
-        public IEnumerable<Member> GetChildrenWithSpouse(SearchSettings settings)
+        private IEnumerable<Member> GetChildrenWithSpouse(SearchSettings settings, bool noncycle)
         {
             List<Member> result = new List<Member>();
 
-            if (Source.WasMarried(settings.At))
+            if (noncycle && Source.WasMarried(settings.At))
             {
-                foreach (Member child in Partner.Value(settings.At).References.Children.Values)
+                result.AddRange(
+                    Partner.Value(settings.At).Refs.GetChildrenWithSpouse(settings, false)
+                );
+            }
+
+            foreach (Member child in Children.Values)
+            {
+                result.Add(child);
+
+                if (settings.GoDeep)
                 {
-                    result.Add(child);
+                    result.AddRange(child.Refs.GetChildrenWithSpouse(settings, true));
                 }
             }
 
-            result.AddRange(Children.Values);
             return result.Where(ch => ch.IsBorn(settings.At, settings.CanBeDead));
+        }
+
+        public IEnumerable<Member> GetChildrenWithSpouse(SearchSettings settings)
+        {
+            return GetChildrenWithSpouse(settings, true);
         }
 
         public bool IsRootAncestor(SearchSettings settings)
@@ -189,7 +202,7 @@ namespace FamilyTreeTools.Entities
                 return settings.CanBePartnerOtherTime || !Source.HadAnyPartner();
             }
 
-            return !partner.References.GetAncestors(settings).Any();
+            return !partner.Refs.GetAncestors(settings).Any();
         }
 
         public List<Member> GetAncestors(SearchSettings settings)
@@ -202,12 +215,12 @@ namespace FamilyTreeTools.Entities
 
                 if (settings.GoDeep)
                 {
-                    result.AddRange(Parent.References.GetAncestors(settings));
+                    result.AddRange(Parent.Refs.GetAncestors(settings));
 
-                    Member partner = Parent.References.Partner.Value(Source.BirthDate);
+                    Member partner = Parent.Refs.Partner.Value(Source.BirthDate);
                     if (partner != null && (settings.CanBeDead || !partner.IsDead(settings.At)))
                     {
-                        result.AddRange(partner.References.GetAncestors(settings));
+                        result.AddRange(partner.Refs.GetAncestors(settings));
                     }
                 }
             }

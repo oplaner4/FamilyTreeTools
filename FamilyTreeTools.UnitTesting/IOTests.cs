@@ -32,13 +32,13 @@ namespace FamilyTreeTools.UnitTesting
                 );
 
                 Assert.AreEqual(
-                    deserializedFamily.Members[member.Id].References.ParentId,
-                    fieldFamily.Members[member.Id].References.ParentId
+                    deserializedFamily.Members[member.Id].Refs.ParentId,
+                    fieldFamily.Members[member.Id].Refs.ParentId
                 );
 
                 Assert.AreEqual(
-                    deserializedFamily.Members[member.Id].References.ChildrenIds.Count(),
-                    fieldFamily.Members[member.Id].References.ChildrenIds.Count()
+                    deserializedFamily.Members[member.Id].Refs.ChildrenIds.Count(),
+                    fieldFamily.Members[member.Id].Refs.ChildrenIds.Count()
                 );
 
                 foreach (DateTime at in new List<DateTime>() {

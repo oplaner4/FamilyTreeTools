@@ -16,44 +16,27 @@ namespace FamilyTreeTools.Entities
 
         private IEnumerable<Member> UseChildren(Node node)
         {
-            if (node.Key == Root.Key)
-            {
-                return Family.GetRootAncestors(Settings);
-            }
-
-            return Family.Members[node.Key].References.GetChildrenWithSpouse(Settings);
+            return node.Key == Root.Key ?
+                Family.GetRootAncestors(Settings)
+                :
+                Family.Members[node.Key].Refs.GetChildrenWithSpouse(Settings);
         }
 
         private Tree UpdatePartner(Node node)
         {
-            Member partner = Family.Members[node.Key].References.Partner.Value(Settings.At);
+            Member partner = Family.Members[node.Key].Refs.Partner.Value(Settings.At);
 
-            if (partner != null)
+            if (partner != null && !AddedMembers.Contains(partner.Id))
             {
-                if (AddedMembers.Contains(partner.Id))
-                {
-                    node.PartnerReference = partner.Id;
-                }
-                else {
-                    node.Partner = new Node(
-                        partner.Id,
-                        partner.FullName.Value(Settings.At)
-                    );
+                node.Partner = new Node(
+                    partner.Id,
+                    partner.FullName.Value(Settings.At)
+                );
 
-                    AddedMembers.Add(partner.Id);
+                AddedMembers.Add(partner.Id);
+                node.Partner.PartnerReference = node.Key;
 
-                    UpdateChildren(node.Partner).BuildRecurrent(node.Partner);
-                }
-            }
-
-            return this;
-        }
-
-        private Tree UpdateChildren(Node node)
-        {
-            foreach (Member child in UseChildren(node)) {
-                Node childNode = new Node(child.Id, child.FullName.Value(Settings.At));
-                node.AddChild(childNode);
+                BuildRecurrent(node.Partner);
             }
 
             return this;
@@ -61,22 +44,28 @@ namespace FamilyTreeTools.Entities
 
         public Tree Build()
         {
+            Settings.GoDeep = false;
             AddedMembers = new HashSet<Guid>();
             Root = new Node(Guid.Empty, Family.Name);
-
-            UpdateChildren(Root);
-            AddedMembers.Add(Root.Key);
             BuildRecurrent(Root);
+            Root.SpouseChildren = null;
             return this;
         }
 
         private Tree BuildRecurrent(Node actual)
         {
-            foreach (Node node in actual.Children.Values)
+            foreach (Member child in UseChildren(actual))
             {
-                if (!AddedMembers.Contains(node.Key))
+                if (Root.Key != actual.Key && AddedMembers.Contains(child.Id))
                 {
-                    UpdatePartner(node).UpdateChildren(node).BuildRecurrent(node);
+                    actual.AddSpouseChild(child.Id);
+                }
+                else
+                {
+                    Node childNode = new Node(child.Id, child.FullName.Value(Settings.At));
+                    actual.AddChild(childNode);
+                    AddedMembers.Add(child.Id);
+                    BuildRecurrent(childNode).UpdatePartner(childNode);
                 }
             }
 
@@ -84,7 +73,7 @@ namespace FamilyTreeTools.Entities
         }
 
         [JsonProperty]
-        public SearchSettings Settings { get; set; }
+        public SearchSettings Settings { get; private set; }
 
         [JsonProperty]
         public Node Root { get; private set; }

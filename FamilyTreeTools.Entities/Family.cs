@@ -80,7 +80,7 @@ namespace FamilyTreeTools.Entities
         public IEnumerable<Member> GetRootAncestors(SearchSettings settings)
         {
             IEnumerable<Member> result = Members.Values.Where(
-                m => m.References.IsRootAncestor(settings)
+                m => m.Refs.IsRootAncestor(settings)
             );
 
             return result;

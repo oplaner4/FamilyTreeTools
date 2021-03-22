@@ -89,7 +89,8 @@ namespace FamilyTreeTools.UnitTesting
                         FamilyGenerator.Sebastian,
                         FamilyGenerator.Karishma,
                         FamilyGenerator.Kaleb,
-                        FamilyGenerator.Hailie
+                        FamilyGenerator.Hailie,
+                        FamilyGenerator.Ahsan
                     }
                 },
                 { /* 8 */
@@ -253,76 +254,76 @@ namespace FamilyTreeTools.UnitTesting
         public static void CheckFieldFamilyReferences (Family f)
         {
             Assert.AreEqual(
-                f.Members[FamilyGenerator.Kaleb.Id].References.Partner.Value(FamilyGenerator.KalebWeddingDate).Id,
+                f.Members[FamilyGenerator.Kaleb.Id].Refs.Partner.Value(FamilyGenerator.KalebWeddingDate).Id,
                 FamilyGenerator.Karishma.Id
             );
 
             Assert.AreEqual(
-                f.Members[FamilyGenerator.Karishma.Id].References.Partner.Value(FamilyGenerator.KalebWeddingDate).Id,
+                f.Members[FamilyGenerator.Karishma.Id].Refs.Partner.Value(FamilyGenerator.KalebWeddingDate).Id,
                 FamilyGenerator.Kaleb.Id
             );
 
             Assert.AreEqual(
-                f.Members[FamilyGenerator.Sebastian.Id].References.Partner.Value(FamilyGenerator.SebastianWithKarishmaDate).Id,
+                f.Members[FamilyGenerator.Sebastian.Id].Refs.Partner.Value(FamilyGenerator.SebastianWithKarishmaDate).Id,
                 FamilyGenerator.Karishma.Id
             );
 
             Assert.AreEqual(
-                f.Members[FamilyGenerator.Karishma.Id].References.Partner.Value(FamilyGenerator.SebastianWithKarishmaDate).Id,
+                f.Members[FamilyGenerator.Karishma.Id].Refs.Partner.Value(FamilyGenerator.SebastianWithKarishmaDate).Id,
                 FamilyGenerator.Sebastian.Id
             );
 
             Assert.AreEqual(
-                f.Members[FamilyGenerator.Rumaysa.Id].References.Parent.Id,
+                f.Members[FamilyGenerator.Rumaysa.Id].Refs.Parent.Id,
                 FamilyGenerator.Kaleb.Id
             );
 
             Assert.AreEqual(
-                f.Members[FamilyGenerator.Korey.Id].References.Parent.Id,
+                f.Members[FamilyGenerator.Korey.Id].Refs.Parent.Id,
                 FamilyGenerator.Kaleb.Id
             );
 
             Assert.AreEqual(
-                f.Members[FamilyGenerator.Rumaysa.Id].References.Parent.Id,
+                f.Members[FamilyGenerator.Rumaysa.Id].Refs.Parent.Id,
                 FamilyGenerator.Kaleb.Id
             );
 
             Assert.AreEqual(
-                f.Members[FamilyGenerator.Klara.Id].References.Parent
-                    .References.Partner.Value(FamilyGenerator.KalebWeddingDate).Id,
+                f.Members[FamilyGenerator.Klara.Id].Refs.Parent
+                    .Refs.Partner.Value(FamilyGenerator.KalebWeddingDate).Id,
                 FamilyGenerator.Karishma.Id
             );
 
             Assert.AreEqual(
-                f.Members[FamilyGenerator.Korey.Id].References.Parent
-                    .References.Partner.Value(FamilyGenerator.KalebWeddingDate).Id,
+                f.Members[FamilyGenerator.Korey.Id].Refs.Parent
+                    .Refs.Partner.Value(FamilyGenerator.KalebWeddingDate).Id,
                 FamilyGenerator.Karishma.Id
             );
 
             Assert.AreEqual(
-                f.Members[FamilyGenerator.Kian.Id].References.Parent
-                    .References.Parent.References.Partner.Value(FamilyGenerator.RumaysaWeddingDate).Id,
+                f.Members[FamilyGenerator.Kian.Id].Refs.Parent
+                    .Refs.Parent.Refs.Partner.Value(FamilyGenerator.RumaysaWeddingDate).Id,
                 FamilyGenerator.Fleur.Id
             );
 
             Assert.IsTrue(
-                f.Members[FamilyGenerator.Fleur.Id].References.Children.ContainsKey(FamilyGenerator.Raja.Id)
+                f.Members[FamilyGenerator.Fleur.Id].Refs.Children.ContainsKey(FamilyGenerator.Raja.Id)
             );
 
             Assert.IsTrue(
-                f.Members[FamilyGenerator.Korey.Id].References.Children[FamilyGenerator.Sonya.Id]
-                    .References.Children.ContainsKey(FamilyGenerator.Marwah.Id)
+                f.Members[FamilyGenerator.Korey.Id].Refs.Children[FamilyGenerator.Sonya.Id]
+                    .Refs.Children.ContainsKey(FamilyGenerator.Marwah.Id)
             );
 
             Assert.AreEqual(
                 f.Members[FamilyGenerator.Moesha.Id]
-                    .References.Children[FamilyGenerator.Kian.Id]
-                    .References.Parent
-                    .References.Partner.Value(FamilyGenerator.Kian.BirthDate)
-                    .References.Partner.Value(FamilyGenerator.Kian.BirthDate)
-                    .References.Parent
-                    .References.Parent
-                    .References.Partner.Value(FamilyGenerator.KalebWeddingDate).Id,
+                    .Refs.Children[FamilyGenerator.Kian.Id]
+                    .Refs.Parent
+                    .Refs.Partner.Value(FamilyGenerator.Kian.BirthDate)
+                    .Refs.Partner.Value(FamilyGenerator.Kian.BirthDate)
+                    .Refs.Parent
+                    .Refs.Parent
+                    .Refs.Partner.Value(FamilyGenerator.KalebWeddingDate).Id,
                 FamilyGenerator.Karishma.Id
             );
         }
@@ -332,10 +333,10 @@ namespace FamilyTreeTools.UnitTesting
         {
             Family fieldFamily = FamilyGenerator.GetData();
 
-            FamilyGenerator.Rumaysa.References.RemoveChild(FamilyGenerator.Moesha);
-            Assert.AreEqual(1, FamilyGenerator.Rumaysa.References.Children.Count());
+            FamilyGenerator.Rumaysa.Refs.RemoveChild(FamilyGenerator.Moesha);
+            Assert.AreEqual(1, FamilyGenerator.Rumaysa.Refs.Children.Count());
             FamilyGenerator.Rumaysa.HadChild(FamilyGenerator.Moesha);
-            Assert.AreEqual(2, FamilyGenerator.Rumaysa.References.Children.Count());
+            Assert.AreEqual(2, FamilyGenerator.Rumaysa.Refs.Children.Count());
 
             CheckFieldFamilyReferences(fieldFamily);
         }

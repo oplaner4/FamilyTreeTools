@@ -27,6 +27,7 @@ namespace FamilyTreeTools.UnitTesting
                 .Children[FamilyGenerator.Henrietta.Id];
 
             Assert.AreEqual(FamilyGenerator.Ahsan.Id, HenriettaNode.Partner.Key);
+            Assert.AreEqual(FamilyGenerator.Henrietta.Id, HenriettaNode.Partner.PartnerReference);
 
 
             /*  FamilyGenerator.Karishma,
