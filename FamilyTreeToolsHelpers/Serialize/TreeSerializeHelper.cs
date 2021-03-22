@@ -11,7 +11,11 @@ namespace FamilyTreeTools.Utilities.Serialize
         public TreeSerializeHelper Save(Tree tree)
         {
             File.WriteAllText(FullFileName,
-                JsonConvert.SerializeObject(tree)
+                JsonConvert.SerializeObject(tree, Formatting.Indented, new JsonSerializerSettings
+                {
+                    NullValueHandling = NullValueHandling.Ignore,
+                    DateFormatString = "MM/dd/yyyy H:mm:ss",
+                })
             );
 
             return this;

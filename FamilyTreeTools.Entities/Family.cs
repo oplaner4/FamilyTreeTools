@@ -67,7 +67,7 @@ namespace FamilyTreeTools.Entities
         /// <summary>
         /// This method is used only after serialization.
         /// </summary>
-        public Family RepairReferences()
+        public Family Repair()
         {
             foreach (Member member in Members.Values)
             {

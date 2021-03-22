@@ -93,7 +93,7 @@ namespace FamilyTreeTools.Entities
             return UpdatePartner(arg, since, true);
         }
 
-        internal References AddChild (Member arg)
+        internal References AddChild(Member arg)
         {
             Children.Add(arg.Id, arg);
             ChildrenIds.Add(arg.Id);
@@ -160,67 +160,88 @@ namespace FamilyTreeTools.Entities
             return this;
         }
 
-        private IEnumerable<Member> GetChildrenWithSpouse(SearchSettings settings, bool noncycle)
+        private HashSet<Member> GetSpouseChildren(SearchSettings settings, bool noncycle)
         {
-            List<Member> result = new List<Member>();
+            HashSet<Member> result = new HashSet<Member>();
 
-            if (noncycle && Source.WasMarried(settings.At))
+            if (noncycle && TryGetSpouse(
+                settings.At, settings.CanBeDead, out Member spouse
+            ))
             {
-                result.AddRange(
-                    Partner.Value(settings.At).Refs.GetChildrenWithSpouse(settings, false)
-                );
+                result.Union(spouse.Refs.GetSpouseChildren(settings, false));
             }
 
             foreach (Member child in Children.Values)
             {
-                result.Add(child);
-
-                if (settings.GoDeep)
+                if (child.IsBorn(settings.At, settings.CanBeDead))
                 {
-                    result.AddRange(child.Refs.GetChildrenWithSpouse(settings, true));
+                    result.Add(child);
+
+                    if (settings.GoDeep)
+                    {
+                        result.Union(child.Refs.GetSpouseChildren(settings, true));
+                    }
                 }
             }
 
-            return result.Where(ch => ch.IsBorn(settings.At, settings.CanBeDead));
+            return result;
         }
 
-        public IEnumerable<Member> GetChildrenWithSpouse(SearchSettings settings)
+        public HashSet<Member> GetSpouseChildren(SearchSettings settings)
         {
-            return GetChildrenWithSpouse(settings, true);
+            return GetSpouseChildren(settings, true);
         }
 
         public bool IsRootAncestor(SearchSettings settings)
         {
-            if (!Source.IsBorn(settings.At, settings.CanBeDead) || GetAncestors(settings).Any())
+            SearchSettings useSettings = new SearchSettings()
+            {
+                At = settings.At,
+                CanBeDead = settings.CanBeDead,
+                CanBePartnerOtherTime = settings.CanBePartnerOtherTime,
+                GoDeep = false
+            };
+
+            if (!Source.IsBorn(useSettings.At, useSettings.CanBeDead) || GetAncestors(useSettings).Any())
             {
                 return false;
             }
 
-            Member partner = Partner.Value(settings.At);
+            Member partner = Partner.Value(useSettings.At);
             if (partner == null)
             {
-                return settings.CanBePartnerOtherTime || !Source.HadAnyPartner();
+                return useSettings.CanBePartnerOtherTime || !Source.HadAnyPartner();
             }
 
-            return !partner.Refs.GetAncestors(settings).Any();
+            return !partner.Refs.GetAncestors(useSettings).Any();
         }
 
-        public List<Member> GetAncestors(SearchSettings settings)
+        public bool TryGetSpouse(DateTime at, bool canBeDead, out Member spouse)
         {
-            List<Member> result = new List<Member>();
+            spouse = Partner.Value(at);
+            return spouse != null &&
+                spouse.IsBorn(at, canBeDead) &&
+                Source.WasMarried(at);
+        }
 
-            if (Parent != null && (settings.CanBeDead || !Parent.IsDead(settings.At)))
+        public HashSet<Member> GetAncestors(SearchSettings settings)
+        {
+            HashSet<Member> result = new HashSet<Member>();
+
+            if (Parent != null && Parent.IsBorn(settings.At, settings.CanBeDead))
             {
                 result.Add(Parent);
 
                 if (settings.GoDeep)
                 {
-                    result.AddRange(Parent.Refs.GetAncestors(settings));
+                    result.Union(Parent.Refs.GetAncestors(settings));
 
-                    Member partner = Parent.Refs.Partner.Value(Source.BirthDate);
-                    if (partner != null && (settings.CanBeDead || !partner.IsDead(settings.At)))
+                    if (Parent.Refs.TryGetSpouse(
+                        Source.BirthDate, settings.CanBeDead,
+                        out Member spouse
+                    ))
                     {
-                        result.AddRange(partner.Refs.GetAncestors(settings));
+                        result.Union(spouse.Refs.GetAncestors(settings));
                     }
                 }
             }

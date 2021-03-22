@@ -21,7 +21,7 @@ namespace FamilyTreeTools.Utilities.Serialize
         {
             return JsonConvert.DeserializeObject<Family>(
                 File.ReadAllText(FullFileName)
-            ).RepairReferences();
+            ).Repair();
         }
     }
 }

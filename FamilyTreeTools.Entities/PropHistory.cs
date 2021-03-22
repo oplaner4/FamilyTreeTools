@@ -53,11 +53,6 @@ namespace FamilyTreeTools.Entities
             return this;
         }
 
-        public DateTime GetLatestChangeDate()
-        {
-            return Changes.Keys.Max();
-        }
-
         public T Value(DateTime at)
         {
             try

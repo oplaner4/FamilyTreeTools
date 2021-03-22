@@ -1,16 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="NameAndType">
   <Comment CommentText="Methods returning Member are chainable.">
-    <Position X="4.226" Y="7.265" Height="0.3" Width="2.628" />
+    <Position X="4.351" Y="6.848" Height="0.3" Width="2.628" />
   </Comment>
   <Comment CommentText="Methods returning References are chainable.">
-    <Position X="0.5" Y="11.201" Height="0.3" Width="2.749" />
+    <Position X="0.542" Y="9.472" Height="0.3" Width="2.749" />
   </Comment>
   <Comment CommentText="Methods returning Family are chainable.">
-    <Position X="4.239" Y="2.743" Height="0.3" Width="2.509" />
+    <Position X="4.322" Y="2.701" Height="0.3" Width="2.509" />
   </Comment>
   <Class Name="FamilyTreeTools.Entities.Exceptions.HistoryViolationException">
-    <Position X="12" Y="3.5" Width="2" />
+    <Position X="11.75" Y="3.5" Width="2" />
     <Members>
       <Method Name="HistoryViolationException" Hidden="true" />
     </Members>
@@ -27,7 +27,7 @@
       <Method Name="Family" Hidden="true" />
     </Members>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAACAAIAQAEQAAAABAAAAEAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAIAQAESAAAABAAAAEAAAAAAA=</HashCode>
       <FileName>Family.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -61,24 +61,23 @@
   <Class Name="FamilyTreeTools.Entities.Member">
     <Position X="4.25" Y="3.5" Width="3.25" />
     <Members>
-      <Property Name="_References" Hidden="true" />
+      <Property Name="_Refs" Hidden="true" />
       <Method Name="Initialize" Hidden="true" />
       <Method Name="Member" Hidden="true" />
-      <Property Name="References" Hidden="true" />
       <Method Name="SetPartner" Hidden="true" />
     </Members>
     <TypeIdentifier>
-      <HashCode>AAAAAABAAEAAAQAAAAAAAgAAKCAYAAJABAQAAAAAAAA=</HashCode>
+      <HashCode>AAABAABAAEAAAQAAAAAAAAAAKDAIAAJABAQAAAAAAAA=</HashCode>
       <FileName>Member.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="FamilyTreeTools.Entities.Node">
-    <Position X="12" Y="0.5" Width="3" />
+    <Position X="11.25" Y="0.5" Width="3" />
     <Members>
       <Method Name="Node" Hidden="true" />
     </Members>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAABEAQAAAAEAAAAAAAAEAAAAAAgAAAAAAg=</HashCode>
+      <HashCode>AAAAAAAAAAAAMAQAAAAEAAAAAAAAEAAAAAAgAAgAAAg=</HashCode>
       <FileName>Node.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -96,7 +95,7 @@
       </Delegate>
     </NestedTypes>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAgAAAAgAAAAAAAggAAAAAAoAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAgAAAAgAAAAAAAggAAAAAAgAAAAAAA=</HashCode>
       <FileName>PropHistory.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -107,12 +106,11 @@
       <Method Name="BuildRecurrent" Hidden="true" />
       <Property Name="Family" Hidden="true" />
       <Method Name="Tree" Hidden="true" />
-      <Method Name="UpdateChildren" Hidden="true" />
       <Method Name="UpdatePartner" Hidden="true" />
       <Method Name="UseChildren" Hidden="true" />
     </Members>
     <TypeIdentifier>
-      <HashCode>AAAAAgAAAAAAACAAAAQIAAgAAAAAgAAAgAAAAAAABEA=</HashCode>
+      <HashCode>AAAAAgAAAAAAACAAAAAIAAgAAAAAgAAAgAAAAAAABEA=</HashCode>
       <FileName>Tree.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -122,6 +120,7 @@
       <Property Name="_ChildrenIds" Hidden="true" />
       <Property Name="_PartnerId" Hidden="true" />
       <Method Name="AddChild" Hidden="true" />
+      <Method Name="GetSpouseChildren" Hidden="true" />
       <Method Name="Initialize" Hidden="true" />
       <Method Name="References" Hidden="true" />
       <Method Name="Repair" Hidden="true" />
@@ -129,7 +128,7 @@
       <Method Name="UpdatePartner" Hidden="true" />
     </Members>
     <TypeIdentifier>
-      <HashCode>AAQAAAAAAgAEkQAAAAAMQAAAAaIAABAAAgAAAAAAAAk=</HashCode>
+      <HashCode>AAQAAAAgAgAEkQAAAAAMQAAAAKIAABAAAgAAAAAAAAk=</HashCode>
       <FileName>References.cs</FileName>
     </TypeIdentifier>
   </Class>
