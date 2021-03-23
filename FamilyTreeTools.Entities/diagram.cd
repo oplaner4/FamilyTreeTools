@@ -115,7 +115,7 @@
     </TypeIdentifier>
   </Class>
   <Class Name="FamilyTreeTools.Entities.References">
-    <Position X="0.5" Y="6.25" Width="3.75" />
+    <Position X="0.5" Y="6.25" Width="2.75" />
     <Members>
       <Property Name="_ChildrenIds" Hidden="true" />
       <Property Name="_PartnerId" Hidden="true" />
