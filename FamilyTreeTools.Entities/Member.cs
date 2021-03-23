@@ -134,6 +134,16 @@ namespace FamilyTreeTools.Entities
                 throw new HistoryViolationException("Cannot break up with the partner that was not set that time.");
             }
 
+            if (WasMarried(since))
+            {
+                Status.AddChange(StatusOptions.Unmarried, since);
+
+                if (Refs.TryGetPartner(out Member partner, since))
+                {
+                    partner.Status.AddChange(StatusOptions.Unmarried, since);
+                }
+            }
+
             return SetPartner(null, since);
         }
 
@@ -146,25 +156,30 @@ namespace FamilyTreeTools.Entities
                     throw new HistoryViolationException("Cannot get married with another partner.");
                 }
             }
-            else if (partner != null)
+            else if (partner == null)
+            {
+                throw new HistoryViolationException("Cannot get married without any partner.");
+            }
+            else
             {
                 WithPartner(partner, since);
             }
 
             Status.AddChange(StatusOptions.Married, since);
-            Refs.Partner.Value(since)?.Status.AddChange(StatusOptions.Married, since);
+
+            if (Refs.TryGetPartner(out Member value, since))
+            {
+                value.Status.AddChange(StatusOptions.Married, since);
+            }
             return this;
         }
 
         public Member GotUnmarried(DateTime since)
         {
-            if (!Refs.PartnerId.Value(since).HasValue)
+            if (!HadPartner(since))
             {
                 throw new HistoryViolationException("Cannot get unmarried without any partner.");
             }
-
-            Status.AddChange(StatusOptions.Unmarried, since);
-            Refs.Partner.Value(since)?.Status.AddChange(StatusOptions.Unmarried, since);
 
             return WithoutPartner(since);
         }

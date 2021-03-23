@@ -75,7 +75,10 @@ namespace FamilyTreeTools.Entities
             {
                 if (arg == null)
                 {
-                    Partner.Value(since)?.Refs.UpdatePartner(arg, since, false);
+                    if (TryGetPartner(out Member value, since))
+                    {
+                        value.Refs.UpdatePartner(arg, since, false);
+                    }
                 }
                 else
                 {
@@ -160,15 +163,15 @@ namespace FamilyTreeTools.Entities
             return this;
         }
 
-        private HashSet<Member> GetSpouseChildren(SearchSettings settings, bool noncycle)
+        private HashSet<Member> GetDescendants(SearchSettings settings, bool noncycle)
         {
             HashSet<Member> result = new HashSet<Member>();
 
             if (noncycle && TryGetSpouse(
-                settings.At, settings.CanBeDead, out Member spouse
+                out Member spouse, settings.At, settings.CanBeDead
             ))
             {
-                result.Union(spouse.Refs.GetSpouseChildren(settings, false));
+                result.Union(spouse.Refs.GetDescendants(settings, false));
             }
 
             foreach (Member child in Children.Values)
@@ -179,7 +182,7 @@ namespace FamilyTreeTools.Entities
 
                     if (settings.GoDeep)
                     {
-                        result.Union(child.Refs.GetSpouseChildren(settings, true));
+                        result.Union(child.Refs.GetDescendants(settings, true));
                     }
                 }
             }
@@ -187,9 +190,9 @@ namespace FamilyTreeTools.Entities
             return result;
         }
 
-        public HashSet<Member> GetSpouseChildren(SearchSettings settings)
+        public HashSet<Member> GetDescendants(SearchSettings settings)
         {
-            return GetSpouseChildren(settings, true);
+            return GetDescendants(settings, true);
         }
 
         public bool IsRootAncestor(SearchSettings settings)
@@ -202,26 +205,30 @@ namespace FamilyTreeTools.Entities
                 GoDeep = false
             };
 
-            if (!Source.IsBorn(useSettings.At, useSettings.CanBeDead) || GetAncestors(useSettings).Any())
+            if (!Source.IsBorn(useSettings.At, useSettings.CanBeDead) ||
+                GetAncestors(useSettings).Any()
+            )
             {
                 return false;
             }
 
-            Member partner = Partner.Value(useSettings.At);
-            if (partner == null)
+            if (TryGetPartner(out Member value, useSettings.At, useSettings.CanBeDead))
             {
-                return useSettings.CanBePartnerOtherTime || !Source.HadAnyPartner();
+                return !value.Refs.GetAncestors(useSettings).Any();
             }
 
-            return !partner.Refs.GetAncestors(useSettings).Any();
+            return useSettings.CanBePartnerOtherTime || !Source.HadAnyPartner();
         }
 
-        public bool TryGetSpouse(DateTime at, bool canBeDead, out Member spouse)
+        public bool TryGetSpouse(out Member value, DateTime at, bool canBeDead = false)
         {
-            spouse = Partner.Value(at);
-            return spouse != null &&
-                spouse.IsBorn(at, canBeDead) &&
-                Source.WasMarried(at);
+            return TryGetPartner(out value, at, canBeDead) && Source.WasMarried(at);
+        }
+
+        public bool TryGetPartner(out Member value, DateTime at, bool canBeDead = false)
+        {
+            value = Partner.Value(at);
+            return value != null && value.IsBorn(at, canBeDead);
         }
 
         public HashSet<Member> GetAncestors(SearchSettings settings)
@@ -237,8 +244,7 @@ namespace FamilyTreeTools.Entities
                     result.Union(Parent.Refs.GetAncestors(settings));
 
                     if (Parent.Refs.TryGetSpouse(
-                        Source.BirthDate, settings.CanBeDead,
-                        out Member spouse
+                        out Member spouse, Source.BirthDate, settings.CanBeDead
                     ))
                     {
                         result.Union(spouse.Refs.GetAncestors(settings));

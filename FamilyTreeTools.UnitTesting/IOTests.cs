@@ -41,7 +41,7 @@ namespace FamilyTreeTools.UnitTesting
                     fieldFamily.Members[member.Id].Refs.ChildrenIds.Count()
                 );
 
-                foreach (DateTime at in new List<DateTime>() {
+                foreach (DateTime at in new HashSet<DateTime>() {
                     DateTime.Now,
                     FamilyGenerator.KalebWeddingDate,
                     FamilyGenerator.KoreyWeddingDate,

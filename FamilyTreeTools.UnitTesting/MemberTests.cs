@@ -104,7 +104,6 @@ namespace FamilyTreeTools.UnitTesting
                     new Member(ShylaBoyce, ShylaBoyceBirthDate).HadChild(Jazmyn);
                     new Member(HuzaifaMscgrath, HuzaifaMscgrathBirthDate).HadChild(Jazmyn);
                 }
-
             })
             {
                 Assert.ThrowsException<HistoryViolationException>(

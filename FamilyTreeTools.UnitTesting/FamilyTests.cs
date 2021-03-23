@@ -23,27 +23,27 @@ namespace FamilyTreeTools.UnitTesting
             );
 
             int i = 1;
-            foreach (KeyValuePair<SearchSettings, List<Member>> expected in new Dictionary<SearchSettings, List<Member>>() {
+            foreach (KeyValuePair<SearchSettings, HashSet<Member>> expected in new Dictionary<SearchSettings, HashSet<Member>>() {
                 { /* 1 */
                     new SearchSettings() {
                         At = FamilyGenerator.Kaleb.BirthDate.AddYears(-10),
                         CanBePartnerOtherTime = true
                     },
-                    new List<Member>() {}
+                    new HashSet<Member>() {}
                 },
                 { /* 2 */
                     new SearchSettings() {
                         At = FamilyGenerator.Kaleb.BirthDate,
                         CanBePartnerOtherTime = false
                     },
-                    new List<Member>() {}
+                    new HashSet<Member>() {}
                 },
                 { /* 3 */
                     new SearchSettings() {
                         At = FamilyGenerator.Kaleb.BirthDate,
                         CanBePartnerOtherTime = true
                     },
-                    new List<Member>() {
+                    new HashSet<Member>() {
                         FamilyGenerator.Kaleb
                     }
                 },
@@ -52,7 +52,7 @@ namespace FamilyTreeTools.UnitTesting
                         At = FamilyGenerator.Karishma.BirthDate,
                         CanBePartnerOtherTime = true
                     },
-                    new List<Member>() {
+                    new HashSet<Member>() {
                         FamilyGenerator.Kaleb,
                         FamilyGenerator.Karishma
                     }
@@ -62,7 +62,7 @@ namespace FamilyTreeTools.UnitTesting
                         At = FamilyGenerator.KalebWeddingDate,
                         CanBePartnerOtherTime = false
                     },
-                    new List<Member>() {
+                    new HashSet<Member>() {
                         FamilyGenerator.Kaleb,
                         FamilyGenerator.Karishma
                     }
@@ -72,7 +72,7 @@ namespace FamilyTreeTools.UnitTesting
                         At = FamilyGenerator.KalebWeddingDate,
                         CanBePartnerOtherTime = true
                     },
-                    new List<Member>() {
+                    new HashSet<Member>() {
                         FamilyGenerator.Kaleb,
                         FamilyGenerator.Karishma,
                         FamilyGenerator.Fleur,
@@ -85,7 +85,7 @@ namespace FamilyTreeTools.UnitTesting
                         At = FamilyGenerator.SebastianWithKarishmaDate,
                         CanBePartnerOtherTime = true
                     },
-                    new List<Member>() {
+                    new HashSet<Member>() {
                         FamilyGenerator.Sebastian,
                         FamilyGenerator.Karishma,
                         FamilyGenerator.Kaleb,
@@ -98,7 +98,7 @@ namespace FamilyTreeTools.UnitTesting
                         At = FamilyGenerator.SebastianWithKarishmaDate,
                         CanBePartnerOtherTime = false
                     },
-                    new List<Member>() {
+                    new HashSet<Member>() {
                         FamilyGenerator.Karishma,
                         FamilyGenerator.Sebastian
                     }
@@ -108,7 +108,7 @@ namespace FamilyTreeTools.UnitTesting
                         At = FamilyGenerator.RumaysaWeddingDate,
                         CanBePartnerOtherTime = true
                     },
-                    new List<Member>() {
+                    new HashSet<Member>() {
                         FamilyGenerator.Kaleb,
                         FamilyGenerator.Karishma,
                         FamilyGenerator.Sebastian,
@@ -120,7 +120,7 @@ namespace FamilyTreeTools.UnitTesting
                         At = FamilyGenerator.RumaysaWeddingDate,
                         CanBePartnerOtherTime = false
                     },
-                    new List<Member>() {
+                    new HashSet<Member>() {
                         FamilyGenerator.Karishma,
                         FamilyGenerator.Kaleb
                     }
@@ -130,7 +130,7 @@ namespace FamilyTreeTools.UnitTesting
                         At = FamilyGenerator.HenriettaWeddingDate,
                         CanBePartnerOtherTime = true
                     },
-                    new List<Member>() {
+                    new HashSet<Member>() {
                         FamilyGenerator.Karishma,
                         FamilyGenerator.Kaleb,
                         FamilyGenerator.Sebastian,
@@ -145,7 +145,7 @@ namespace FamilyTreeTools.UnitTesting
                         At = FamilyGenerator.HenriettaWeddingDate,
                         CanBePartnerOtherTime = false
                     },
-                    new List<Member>() {
+                    new HashSet<Member>() {
                         FamilyGenerator.Karishma,
                         FamilyGenerator.Sebastian,
                         FamilyGenerator.Hailie,
@@ -158,8 +158,7 @@ namespace FamilyTreeTools.UnitTesting
                         CanBePartnerOtherTime = false,
                         CanBeDead = false
                     },
-                    new List<Member>() {
-                        FamilyGenerator.Sebastian,
+                    new HashSet<Member>() {
                         FamilyGenerator.Korey,
                         FamilyGenerator.Heena,
                         FamilyGenerator.Klara,
@@ -173,7 +172,7 @@ namespace FamilyTreeTools.UnitTesting
                         CanBePartnerOtherTime = true,
                         CanBeDead = false
                     },
-                    new List<Member>() {
+                    new HashSet<Member>() {
                         FamilyGenerator.Sebastian,
                         FamilyGenerator.Korey,
                         FamilyGenerator.Heena,
@@ -190,7 +189,7 @@ namespace FamilyTreeTools.UnitTesting
                         CanBePartnerOtherTime = false,
                         CanBeDead = true
                     },
-                    new List<Member>() {
+                    new HashSet<Member>() {
                         FamilyGenerator.Karishma,
                         FamilyGenerator.Sebastian,
                         FamilyGenerator.Fleur,
@@ -202,7 +201,7 @@ namespace FamilyTreeTools.UnitTesting
                         CanBePartnerOtherTime = false,
                         CanBeDead = false
                     },
-                    new List<Member>() {
+                    new HashSet<Member>() {
                         FamilyGenerator.Korey,
                         FamilyGenerator.Heena,
                         FamilyGenerator.Klara,
@@ -215,7 +214,7 @@ namespace FamilyTreeTools.UnitTesting
                         CanBePartnerOtherTime = true,
                         CanBeDead = true
                     },
-                    new List<Member>() {
+                    new HashSet<Member>() {
                         FamilyGenerator.Karishma,
                         FamilyGenerator.Kaleb,
                         FamilyGenerator.Sebastian,

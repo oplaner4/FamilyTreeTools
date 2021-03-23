@@ -16,9 +16,17 @@ namespace FamilyTreeTools.Entities
             At = DateTime.Now;
         }
 
+        /// <summary>
+        /// Look for dead members.
+        /// </summary>
         [JsonProperty]
         public bool CanBeDead { get; set; }
 
+        /// <summary>
+        /// Determines if members who are partners
+        /// at another time, and are not connected with
+        /// other relatives, should be included
+        /// </summary>
         [JsonProperty]
         public bool CanBePartnerOtherTime { get; set; }
 
@@ -39,6 +47,11 @@ namespace FamilyTreeTools.Entities
             }
         }
 
+        /// <summary>
+        /// Look for members who are
+        /// from a farther generation
+        /// or just from the nearest.
+        /// </summary>
         public bool GoDeep { get; set; }
     }
 }

@@ -19,7 +19,7 @@ namespace FamilyTreeTools.Entities
             return node.Key == Root.Key ?
                 Family.GetRootAncestors(Settings)
                 :
-                Family.Members[node.Key].Refs.GetSpouseChildren(Settings);
+                Family.Members[node.Key].Refs.GetDescendants(Settings);
         }
 
         private Tree UpdatePartner(Node node)
