@@ -25,7 +25,7 @@ namespace FamilyTreeTools.Entities
         public Dictionary<Guid, Node> Children { get; private set; }
 
         [JsonProperty]
-        public HashSet<Guid> SpouseChildren { get; set; }
+        public HashSet<Guid> CommonChildren { get; set; }
 
         [JsonProperty]
         public Node Partner { get; set; }
@@ -39,14 +39,14 @@ namespace FamilyTreeTools.Entities
             return this;
         }
 
-        public Node AddSpouseChild(Guid key)
+        public Node AddCommonChild(Guid key)
         {
-            if (SpouseChildren == null)
+            if (CommonChildren == null)
             {
-                SpouseChildren = new HashSet<Guid>();
+                CommonChildren = new HashSet<Guid>();
             }
 
-            SpouseChildren.Add(key);
+            CommonChildren.Add(key);
             return this;
         }
     }

@@ -4,7 +4,7 @@
     <Position X="4.716" Y="6.858" Height="0.3" Width="2.628" />
   </Comment>
   <Comment CommentText="Methods returning References are chainable.">
-    <Position X="0.521" Y="10.065" Height="0.3" Width="2.749" />
+    <Position X="0.563" Y="9.669" Height="0.3" Width="2.749" />
   </Comment>
   <Comment CommentText="Methods returning Family are chainable.">
     <Position X="4.322" Y="2.743" Height="0.3" Width="2.509" />
@@ -72,12 +72,12 @@
     </TypeIdentifier>
   </Class>
   <Class Name="FamilyTreeTools.Entities.Node">
-    <Position X="11.25" Y="0.5" Width="2.5" />
+    <Position X="11.25" Y="0.5" Width="2.75" />
     <Members>
       <Method Name="Node" Hidden="true" />
     </Members>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAMAQAAAAEAAAAAAAAEAAAAAAgAAgAAAg=</HashCode>
+      <HashCode>AAAAAAAAAAAAEAQAAAAEAAAAAAAAEAAAAAAgBAAAABg=</HashCode>
       <FileName>Node.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -120,6 +120,8 @@
       <Property Name="_ChildrenIds" Hidden="true" />
       <Property Name="_PartnerId" Hidden="true" />
       <Method Name="AddChild" Hidden="true" />
+      <Method Name="GetAncestors" Hidden="true" />
+      <Method Name="GetDescendants" Hidden="true" />
       <Method Name="Initialize" Hidden="true" />
       <Method Name="References" Hidden="true" />
       <Method Name="Repair" Hidden="true" />
@@ -127,18 +129,18 @@
       <Method Name="UpdatePartner" Hidden="true" />
     </Members>
     <TypeIdentifier>
-      <HashCode>IAQCAAAAAgAEkQIAAAAMQAAAAKIAABAAAgAAAAAAAAk=</HashCode>
+      <HashCode>AAQCAAAAAgIEkQIAAAAMQAAAAKIAABAAAgAAAAAAAAk=</HashCode>
       <FileName>References.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="FamilyTreeTools.Entities.SearchSettings">
-    <Position X="8.25" Y="6.5" Width="2.25" />
+    <Position X="8.25" Y="6.5" Width="2.75" />
     <Members>
       <Property Name="_At" Hidden="true" />
       <Method Name="SearchSettings" Hidden="true" />
     </Members>
     <TypeIdentifier>
-      <HashCode>AAAEAAAAAAIAAACAAAAAAAAAAACAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AEAGAAAAAAAAAACAAAAAAAAAAACAAAAAACAAAAAAAAA=</HashCode>
       <FileName>SearchSettings.cs</FileName>
     </TypeIdentifier>
   </Class>

@@ -1,8 +1,10 @@
 ﻿using FamilyTreeTools.Entities;
 using FamilyTreeTools.Entities.Exceptions;
+using FamilyTreeTools.Utilities.Generators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace FamilyTreeTools.UnitTesting
 {
@@ -204,6 +206,425 @@ namespace FamilyTreeTools.UnitTesting
 
             nobodyMarried(timeSecondUnmarried);
             nobodyPartner(timeSecondUnmarried);
+        }
+
+        public void CheckAncestorsMarwah()
+        {
+            HashSet<Member> ancestors = FamilyGenerator.Marwah.Refs.GetAncestors(
+                new SearchSettings()
+                {
+                    At = FamilyGenerator.Marwah.BirthDate,
+                    CanBeDead = false,
+                    CanBeFromFartherGeneration = true,
+                    CanBeIllegitimateRelative = true
+                }
+            );
+
+            Assert.AreEqual(3, ancestors.Count);
+            Assert.IsTrue(ancestors.Contains(FamilyGenerator.Sonya));
+            Assert.IsTrue(ancestors.Contains(FamilyGenerator.Korey));
+            Assert.IsTrue(ancestors.Contains(FamilyGenerator.Heena));
+
+
+            ancestors = FamilyGenerator.Marwah.Refs.GetAncestors(
+                new SearchSettings()
+                {
+                    At = FamilyGenerator.Marwah.BirthDate,
+                    CanBeDead = true,
+                    CanBeFromFartherGeneration = true,
+                    CanBeIllegitimateRelative = false
+                }
+            );
+
+            Assert.AreEqual(4, ancestors.Count);
+            Assert.IsTrue(ancestors.Contains(FamilyGenerator.Sonya));
+            Assert.IsTrue(ancestors.Contains(FamilyGenerator.Korey));
+            Assert.IsTrue(ancestors.Contains(FamilyGenerator.Heena));
+            Assert.IsTrue(ancestors.Contains(FamilyGenerator.Kaleb));
+
+
+            ancestors = FamilyGenerator.Marwah.Refs.GetAncestors(
+                new SearchSettings()
+                {
+                    At = FamilyGenerator.Marwah.BirthDate,
+                    CanBeDead = true,
+                    CanBeFromFartherGeneration = false,
+                    CanBeIllegitimateRelative = true
+                }
+            );
+
+            Assert.AreEqual(1, ancestors.Count);
+            Assert.IsTrue(ancestors.Contains(FamilyGenerator.Sonya));
+        }
+
+        public void CheckAncestorsKian()
+        {
+            HashSet<Member> ancestors = FamilyGenerator.Kian.Refs.GetAncestors(
+                new SearchSettings()
+                {
+                    At = FamilyGenerator.Kian.BirthDate,
+                    CanBeDead = true,
+                    CanBeFromFartherGeneration = true,
+                    CanBeIllegitimateRelative = true
+                }
+            );
+
+            Assert.AreEqual(5, ancestors.Count);
+            Assert.IsTrue(ancestors.Contains(FamilyGenerator.Moesha));
+            Assert.IsTrue(ancestors.Contains(FamilyGenerator.John));
+            Assert.IsTrue(ancestors.Contains(FamilyGenerator.Rumaysa));
+            Assert.IsTrue(ancestors.Contains(FamilyGenerator.Kaleb));
+            Assert.IsTrue(ancestors.Contains(FamilyGenerator.Fleur));
+
+
+            ancestors = FamilyGenerator.Kian.Refs.GetAncestors(
+                new SearchSettings()
+                {
+                    At = FamilyGenerator.Kian.BirthDate,
+                    CanBeDead = false,
+                    CanBeFromFartherGeneration = true,
+                    CanBeIllegitimateRelative = false
+                }
+            );
+
+            Assert.AreEqual(3, ancestors.Count);
+            Assert.IsTrue(ancestors.Contains(FamilyGenerator.Moesha));
+            Assert.IsTrue(ancestors.Contains(FamilyGenerator.Rumaysa));
+            Assert.IsTrue(ancestors.Contains(FamilyGenerator.Fleur));
+
+
+            ancestors = FamilyGenerator.Kian.Refs.GetAncestors(
+                new SearchSettings()
+                {
+                    At = FamilyGenerator.Kian.BirthDate,
+                    CanBeDead = true,
+                    CanBeFromFartherGeneration = false,
+                    CanBeIllegitimateRelative = true
+                }
+            );
+
+            Assert.AreEqual(2, ancestors.Count);
+            Assert.IsTrue(ancestors.Contains(FamilyGenerator.Moesha));
+            Assert.IsTrue(ancestors.Contains(FamilyGenerator.John));
+        }
+
+        public void CheckAncestorsRaja()
+        {
+
+            HashSet<Member> ancestors = FamilyGenerator.Raja.Refs.GetAncestors(
+                new SearchSettings()
+                {
+                    At = FamilyGenerator.Raja.BirthDate,
+                    CanBeDead = false,
+                    CanBeFromFartherGeneration = true,
+                    CanBeIllegitimateRelative = false
+                }
+            );
+
+            Assert.AreEqual(1, ancestors.Count);
+            Assert.IsTrue(ancestors.Contains(FamilyGenerator.Fleur));
+
+
+            ancestors = FamilyGenerator.Raja.Refs.GetAncestors(
+                new SearchSettings()
+                {
+                    At = FamilyGenerator.Raja.BirthDate,
+                    CanBeDead = false,
+                    CanBeFromFartherGeneration = true,
+                    CanBeIllegitimateRelative = true
+                }
+            );
+
+            Assert.AreEqual(2, ancestors.Count);
+            Assert.IsTrue(ancestors.Contains(FamilyGenerator.Fleur));
+            Assert.IsTrue(ancestors.Contains(FamilyGenerator.Hailie));
+        }
+
+        public void CheckAncestorsAhsan()
+        {
+            HashSet<Member> ancestors = FamilyGenerator.Ahsan.Refs.GetAncestors(
+                new SearchSettings()
+                {
+                    At = FamilyGenerator.Ahsan.BirthDate,
+                    CanBeDead = true,
+                    CanBeFromFartherGeneration = true,
+                    CanBeIllegitimateRelative = true
+                }
+            );
+
+            Assert.AreEqual(0, ancestors.Count);
+        }
+
+        public void CheckAncestorsHenrietta()
+        {
+            HashSet<Member> ancestors = FamilyGenerator.Henrietta.Refs.GetAncestors(
+                new SearchSettings()
+                {
+                    At = FamilyGenerator.Henrietta.BirthDate,
+                    CanBeDead = true,
+                    CanBeFromFartherGeneration = true,
+                    CanBeIllegitimateRelative = true
+                }
+            );
+
+            Assert.AreEqual(3, ancestors.Count);
+            Assert.IsTrue(ancestors.Contains(FamilyGenerator.Korey));
+            Assert.IsTrue(ancestors.Contains(FamilyGenerator.Heena));
+            Assert.IsTrue(ancestors.Contains(FamilyGenerator.Kaleb));
+
+
+            ancestors = FamilyGenerator.Henrietta.Refs.GetAncestors(
+                new SearchSettings()
+                {
+                    At = DateTime.Now,
+                    CanBeDead = false,
+                    CanBeFromFartherGeneration = true,
+                    CanBeIllegitimateRelative = false
+                }
+            );
+
+            Assert.AreEqual(2, ancestors.Count);
+            Assert.IsTrue(ancestors.Contains(FamilyGenerator.Korey));
+            Assert.IsTrue(ancestors.Contains(FamilyGenerator.Heena));
+
+
+            ancestors = FamilyGenerator.Henrietta.Refs.GetAncestors(
+                new SearchSettings()
+                {
+                    At = DateTime.Now,
+                    CanBeDead = true,
+                    CanBeFromFartherGeneration = false,
+                    CanBeIllegitimateRelative = true
+                }
+            );
+
+            Assert.AreEqual(2, ancestors.Count);
+            Assert.IsTrue(ancestors.Contains(FamilyGenerator.Korey));
+            Assert.IsTrue(ancestors.Contains(FamilyGenerator.Heena));
+        }
+
+        public void CheckAncestorsIsmaeel()
+        {
+            HashSet<Member> ancestors = FamilyGenerator.Ismaeel.Refs.GetAncestors(
+                new SearchSettings()
+                {
+                    At = FamilyGenerator.Ismaeel.BirthDate,
+                    CanBeDead = true,
+                    CanBeFromFartherGeneration = true,
+                    CanBeIllegitimateRelative = true
+                }
+            );
+
+            Assert.AreEqual(2, ancestors.Count);
+            Assert.IsTrue(ancestors.Contains(FamilyGenerator.Fleur));
+            Assert.IsTrue(ancestors.Contains(FamilyGenerator.Hailie));
+
+
+            ancestors = FamilyGenerator.Ismaeel.Refs.GetAncestors(
+                new SearchSettings()
+                {
+                    At = FamilyGenerator.Ismaeel.BirthDate,
+                    CanBeDead = true,
+                    CanBeFromFartherGeneration = true,
+                    CanBeIllegitimateRelative = false
+                }
+            );
+
+            Assert.AreEqual(1, ancestors.Count);
+            Assert.IsTrue(ancestors.Contains(FamilyGenerator.Fleur));
+        }
+
+        [TestMethod]
+        public void Ancestors()
+        {
+            CheckAncestorsMarwah();
+            CheckAncestorsKian();
+            CheckAncestorsRaja();
+            CheckAncestorsAhsan();
+            CheckAncestorsHenrietta();
+            CheckAncestorsIsmaeel();
+
+            HashSet<Member> ancestors = FamilyGenerator.Karishma.Refs.GetAncestors(
+                new SearchSettings()
+                {
+                    At = FamilyGenerator.Karishma.BirthDate,
+                    CanBeDead = true,
+                    CanBeFromFartherGeneration = true,
+                    CanBeIllegitimateRelative = true
+                }
+            );
+
+            Assert.AreEqual(0, ancestors.Count);
+
+            ancestors = FamilyGenerator.Kaleb.Refs.GetAncestors(
+                new SearchSettings()
+                {
+                    At = FamilyGenerator.Kaleb.BirthDate,
+                    CanBeDead = true,
+                    CanBeFromFartherGeneration = true,
+                    CanBeIllegitimateRelative = true
+                }
+            );
+
+            Assert.AreEqual(0, ancestors.Count);
+        }
+
+        [TestMethod]
+        public void Descendants()
+        {
+            HashSet<Member> descendants = FamilyGenerator.Karishma.Refs.GetDescendants(
+                new SearchSettings()
+                {
+                    At = FamilyGenerator.Klara.BirthDate,
+                    CanBeDead = false,
+                    CanBeFromFartherGeneration = true,
+                    CanBeIllegitimateRelative = false
+                }
+            );
+
+            Assert.AreEqual(3, descendants.Count);
+            Assert.IsTrue(descendants.Contains(FamilyGenerator.Korey));
+            Assert.IsTrue(descendants.Contains(FamilyGenerator.Rumaysa));
+            Assert.IsTrue(descendants.Contains(FamilyGenerator.Klara));
+
+
+            descendants = FamilyGenerator.Kaleb.Refs.GetDescendants(
+                new SearchSettings()
+                {
+                    At = DateTime.Now,
+                    CanBeDead = true,
+                    CanBeFromFartherGeneration = true,
+                    CanBeIllegitimateRelative = true
+                }
+            );
+
+            Assert.AreEqual(10, descendants.Count);
+            Assert.IsTrue(descendants.Contains(FamilyGenerator.Korey));
+            Assert.IsTrue(descendants.Contains(FamilyGenerator.Sonya));
+            Assert.IsTrue(descendants.Contains(FamilyGenerator.Henrietta));
+            Assert.IsTrue(descendants.Contains(FamilyGenerator.Rumaysa));
+            Assert.IsTrue(descendants.Contains(FamilyGenerator.Marian));
+            Assert.IsTrue(descendants.Contains(FamilyGenerator.Moesha));
+            Assert.IsTrue(descendants.Contains(FamilyGenerator.Klara));
+            Assert.IsTrue(descendants.Contains(FamilyGenerator.Jun));
+            Assert.IsTrue(descendants.Contains(FamilyGenerator.Kian));
+            Assert.IsTrue(descendants.Contains(FamilyGenerator.Marwah));
+
+
+            descendants = FamilyGenerator.Hailie.Refs.GetDescendants(
+                new SearchSettings()
+                {
+                    At = FamilyGenerator.Raja.BirthDate,
+                    CanBeDead = true,
+                    CanBeFromFartherGeneration = true,
+                    CanBeIllegitimateRelative = false
+                }
+            );
+
+            Assert.AreEqual(0, descendants.Count);
+
+
+            descendants = FamilyGenerator.Hailie.Refs.GetDescendants(
+                new SearchSettings()
+                {
+                    At = FamilyGenerator.Raja.BirthDate,
+                    CanBeDead = true,
+                    CanBeFromFartherGeneration = true,
+                    CanBeIllegitimateRelative = true
+                }
+            );
+
+            Assert.AreEqual(2, descendants.Count);
+            Assert.IsTrue(descendants.Contains(FamilyGenerator.Raja));
+            Assert.IsTrue(descendants.Contains(FamilyGenerator.Ismaeel));
+
+
+            descendants = FamilyGenerator.Hailie.Refs.GetDescendants(
+                new SearchSettings()
+                {
+                    At = FamilyGenerator.Raja.DeathDate.Value,
+                    CanBeDead = false,
+                    CanBeFromFartherGeneration = true,
+                    CanBeIllegitimateRelative = true
+                }
+            );
+
+            Assert.AreEqual(1, descendants.Count);
+            Assert.IsTrue(descendants.Contains(FamilyGenerator.Ismaeel));
+        }
+
+        [TestMethod]
+        public void Siblings()
+        {
+            HashSet<Member> siblings = FamilyGenerator.Korey.Refs.GetSiblings(
+                new SearchSettings()
+                {
+                    At = DateTime.Now,
+                    CanBeDead = false,
+                    CanBeFromFartherGeneration = true,
+                    CanBeIllegitimateRelative = true
+                }
+            );
+
+            Assert.AreEqual(2, siblings.Count);
+            Assert.IsTrue(siblings.Contains(FamilyGenerator.Rumaysa));
+            Assert.IsTrue(siblings.Contains(FamilyGenerator.Klara));
+
+
+            siblings = FamilyGenerator.Rumaysa.Refs.GetSiblings(
+                new SearchSettings()
+                {
+                    At = DateTime.Now,
+                    CanBeDead = false,
+                    CanBeFromFartherGeneration = true,
+                    CanBeIllegitimateRelative = true
+                }
+            );
+
+            Assert.AreEqual(2, siblings.Count);
+            Assert.IsTrue(siblings.Contains(FamilyGenerator.Korey));
+            Assert.IsTrue(siblings.Contains(FamilyGenerator.Klara));
+
+
+            siblings = FamilyGenerator.Ismaeel.Refs.GetSiblings(
+                new SearchSettings()
+                {
+                    At = FamilyGenerator.Raja.BirthDate,
+                    CanBeDead = false,
+                    CanBeFromFartherGeneration = true,
+                    CanBeIllegitimateRelative = true
+                }
+            );
+
+            Assert.AreEqual(1, siblings.Count);
+            Assert.IsTrue(siblings.Contains(FamilyGenerator.Raja));
+
+
+            siblings = FamilyGenerator.Ismaeel.Refs.GetSiblings(
+                new SearchSettings()
+                {
+                    At = FamilyGenerator.Raja.DeathDate.Value,
+                    CanBeDead = false,
+                    CanBeFromFartherGeneration = true,
+                    CanBeIllegitimateRelative = true
+                }
+            );
+
+            Assert.AreEqual(0, siblings.Count);
+
+
+            siblings = FamilyGenerator.Ismaeel.Refs.GetSiblings(
+                new SearchSettings()
+                {
+                    At = FamilyGenerator.Raja.DeathDate.Value,
+                    CanBeDead = true,
+                    CanBeFromFartherGeneration = true,
+                    CanBeIllegitimateRelative = true
+                }
+            );
+
+            Assert.AreEqual(1, siblings.Count);
+            Assert.IsTrue(siblings.Contains(FamilyGenerator.Raja));
         }
     }
 }

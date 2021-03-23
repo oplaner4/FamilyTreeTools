@@ -11,25 +11,29 @@ namespace FamilyTreeTools.Entities
         public SearchSettings ()
         {
             CanBeDead = true;
-            CanBePartnerOtherTime = false;
-            GoDeep = false;
+            IncludePartnerOtherTime = false;
+            CanBeFromFartherGeneration = false;
+            CanBeIllegitimateRelative = false;
             At = DateTime.Now;
         }
 
         /// <summary>
-        /// Look for dead members.
+        /// Look also for dead members.
         /// </summary>
         [JsonProperty]
         public bool CanBeDead { get; set; }
 
         /// <summary>
-        /// Determines if members who are partners
-        /// at another time, and are not connected with
-        /// other relatives, should be included
+        /// include also members who are partners
+        /// at another time, and are not connected to
+        /// other relatives that time.
         /// </summary>
         [JsonProperty]
-        public bool CanBePartnerOtherTime { get; set; }
+        public bool IncludePartnerOtherTime { get; set; }
 
+        /// <summary>
+        /// Date which is used to look for relatives.
+        /// </summary>
         private DateTime _At { get; set; }
 
         [JsonProperty]
@@ -48,10 +52,16 @@ namespace FamilyTreeTools.Entities
         }
 
         /// <summary>
-        /// Look for members who are
-        /// from a farther generation
-        /// or just from the nearest.
+        /// Look also for members who are
+        /// from a farther generation.
         /// </summary>
-        public bool GoDeep { get; set; }
+        public bool CanBeFromFartherGeneration { get; set; }
+
+        /// <summary>
+        /// Look also for members who
+        /// are not legitimate relatives
+        /// (from unmarried partner).
+        /// </summary>
+        public bool CanBeIllegitimateRelative { get; set; }
     }
 }

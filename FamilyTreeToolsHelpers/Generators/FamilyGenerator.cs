@@ -86,7 +86,8 @@ namespace FamilyTreeTools.Utilities.Generators
         public static Member Ismaeel = new Member("Ismaeel Garrison", new DateTime(2002, 7, 20))
             .WithPartner(Ashley, new DateTime(2021, 1, 2));
 
-        public static Member Raja = (Member)new Member("Raja Garrison", new DateTime(2003, 9, 8)).Died(new DateTime(2004, 4, 11));
+        public static Member Raja = (Member)new Member("Raja Garrison", new DateTime(2003, 9, 8))
+            .Died(new DateTime(2004, 4, 11));
 
 
         // Klara's children
@@ -130,21 +131,25 @@ namespace FamilyTreeTools.Utilities.Generators
 
         // Karishma's next partner
 
-        public static Member Sebastian = (Member)new Member("Sebastian Mcdougall", new DateTime(1946, 2, 2)).Died(new DateTime(2020, 4, 3));
+        public static Member Sebastian = (Member)new Member("Sebastian Mcdougall", new DateTime(1946, 2, 2))
+            .Died(new DateTime(2020, 4, 3));
 
 
         // Kaleb + Karishma
 
-        public static readonly Member Karishma = ((Member)new Member("Karishma Smith", new DateTime(1940, 1, 1)).Died(new DateTime(2011, 11, 8)))
+        public static readonly Member Karishma = ((Member)new Member(
+            "Karishma Smith", new DateTime(1940, 1, 1)
+        ).Died(new DateTime(2011, 11, 8)))
             .ChangedFullName("Karishma Field", KalebWeddingDate)
             .ChangedFullName("Karishma Smith", new DateTime(1993, 11, 3))
             .WithPartner(Sebastian, SebastianWithKarishmaDate);
 
-        public static readonly Member Kaleb = ((Member)new Member("Kaleb Field", new DateTime(1939, 1, 5)).Died(new DateTime(2010, 12, 19)))
+        public static readonly Member Kaleb = (Member)(new Member("Kaleb Field", new DateTime(1939, 1, 5))
             .GotMarried(KalebWeddingDate, Karishma)
             .HadChild(Korey)
             .HadChild(Rumaysa)
             .HadChild(Klara)
-            .GotUnmarried(new DateTime(1993, 10, 30));
+            .GotUnmarried(new DateTime(1993, 10, 30)))
+            .Died(new DateTime(2010, 12, 19));
     }
 }

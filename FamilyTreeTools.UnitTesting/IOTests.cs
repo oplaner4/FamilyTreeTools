@@ -77,31 +77,31 @@ namespace FamilyTreeTools.UnitTesting
                 {
                     At = FamilyGenerator.Kaleb.BirthDate.AddYears(-10),
                     CanBeDead = true,
-                    CanBePartnerOtherTime = false
+                    IncludePartnerOtherTime = false
                 },
                 new SearchSettings()
                 {
                     At = FamilyGenerator.KalebWeddingDate,
                     CanBeDead = true,
-                    CanBePartnerOtherTime = true
+                    IncludePartnerOtherTime = true
                 },
                 new SearchSettings()
                 {
                     At = FamilyGenerator.KalebWeddingDate,
                     CanBeDead = false,
-                    CanBePartnerOtherTime = false
+                    IncludePartnerOtherTime = false
                 },
                 new SearchSettings()
                 {
                     At = FamilyGenerator.HenriettaWeddingDate,
                     CanBeDead = false,
-                    CanBePartnerOtherTime = true
+                    IncludePartnerOtherTime = true
                 },
                 new SearchSettings()
                 {
                     At = DateTime.Now,
                     CanBeDead = true,
-                    CanBePartnerOtherTime = false
+                    IncludePartnerOtherTime = false
                 }
             })
             {

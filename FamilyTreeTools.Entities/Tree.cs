@@ -44,10 +44,14 @@ namespace FamilyTreeTools.Entities
 
         public Tree Build()
         {
-            Settings.GoDeep = false;
+            bool canBeFromFartherGeneration = Settings.CanBeFromFartherGeneration;
+            Settings.CanBeFromFartherGeneration = false;
+
             Seen = new HashSet<Guid>();
             Root = new Node(Guid.Empty, Family.Name);
             BuildRecurrent(Root);
+
+            Settings.CanBeFromFartherGeneration = canBeFromFartherGeneration;
             return this;
         }
 
@@ -59,7 +63,7 @@ namespace FamilyTreeTools.Entities
                 {
                     if (Root.Key != actual.Key)
                     {
-                        actual.AddSpouseChild(child.Id);
+                        actual.AddCommonChild(child.Id);
                     }
                 }
                 else

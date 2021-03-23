@@ -114,7 +114,7 @@ namespace FamilyTreeTools.Entities
             return this;
         }
 
-        public Member Parent { get; set; }
+        public Member Parent { get; private set; }
 
         public Dictionary<Guid, Member> Children { get; private set; }
 
@@ -167,11 +167,16 @@ namespace FamilyTreeTools.Entities
         {
             HashSet<Member> result = new HashSet<Member>();
 
-            if (noncycle && TryGetSpouse(
-                out Member spouse, settings.At, settings.CanBeDead
-            ))
+            if (noncycle &&
+                TryGetPartner(
+                    out Member value, settings.At, settings.CanBeDead
+                ) && (
+                    settings.CanBeIllegitimateRelative ||
+                    Source.WasMarried(settings.At)
+                )
+            )
             {
-                result.Union(spouse.Refs.GetDescendants(settings, false));
+                result.UnionWith(value.Refs.GetDescendants(settings, false));
             }
 
             foreach (Member child in Children.Values)
@@ -180,9 +185,9 @@ namespace FamilyTreeTools.Entities
                 {
                     result.Add(child);
 
-                    if (settings.GoDeep)
+                    if (settings.CanBeFromFartherGeneration)
                     {
-                        result.Union(child.Refs.GetDescendants(settings, true));
+                        result.UnionWith(child.Refs.GetDescendants(settings, true));
                     }
                 }
             }
@@ -201,8 +206,9 @@ namespace FamilyTreeTools.Entities
             {
                 At = settings.At,
                 CanBeDead = settings.CanBeDead,
-                CanBePartnerOtherTime = settings.CanBePartnerOtherTime,
-                GoDeep = false
+                IncludePartnerOtherTime = settings.IncludePartnerOtherTime,
+                CanBeIllegitimateRelative = true,
+                CanBeFromFartherGeneration = false
             };
 
             if (!Source.IsBorn(useSettings.At, useSettings.CanBeDead) ||
@@ -217,12 +223,7 @@ namespace FamilyTreeTools.Entities
                 return !value.Refs.GetAncestors(useSettings).Any();
             }
 
-            return useSettings.CanBePartnerOtherTime || !Source.HadAnyPartner();
-        }
-
-        public bool TryGetSpouse(out Member value, DateTime at, bool canBeDead = false)
-        {
-            return TryGetPartner(out value, at, canBeDead) && Source.WasMarried(at);
+            return useSettings.IncludePartnerOtherTime || !Source.HadAnyPartner();
         }
 
         public bool TryGetPartner(out Member value, DateTime at, bool canBeDead = false)
@@ -231,7 +232,7 @@ namespace FamilyTreeTools.Entities
             return value != null && value.IsBorn(at, canBeDead);
         }
 
-        public HashSet<Member> GetAncestors(SearchSettings settings)
+        private HashSet<Member> GetAncestors(SearchSettings settings, bool noncycle)
         {
             HashSet<Member> result = new HashSet<Member>();
 
@@ -239,19 +240,56 @@ namespace FamilyTreeTools.Entities
             {
                 result.Add(Parent);
 
-                if (settings.GoDeep)
+                if (settings.CanBeFromFartherGeneration)
                 {
-                    result.Union(Parent.Refs.GetAncestors(settings));
+                    result.UnionWith(Parent.Refs.GetAncestors(settings, true));
+                }
 
-                    if (Parent.Refs.TryGetSpouse(
-                        out Member spouse, Source.BirthDate, settings.CanBeDead
-                    ))
+                if (noncycle &&
+                    Parent.Refs.TryGetPartner(
+                        out Member value, Source.BirthDate, settings.CanBeDead
+                    ) && (
+                        settings.CanBeIllegitimateRelative ||
+                        Parent.WasMarried(Source.BirthDate)
+                    )
+                )
+                {
+                    result.Add(value);
+
+                    if (settings.CanBeFromFartherGeneration)
                     {
-                        result.Union(spouse.Refs.GetAncestors(settings));
+                        result.UnionWith(value.Refs.GetAncestors(settings, false));
                     }
                 }
             }
 
+            return result;
+        }
+
+        public HashSet<Member> GetAncestors(SearchSettings settings)
+        {
+            return GetAncestors(settings, true);
+        }
+
+        public HashSet<Member> GetSiblings(SearchSettings settings)
+        {
+            HashSet<Member> result = new HashSet<Member>();
+
+            if (Parent != null)
+            {
+                result.UnionWith(
+                    Parent.Refs.GetDescendants(new SearchSettings()
+                    {
+                        At = settings.At,
+                        CanBeDead = settings.CanBeDead,
+                        IncludePartnerOtherTime = settings.IncludePartnerOtherTime,
+                        CanBeIllegitimateRelative = settings.CanBeIllegitimateRelative,
+                        CanBeFromFartherGeneration = false
+                    }
+                ));
+            }
+
+            result.Remove(Source);
             return result;
         }
     }
