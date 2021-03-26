@@ -16,7 +16,11 @@ namespace FamilyTreeTools.UnitTesting
         {
             Family fieldFamily = FamilyGenerator.GetData();
             Family deserializedFamily = new FamilySerializeHelper(
-                string.Format(".\\serialized\\{0}", fieldFamily.Name)
+                string.Format(
+                    ".\\serialized\\{0}.{1}",
+                    fieldFamily.Name,
+                    FamilySerializeHelper.StandardExtension
+                )
             ).Save(fieldFamily).Load();
 
             foreach (Member member in fieldFamily.Members.Values)
@@ -106,9 +110,10 @@ namespace FamilyTreeTools.UnitTesting
             })
             {
                 string name = string.Format(
-                    ".\\serialized\\{0} {1}",
+                    ".\\serialized\\{0}_{1}.{2}",
                     fieldFamily.Name,
-                    i++
+                    i++,
+                    TreeSerializeHelper.StandardExtension
                 );
 
                 new TreeSerializeHelper(name).Save(

@@ -29,96 +29,122 @@ namespace FamilyTreeTools
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.abToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.cdToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.aToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.bcToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.abcToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.cdToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.efToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.cdToolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
+            this.MainMenu = new System.Windows.Forms.MenuStrip();
+            this.FileMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.FileMenuItemOpen = new System.Windows.Forms.ToolStripMenuItem();
+            this.FileMenuItemSave = new System.Windows.Forms.ToolStripMenuItem();
+            this.FileMenuItemSaveAs = new System.Windows.Forms.ToolStripMenuItem();
+            this.MembersMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.MembersMenuItemAdd = new System.Windows.Forms.ToolStripMenuItem();
+            this.MembersMenuItemEdit = new System.Windows.Forms.ToolStripMenuItem();
+            this.TreeMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.TreeMenuItemSettings = new System.Windows.Forms.ToolStripMenuItem();
+            this.TreeMenuItemExport = new System.Windows.Forms.ToolStripMenuItem();
+            this.animationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.familyTree = new System.Windows.Forms.TreeView();
-            this.contextMenuStrip1.SuspendLayout();
-            this.menuStrip1.SuspendLayout();
+            this.OpenFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.SaveAsFileDialog = new System.Windows.Forms.SaveFileDialog();
+            this.MainMenu.SuspendLayout();
             this.SuspendLayout();
             // 
-            // contextMenuStrip1
+            // MainMenu
             // 
-            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.abToolStripMenuItem,
-            this.bcToolStripMenuItem});
-            this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(88, 48);
+            this.MainMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.FileMenuItem,
+            this.MembersMenuItem,
+            this.TreeMenuItem});
+            this.MainMenu.Location = new System.Drawing.Point(0, 0);
+            this.MainMenu.Name = "MainMenu";
+            this.MainMenu.Size = new System.Drawing.Size(800, 24);
+            this.MainMenu.TabIndex = 1;
+            this.MainMenu.Text = "Menu";
             // 
-            // abToolStripMenuItem
+            // FileMenuItem
             // 
-            this.abToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.cdToolStripMenuItem,
-            this.aToolStripMenuItem});
-            this.abToolStripMenuItem.Name = "abToolStripMenuItem";
-            this.abToolStripMenuItem.Size = new System.Drawing.Size(87, 22);
-            this.abToolStripMenuItem.Text = "ab";
+            this.FileMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.FileMenuItemOpen,
+            this.FileMenuItemSave,
+            this.FileMenuItemSaveAs});
+            this.FileMenuItem.Name = "FileMenuItem";
+            this.FileMenuItem.Size = new System.Drawing.Size(37, 20);
+            this.FileMenuItem.Text = "File";
             // 
-            // cdToolStripMenuItem
+            // FileMenuItemOpen
             // 
-            this.cdToolStripMenuItem.Name = "cdToolStripMenuItem";
-            this.cdToolStripMenuItem.Size = new System.Drawing.Size(87, 22);
-            this.cdToolStripMenuItem.Text = "cd";
+            this.FileMenuItemOpen.Name = "FileMenuItemOpen";
+            this.FileMenuItemOpen.Size = new System.Drawing.Size(138, 22);
+            this.FileMenuItemOpen.Text = "Open";
+            this.FileMenuItemOpen.Click += new System.EventHandler(this.FileMenuItemOpenOnClick);
             // 
-            // aToolStripMenuItem
+            // FileMenuItemSave
             // 
-            this.aToolStripMenuItem.Name = "aToolStripMenuItem";
-            this.aToolStripMenuItem.Size = new System.Drawing.Size(87, 22);
-            this.aToolStripMenuItem.Text = "a";
+            this.FileMenuItemSave.Enabled = false;
+            this.FileMenuItemSave.Name = "FileMenuItemSave";
+            this.FileMenuItemSave.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
+            this.FileMenuItemSave.Size = new System.Drawing.Size(138, 22);
+            this.FileMenuItemSave.Text = "Save";
+            this.FileMenuItemSave.Click += new System.EventHandler(this.FileMenuItemSaveOnClick);
             // 
-            // bcToolStripMenuItem
+            // FileMenuItemSaveAs
             // 
-            this.bcToolStripMenuItem.Name = "bcToolStripMenuItem";
-            this.bcToolStripMenuItem.Size = new System.Drawing.Size(87, 22);
-            this.bcToolStripMenuItem.Text = "bc";
+            this.FileMenuItemSaveAs.Enabled = false;
+            this.FileMenuItemSaveAs.Name = "FileMenuItemSaveAs";
+            this.FileMenuItemSaveAs.Size = new System.Drawing.Size(138, 22);
+            this.FileMenuItemSaveAs.Text = "Save as";
+            this.FileMenuItemSaveAs.Click += new System.EventHandler(this.FileMenuItemSaveAsOnClick);
             // 
-            // menuStrip1
+            // MembersMenuItem
             // 
-            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.abcToolStripMenuItem,
-            this.cdToolStripMenuItem1,
-            this.efToolStripMenuItem});
-            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
-            this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(800, 24);
-            this.menuStrip1.TabIndex = 1;
-            this.menuStrip1.Text = "menuStrip1";
+            this.MembersMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.MembersMenuItemAdd,
+            this.MembersMenuItemEdit});
+            this.MembersMenuItem.Name = "MembersMenuItem";
+            this.MembersMenuItem.Size = new System.Drawing.Size(69, 20);
+            this.MembersMenuItem.Text = "Members";
             // 
-            // abcToolStripMenuItem
+            // MembersMenuItemAdd
             // 
-            this.abcToolStripMenuItem.Name = "abcToolStripMenuItem";
-            this.abcToolStripMenuItem.Size = new System.Drawing.Size(38, 20);
-            this.abcToolStripMenuItem.Text = "abc";
+            this.MembersMenuItemAdd.Name = "MembersMenuItemAdd";
+            this.MembersMenuItemAdd.Size = new System.Drawing.Size(180, 22);
+            this.MembersMenuItemAdd.Text = "Add";
+            this.MembersMenuItemAdd.Click += new System.EventHandler(this.MembersMenuItemAddOnClick);
             // 
-            // cdToolStripMenuItem1
+            // MembersMenuItemEdit
             // 
-            this.cdToolStripMenuItem1.Name = "cdToolStripMenuItem1";
-            this.cdToolStripMenuItem1.Size = new System.Drawing.Size(32, 20);
-            this.cdToolStripMenuItem1.Text = "cd";
+            this.MembersMenuItemEdit.Enabled = false;
+            this.MembersMenuItemEdit.Name = "MembersMenuItemEdit";
+            this.MembersMenuItemEdit.Size = new System.Drawing.Size(180, 22);
+            this.MembersMenuItemEdit.Text = "Edit";
             // 
-            // efToolStripMenuItem
+            // TreeMenuItem
             // 
-            this.efToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.cdToolStripMenuItem2});
-            this.efToolStripMenuItem.Name = "efToolStripMenuItem";
-            this.efToolStripMenuItem.Size = new System.Drawing.Size(29, 20);
-            this.efToolStripMenuItem.Text = "ef";
+            this.TreeMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.TreeMenuItemSettings,
+            this.TreeMenuItemExport,
+            this.animationToolStripMenuItem});
+            this.TreeMenuItem.Name = "TreeMenuItem";
+            this.TreeMenuItem.Size = new System.Drawing.Size(40, 20);
+            this.TreeMenuItem.Text = "Tree";
             // 
-            // cdToolStripMenuItem2
+            // TreeMenuItemSettings
             // 
-            this.cdToolStripMenuItem2.Checked = true;
-            this.cdToolStripMenuItem2.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cdToolStripMenuItem2.Name = "cdToolStripMenuItem2";
-            this.cdToolStripMenuItem2.Size = new System.Drawing.Size(87, 22);
-            this.cdToolStripMenuItem2.Text = "cd";
+            this.TreeMenuItemSettings.Name = "TreeMenuItemSettings";
+            this.TreeMenuItemSettings.Size = new System.Drawing.Size(130, 22);
+            this.TreeMenuItemSettings.Text = "Settings";
+            // 
+            // TreeMenuItemExport
+            // 
+            this.TreeMenuItemExport.Enabled = false;
+            this.TreeMenuItemExport.Name = "TreeMenuItemExport";
+            this.TreeMenuItemExport.Size = new System.Drawing.Size(130, 22);
+            this.TreeMenuItemExport.Text = "Export";
+            // 
+            // animationToolStripMenuItem
+            // 
+            this.animationToolStripMenuItem.Enabled = false;
+            this.animationToolStripMenuItem.Name = "animationToolStripMenuItem";
+            this.animationToolStripMenuItem.Size = new System.Drawing.Size(130, 22);
+            this.animationToolStripMenuItem.Text = "Animation";
             // 
             // familyTree
             // 
@@ -133,32 +159,34 @@ namespace FamilyTreeTools
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.familyTree);
-            this.Controls.Add(this.menuStrip1);
-            this.MainMenuStrip = this.menuStrip1;
+            this.Controls.Add(this.MainMenu);
+            this.MainMenuStrip = this.MainMenu;
             this.Name = "MainWindow";
             this.Text = "Family tree tools";
             this.Load += new System.EventHandler(this.MainWindowOnLoad);
-            this.contextMenuStrip1.ResumeLayout(false);
-            this.menuStrip1.ResumeLayout(false);
-            this.menuStrip1.PerformLayout();
+            this.MainMenu.ResumeLayout(false);
+            this.MainMenu.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
 
         #endregion
-
-        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
-        private System.Windows.Forms.ToolStripMenuItem abToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem cdToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem aToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem bcToolStripMenuItem;
-        private System.Windows.Forms.MenuStrip menuStrip1;
-        private System.Windows.Forms.ToolStripMenuItem abcToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem cdToolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem efToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem cdToolStripMenuItem2;
+        private System.Windows.Forms.MenuStrip MainMenu;
+        private System.Windows.Forms.ToolStripMenuItem FileMenuItem;
         private System.Windows.Forms.TreeView familyTree;
+        private System.Windows.Forms.ToolStripMenuItem MembersMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem MembersMenuItemAdd;
+        private System.Windows.Forms.ToolStripMenuItem FileMenuItemOpen;
+        private System.Windows.Forms.ToolStripMenuItem FileMenuItemSave;
+        private System.Windows.Forms.ToolStripMenuItem FileMenuItemSaveAs;
+        private System.Windows.Forms.ToolStripMenuItem TreeMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem TreeMenuItemSettings;
+        private System.Windows.Forms.ToolStripMenuItem MembersMenuItemEdit;
+        private System.Windows.Forms.ToolStripMenuItem TreeMenuItemExport;
+        private System.Windows.Forms.OpenFileDialog OpenFileDialog;
+        private System.Windows.Forms.SaveFileDialog SaveAsFileDialog;
+        private System.Windows.Forms.ToolStripMenuItem animationToolStripMenuItem;
     }
 }
 

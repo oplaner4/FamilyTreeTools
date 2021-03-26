@@ -6,14 +6,16 @@ namespace FamilyTreeTools.Utilities.Serialize
 {
     public class FamilySerializeHelper : SerializeHelper
     {
-        public FamilySerializeHelper(string fileName) : base(fileName, "ftt") { }
+        public static readonly string StandardExtension = "ftt";
+
+        public FamilySerializeHelper(string fileName) : base(fileName) { }
 
         public FamilySerializeHelper Save(Family family)
         {
-            File.WriteAllText(FullFileName,
-                JsonConvert.SerializeObject(family)
-            );
-
+            using (StreamWriter file = File.CreateText(FullFileName))
+            {
+                new JsonSerializer().Serialize(file, family);
+            }
             return this;
         }
 

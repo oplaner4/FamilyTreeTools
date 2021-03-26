@@ -4,15 +4,9 @@ namespace FamilyTreeTools.Utilities.Serialize
 {
     public abstract class SerializeHelper
     {
-        public SerializeHelper(string fileName, string extension)
+        public SerializeHelper(string fileName)
         {
-            FullFileName = string.Format("{0}.{1}",
-                new Regex(@"[\s,:\?\*]+").Replace(
-                    fileName,
-                    _ => "_"
-                ),
-                extension
-            );
+            FullFileName = fileName;
         }
 
         public string FullFileName { get; private set; }
