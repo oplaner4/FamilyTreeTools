@@ -34,6 +34,7 @@ namespace FamilyTreeTools
             this.FileMenuItemOpen = new System.Windows.Forms.ToolStripMenuItem();
             this.FileMenuItemSave = new System.Windows.Forms.ToolStripMenuItem();
             this.FileMenuItemSaveAs = new System.Windows.Forms.ToolStripMenuItem();
+            this.FileMenuItemExit = new System.Windows.Forms.ToolStripMenuItem();
             this.MembersMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MembersMenuItemAdd = new System.Windows.Forms.ToolStripMenuItem();
             this.MembersMenuItemEdit = new System.Windows.Forms.ToolStripMenuItem();
@@ -41,10 +42,16 @@ namespace FamilyTreeTools
             this.TreeMenuItemSettings = new System.Windows.Forms.ToolStripMenuItem();
             this.TreeMenuItemExport = new System.Windows.Forms.ToolStripMenuItem();
             this.animationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.displayToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.familyTree = new System.Windows.Forms.TreeView();
             this.OpenFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.SaveAsFileDialog = new System.Windows.Forms.SaveFileDialog();
+            this.MainStatus = new System.Windows.Forms.StatusStrip();
+            this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.MainToolbar = new System.Windows.Forms.ToolStrip();
+            this.TotalMembersValue = new System.Windows.Forms.ToolStripStatusLabel();
             this.MainMenu.SuspendLayout();
+            this.MainStatus.SuspendLayout();
             this.SuspendLayout();
             // 
             // MainMenu
@@ -64,7 +71,8 @@ namespace FamilyTreeTools
             this.FileMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.FileMenuItemOpen,
             this.FileMenuItemSave,
-            this.FileMenuItemSaveAs});
+            this.FileMenuItemSaveAs,
+            this.FileMenuItemExit});
             this.FileMenuItem.Name = "FileMenuItem";
             this.FileMenuItem.Size = new System.Drawing.Size(37, 20);
             this.FileMenuItem.Text = "File";
@@ -72,7 +80,8 @@ namespace FamilyTreeTools
             // FileMenuItemOpen
             // 
             this.FileMenuItemOpen.Name = "FileMenuItemOpen";
-            this.FileMenuItemOpen.Size = new System.Drawing.Size(138, 22);
+            this.FileMenuItemOpen.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
+            this.FileMenuItemOpen.Size = new System.Drawing.Size(180, 22);
             this.FileMenuItemOpen.Text = "Open";
             this.FileMenuItemOpen.Click += new System.EventHandler(this.FileMenuItemOpenOnClick);
             // 
@@ -81,7 +90,7 @@ namespace FamilyTreeTools
             this.FileMenuItemSave.Enabled = false;
             this.FileMenuItemSave.Name = "FileMenuItemSave";
             this.FileMenuItemSave.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.FileMenuItemSave.Size = new System.Drawing.Size(138, 22);
+            this.FileMenuItemSave.Size = new System.Drawing.Size(180, 22);
             this.FileMenuItemSave.Text = "Save";
             this.FileMenuItemSave.Click += new System.EventHandler(this.FileMenuItemSaveOnClick);
             // 
@@ -89,9 +98,16 @@ namespace FamilyTreeTools
             // 
             this.FileMenuItemSaveAs.Enabled = false;
             this.FileMenuItemSaveAs.Name = "FileMenuItemSaveAs";
-            this.FileMenuItemSaveAs.Size = new System.Drawing.Size(138, 22);
+            this.FileMenuItemSaveAs.Size = new System.Drawing.Size(180, 22);
             this.FileMenuItemSaveAs.Text = "Save as";
             this.FileMenuItemSaveAs.Click += new System.EventHandler(this.FileMenuItemSaveAsOnClick);
+            // 
+            // FileMenuItemExit
+            // 
+            this.FileMenuItemExit.Name = "FileMenuItemExit";
+            this.FileMenuItemExit.Size = new System.Drawing.Size(180, 22);
+            this.FileMenuItemExit.Text = "Exit";
+            this.FileMenuItemExit.Click += new System.EventHandler(this.FileMenuItemExitOnClick);
             // 
             // MembersMenuItem
             // 
@@ -121,7 +137,8 @@ namespace FamilyTreeTools
             this.TreeMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.TreeMenuItemSettings,
             this.TreeMenuItemExport,
-            this.animationToolStripMenuItem});
+            this.animationToolStripMenuItem,
+            this.displayToolStripMenuItem});
             this.TreeMenuItem.Name = "TreeMenuItem";
             this.TreeMenuItem.Size = new System.Drawing.Size(40, 20);
             this.TreeMenuItem.Text = "Tree";
@@ -146,26 +163,69 @@ namespace FamilyTreeTools
             this.animationToolStripMenuItem.Size = new System.Drawing.Size(130, 22);
             this.animationToolStripMenuItem.Text = "Animation";
             // 
+            // displayToolStripMenuItem
+            // 
+            this.displayToolStripMenuItem.Name = "displayToolStripMenuItem";
+            this.displayToolStripMenuItem.Size = new System.Drawing.Size(130, 22);
+            this.displayToolStripMenuItem.Text = "Display";
+            // 
             // familyTree
             // 
-            this.familyTree.Location = new System.Drawing.Point(12, 41);
+            this.familyTree.Location = new System.Drawing.Point(12, 52);
             this.familyTree.Name = "familyTree";
-            this.familyTree.Size = new System.Drawing.Size(275, 321);
+            this.familyTree.Size = new System.Drawing.Size(776, 373);
             this.familyTree.TabIndex = 2;
+            // 
+            // MainStatus
+            // 
+            this.MainStatus.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripStatusLabel1,
+            this.TotalMembersValue});
+            this.MainStatus.Location = new System.Drawing.Point(0, 428);
+            this.MainStatus.Name = "MainStatus";
+            this.MainStatus.Size = new System.Drawing.Size(800, 22);
+            this.MainStatus.TabIndex = 3;
+            this.MainStatus.Text = "statusStrip1";
+            // 
+            // toolStripStatusLabel1
+            // 
+            this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(88, 17);
+            this.toolStripStatusLabel1.Text = "Total members:";
+            // 
+            // MainToolbar
+            // 
+            this.MainToolbar.Location = new System.Drawing.Point(0, 24);
+            this.MainToolbar.Name = "MainToolbar";
+            this.MainToolbar.Size = new System.Drawing.Size(800, 25);
+            this.MainToolbar.TabIndex = 4;
+            this.MainToolbar.Text = "toolStrip1";
+            // 
+            // TotalMembersValue
+            // 
+            this.TotalMembersValue.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.TotalMembersValue.Name = "TotalMembersValue";
+            this.TotalMembersValue.Size = new System.Drawing.Size(14, 17);
+            this.TotalMembersValue.Text = "0";
             // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.MainToolbar);
+            this.Controls.Add(this.MainStatus);
             this.Controls.Add(this.familyTree);
             this.Controls.Add(this.MainMenu);
             this.MainMenuStrip = this.MainMenu;
             this.Name = "MainWindow";
             this.Text = "Family tree tools";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainWindowOnClose);
             this.Load += new System.EventHandler(this.MainWindowOnLoad);
             this.MainMenu.ResumeLayout(false);
             this.MainMenu.PerformLayout();
+            this.MainStatus.ResumeLayout(false);
+            this.MainStatus.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -187,6 +247,12 @@ namespace FamilyTreeTools
         private System.Windows.Forms.OpenFileDialog OpenFileDialog;
         private System.Windows.Forms.SaveFileDialog SaveAsFileDialog;
         private System.Windows.Forms.ToolStripMenuItem animationToolStripMenuItem;
+        private System.Windows.Forms.StatusStrip MainStatus;
+        private System.Windows.Forms.ToolStrip MainToolbar;
+        private System.Windows.Forms.ToolStripMenuItem displayToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem FileMenuItemExit;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
+        private System.Windows.Forms.ToolStripStatusLabel TotalMembersValue;
     }
 }
 

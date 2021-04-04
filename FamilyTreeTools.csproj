@@ -55,11 +55,17 @@
     <Compile Include="MainWindow.Designer.cs">
       <DependentUpon>MainWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="MemberDialog.cs">
+    <Compile Include="MemberChangesDialog.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MemberDialog.Designer.cs">
-      <DependentUpon>MemberDialog.cs</DependentUpon>
+    <Compile Include="MemberChangesDialog.Designer.cs">
+      <DependentUpon>MemberChangesDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MemberAddDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MemberAddDialog.Designer.cs">
+      <DependentUpon>MemberAddDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="MembersDialog.cs">
       <SubType>Form</SubType>
@@ -75,11 +81,23 @@
     <Compile Include="TreeSettings.Designer.cs">
       <DependentUpon>TreeSettings.cs</DependentUpon>
     </Compile>
+    <Compile Include="UnsavedConfirmDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UnsavedConfirmDialog.Designer.cs">
+      <DependentUpon>UnsavedConfirmDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ValidationFailedDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ValidationFailedDialog.Designer.cs">
+      <DependentUpon>ValidationFailedDialog.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="MainWindow.resx">
       <DependentUpon>MainWindow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="MemberDialog.resx">
-      <DependentUpon>MemberDialog.cs</DependentUpon>
+    <EmbeddedResource Include="MemberAddDialog.resx">
+      <DependentUpon>MemberAddDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -91,6 +109,12 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="UnsavedConfirmDialog.resx">
+      <DependentUpon>UnsavedConfirmDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ValidationFailedDialog.resx">
+      <DependentUpon>ValidationFailedDialog.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include=".editorconfig" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

@@ -188,5 +188,15 @@ namespace FamilyTreeTools.Entities
         {
             return Status.Value(at) == StatusOptions.Married;
         }
+
+        public override string ToString()
+        {
+            return string.Format(
+                "{0}, *{1} ({2})",
+                FullName.Value(BirthDate),
+                BirthDate.ToString("MM/dd/yyyy"),
+                GetAge()
+            );
+        }
     }
 }
