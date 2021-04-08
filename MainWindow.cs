@@ -3,6 +3,9 @@ using System.Windows.Forms;
 using FamilyTreeTools.Entities;
 using FamilyTreeTools.Utilities.Serialize;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using FamilyTreeTools.Utilities.Generators;
 
 namespace FamilyTreeTools
 {
@@ -10,9 +13,13 @@ namespace FamilyTreeTools
     {
         public Family SourceFamily { get; set; }
 
+        public SearchSettings UseSettings { get; set; }
+
         public string FileFullName { get; set; }
 
         public bool UnsavedChanges { get; set; }
+
+        public IEnumerable<Member> EnumerableMembers { get; set; }
 
         public MainWindow()
         {
@@ -23,7 +30,16 @@ namespace FamilyTreeTools
                 FamilySerializeHelper.StandardExtension
             );
             SaveAsFileDialog.Filter = OpenFileDialog.Filter;
-            SourceFamily = new Family("family");
+
+            ExportTreeDialog.Filter = string.Format(
+                "*.{0}|*.{0}|All files (*.*)|*.*",
+                TreeSerializeHelper.StandardExtension
+            );
+
+            // SourceFamily = new Family("family");
+            SourceFamily = FamilyGenerator.GetData();
+            UseSettings = new SearchSettings();
+            UpdateUI();
         }
 
         private void MainWindowOnLoad(object sender, EventArgs e)
@@ -42,22 +58,37 @@ namespace FamilyTreeTools
 
         private void UpdateUI()
         {
+            UpdateUIMembersListBox();
+
             if (SourceFamily != null)
             {
                 FileMenuItemSaveAs.Enabled = true;
                 FileMenuItemSave.Enabled = true;
 
-                if (SourceFamily.Members.Count > 0)
-                {
-                    MembersMenuItemEdit.Enabled = true;
-                }
-                else
-                {
-                    MembersMenuItemEdit.Enabled = false;
-                }
-
-                TotalMembersValue.Text = SourceFamily.Members.Count.ToString();
+                DateAtValue.Text = UseSettings.At.ToString("dd/MM/yyyy");
             }
+        }
+
+        private void UpdateUIMembersListBox()
+        {
+            EnumerableMembers = SourceFamily.GetEnumerableMembers();
+
+            MembersListBox.Items.Clear();
+
+            if (EnumerableMembers.Any())
+            {
+                foreach (Member member in EnumerableMembers)
+                {
+                    MembersListBox.Items.Add(member);
+                }
+            }
+            else
+            {
+                MembersListBox.Items.Add("No available members.");
+            }
+
+            EditSelectedBtn.Enabled = false;
+            RemoveSelectedBtn.Enabled = false;
         }
 
         private void FileMenuItemOpenOnClick(object sender, EventArgs e)
@@ -72,15 +103,12 @@ namespace FamilyTreeTools
                     UnsavedChanges = false;
                 };
             }
-
-
         }
 
         private void FileMenuItemSaveOnClick(object sender, EventArgs e)
         {
             if (FileFullName == null)
             {
-                FileFullName = OpenFileDialog.FileName;
                 SaveFileShowDialog();
             }
             else
@@ -110,15 +138,10 @@ namespace FamilyTreeTools
             MemberAddDialog dialog = new MemberAddDialog(SourceFamily);
             if (dialog.ShowDialog() == DialogResult.OK)
             {
-                SourceFamily.AddMember(dialog.SourceMember);
+                SourceFamily.AddMember(dialog.OutMember);
                 UnsavedChanges = true;
                 UpdateUI();
             };
-        }
-
-        private void FileMenuItemExitOnClick(object sender, EventArgs e)
-        {
-            SaveExit();
         }
 
         private bool HandleUnsavedChanges()
@@ -126,17 +149,140 @@ namespace FamilyTreeTools
             return !UnsavedChanges || new UnsavedConfirmDialog().ShowDialog() == DialogResult.OK;
         }
 
-        private void SaveExit()
+        private void MainWindowOnClose(object sender, FormClosingEventArgs e)
         {
-            if (HandleUnsavedChanges())
+            if (!HandleUnsavedChanges())
             {
-                Application.Exit();
+                e.Cancel = true;
             }
         }
 
-        private void MainWindowOnClose(object sender, FormClosingEventArgs e)
+        private void MembersListBoxOnSelected(object sender, EventArgs e)
         {
-            SaveExit();
+            UsingSelectedMember(m =>
+            {
+                Member selectedMember = EnumerableMembers.ElementAt(MembersListBox.SelectedIndex);
+                if (m.IsBorn(UseSettings.At, UseSettings.CanBeDead))
+                {
+                    BornValue.Text = "Yes";
+                    DescendantsCountValue.Enabled = true;
+                    AncestorsCountValue.Enabled = true;
+                    ChildrenCountValue.Enabled = true;
+
+                    DescendantsCountValue.Text = m.Refs.GetDescendants(UseSettings).Count().ToString();
+                    AncestorsCountValue.Text = m.Refs.GetAncestors(UseSettings).Count().ToString();
+                    ChildrenCountValue.Text = m.Refs.Children.Count().ToString();
+                }
+                else
+                {
+                    BornValue.Text = "No";
+                    DescendantsCountValue.Enabled = false;
+                    AncestorsCountValue.Enabled = false;
+                    ChildrenCountValue.Enabled = false;
+
+                    DescendantsCountValue.Text = "-";
+                    AncestorsCountValue.Text = "-";
+                    ChildrenCountValue.Text = "-";
+                }
+
+                RemoveSelectedBtn.Enabled = SourceFamily.CanBeRemoved(selectedMember);
+                EditSelectedBtn.Enabled = true;
+            });
+        }
+
+        private void SettingsMenuItemEditOnClick(object sender, EventArgs e)
+        {
+            EditSettingsDialog settingsDialog = new EditSettingsDialog(UseSettings);
+            if (settingsDialog.ShowDialog() == DialogResult.OK)
+            {
+                UseSettings = settingsDialog.Settings;
+                UpdateUI();
+            };
+        }
+
+        private void EditMember()
+        {
+            UsingSelectedMember(m =>
+            {
+                MemberEditDialog editDialog = new MemberEditDialog(
+                    SourceFamily, m
+                );
+
+                if (editDialog.ShowDialog() == DialogResult.OK)
+                {
+                    UnsavedChanges = true;
+                }
+            });
+        }
+
+        private void MembersListBoxOnDoubleClick(object sender, EventArgs e)
+        {
+            EditMember();
+        }
+
+        private void EditSelectedBtnOnClick(object sender, EventArgs e)
+        {
+            EditMember();
+        }
+
+        private void RemoveSelectedBtnOnClick(object sender, EventArgs e)
+        {
+            RemoveSelectedMember();
+        }
+
+        private void RemoveSelectedMember()
+        {
+            UsingSelectedMember(m =>
+            {
+                if (new DestructiveConfirmDialog().ShowDialog() == DialogResult.OK)
+                {
+                    SourceFamily.RemoveMember(m);
+                    UnsavedChanges = true;
+                    UpdateUI();
+                }
+            });
+        }
+
+        private void UsingSelectedMember(Action<Member> action)
+        {
+            if (MembersListBox.SelectedIndex > -1 && EnumerableMembers.Any())
+            {
+                action(EnumerableMembers.ElementAt(MembersListBox.SelectedIndex));
+            }
+        }
+
+        private void MembersListBoxOnKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Delete)
+            {
+                RemoveSelectedMember();
+            }
+            else if (e.KeyCode == Keys.Enter)
+            {
+                EditMember();
+            }
+        }
+
+        private void TreeMenuItemExportOnClick(object sender, EventArgs e)
+        {
+            if (ExportTreeDialog.ShowDialog() == DialogResult.OK)
+            {
+                new TreeSerializeHelper(ExportTreeDialog.FileName).Save(
+                    new Tree(SourceFamily, UseSettings)
+                );
+            };
+        }
+
+        private void FileMenuItemNewOnClick(object sender, EventArgs e)
+        {
+            if (SaveAsFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                SourceFamily = new Family("family");
+                new FamilySerializeHelper(SaveAsFileDialog.FileName).Save(SourceFamily);
+                FileFullName = SaveAsFileDialog.FileName;
+                UnsavedChanges = false;
+                UpdateUI();
+            };
         }
     }
 }

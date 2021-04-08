@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FamilyTreeTools.Properties;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -15,6 +16,7 @@ namespace FamilyTreeTools
         public UnsavedConfirmDialog()
         {
             InitializeComponent();
+            Icon = Resources.favicon;
         }
     }
 }

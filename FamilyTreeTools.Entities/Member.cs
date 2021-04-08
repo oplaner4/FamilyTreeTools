@@ -16,7 +16,7 @@ namespace FamilyTreeTools.Entities
             {
                 if (value == StatusOptions.Married && !HadPartner(since))
                 {
-                    throw new HistoryViolationException("Cannot get married without any partner.");
+                    throw new HistoryViolationException("Trying to get married with no partner.");
                 }
             });
 
@@ -79,14 +79,19 @@ namespace FamilyTreeTools.Entities
                 throw new ArgumentNullException("Trying to set null child.", nameof(child));
             }
 
-            if (child.BirthDate < BirthDate)
+            if (child.Id == Id)
             {
-                throw new HistoryViolationException("The child's birth date is before the parent's birth date.");
+                throw new HistoryViolationException("Trying to add the same human as child.");
+            }
+
+            if (child.BirthDate <= BirthDate)
+            {
+                throw new HistoryViolationException("Child's birth date is not after parent's birth date.");
             }
 
             if (child.Refs.ParentId.HasValue)
             {
-                throw new HistoryViolationException("Cannot set a child who has already the parent.");
+                throw new HistoryViolationException("Child has already the parent. Spouse must be set to add common children.");
             }
 
             Refs.AddChild(child);
@@ -97,19 +102,24 @@ namespace FamilyTreeTools.Entities
         {
             if (arg != null)
             {
+                if (arg.Id == Id)
+                {
+                    throw new HistoryViolationException("Trying to set the same human as a partner.");
+                }
+
                 if (arg.BirthDate > since)
                 {
-                    throw new HistoryViolationException("Cannot set a partner who was not born that time.");
+                    throw new HistoryViolationException("Member was not born that time.");
                 }
 
                 if (since > arg.DeathDate)
                 {
-                    throw new HistoryViolationException("Cannot set a partner who is already dead that time.");
+                    throw new HistoryViolationException("Member is already dead that time.");
                 }
 
                 if (arg.Refs.PartnerId.Value(since).HasValue)
                 {
-                    throw new HistoryViolationException("Cannot set a partner who had already the partner that time.");
+                    throw new HistoryViolationException("Member had alerady another partner that time.");
                 }
             }
 
@@ -131,7 +141,7 @@ namespace FamilyTreeTools.Entities
         {
             if (!HadPartner(since))
             {
-                throw new HistoryViolationException("Cannot break up with the partner that was not set that time.");
+                throw new HistoryViolationException("Trying to break up with the partner that was not set that time.");
             }
 
             if (WasMarried(since))
@@ -149,16 +159,21 @@ namespace FamilyTreeTools.Entities
 
         public Member GotMarried(DateTime since, Member partner = null)
         {
+            if (WasMarried(since))
+            {
+                throw new HistoryViolationException("Member was already married that time.");
+            }
+
             if (HadPartner(since))
             {
                 if (!HadPartner(since, partner))
                 {
-                    throw new HistoryViolationException("Cannot get married with another partner.");
+                    throw new HistoryViolationException("Trying to get married with another partner.");
                 }
             }
             else if (partner == null)
             {
-                throw new HistoryViolationException("Cannot get married without any partner.");
+                throw new HistoryViolationException("Trying to get married with no partner.");
             }
             else
             {
@@ -178,7 +193,7 @@ namespace FamilyTreeTools.Entities
         {
             if (!HadPartner(since))
             {
-                throw new HistoryViolationException("Cannot get unmarried without any partner.");
+                throw new HistoryViolationException("Trying to get unmarried with no partner.");
             }
 
             return WithoutPartner(since);
@@ -197,7 +212,7 @@ namespace FamilyTreeTools.Entities
             Initialize();
             Status.Changes = existingChanges;
             FullName.Changes = fullNameChanges;
-            Refs.Repair(mapper);
+            Refs.Repair(this, mapper);
             return this;
         }
     }

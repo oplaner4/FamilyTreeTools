@@ -44,7 +44,7 @@ namespace FamilyTreeTools.Entities
             set {
                 if (value > DateTime.Now)
                 {
-                    throw new HistoryViolationException("Cannot search in the future.");
+                    throw new HistoryViolationException("Trying to search in the future.");
                 }
 
                 _At = value;

@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using FamilyTreeTools.Entities.Exceptions;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -64,6 +65,27 @@ namespace FamilyTreeTools.Entities
             return this;
         }
 
+        public Family RemoveMember(Member arg)
+        {
+            if (!CanBeRemoved(arg))
+            {
+                throw new HistoryViolationException("Member has children or partner at some time.");
+            }
+
+            if (arg.Refs.Parent != null)
+            {
+                arg.Refs.Parent.Refs.RemoveChild(arg);
+            }
+
+            Members.Remove(arg.Id);
+            return this;
+        }
+
+        public bool CanBeRemoved(Member arg)
+        {
+            return !arg.Refs.Children.Any() && !arg.HadAnyPartner();
+        }
+
         /// <summary>
         /// This method is used only after serialization.
         /// </summary>
@@ -84,6 +106,12 @@ namespace FamilyTreeTools.Entities
             );
 
             return result;
+        }
+
+        public IEnumerable<Member> GetEnumerableMembers()
+        {
+            return Members.Values.OrderByDescending(m => m.BirthDate)
+                .ThenBy(m => m.FullName);
         }
     }
 }

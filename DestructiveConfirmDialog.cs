@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FamilyTreeTools.Properties;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -10,11 +11,12 @@ using System.Windows.Forms;
 
 namespace FamilyTreeTools
 {
-    public partial class MembersDialog : Form
+    public partial class DestructiveConfirmDialog : Form
     {
-        public MembersDialog()
+        public DestructiveConfirmDialog()
         {
             InitializeComponent();
+            Icon = Resources.favicon;
         }
     }
 }

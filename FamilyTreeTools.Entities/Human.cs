@@ -28,7 +28,7 @@ namespace FamilyTreeTools.Entities
             {
                 if (string.IsNullOrEmpty(value))
                 {
-                    throw new HistoryViolationException("Cannot have an empty full name.");
+                    throw new HistoryViolationException("An empty full name.");
                 }
             });
         }
@@ -112,7 +112,7 @@ namespace FamilyTreeTools.Entities
         {
             if (arg > DateTime.Now)
             {
-                throw new HistoryViolationException("The birth date is in the future.");
+                throw new HistoryViolationException("Birth date is in the future.");
             }
 
             _BirthDate = arg;
@@ -143,12 +143,12 @@ namespace FamilyTreeTools.Entities
         {
             if (arg < BirthDate)
             {
-                throw new HistoryViolationException("The death date is before the birth date.");
+                throw new HistoryViolationException("Death date is before the birth date.");
             }
 
             if (arg > DateTime.Now)
             {
-                throw new HistoryViolationException("The death date is in the future.");
+                throw new HistoryViolationException("Death date is in the future.");
             }
 
             _DeathDate = arg;
@@ -192,10 +192,15 @@ namespace FamilyTreeTools.Entities
         public override string ToString()
         {
             return string.Format(
-                "{0}, *{1} ({2})",
+                "{0}, *{1}{3} ({2})",
                 FullName.Value(BirthDate),
-                BirthDate.ToString("MM/dd/yyyy"),
-                GetAge()
+                BirthDate.ToString("dd/MM/yyyy"),
+                GetAge(),
+                DeathDate.HasValue ?
+                    string.Format(
+                        ", +{0}",
+                        DeathDate.Value.ToString("dd/MM/yyyy")
+                    ) : string.Empty
             );
         }
     }

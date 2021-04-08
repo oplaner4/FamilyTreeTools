@@ -17,66 +17,47 @@ namespace FamilyTreeTools
     {
         public Family SourceFamily { get; set; }
 
-        public Member SourceMember { get; set; }
-        private IEnumerable<Member> EnumerableMembers { get; set; }
+        public Member OutMember { get; private set; }
 
         public MemberAddDialog(Family sourceFamily)
         {
             InitializeComponent();
             SourceFamily = sourceFamily;
             Icon = Resources.favicon;
-            Text = "Family tree tools - add member";
-            UpdateChooseChildren(false);
-            EnumerableMembers = SourceFamily.Members.Values;
-        }
-
-
-        private void UpdateChooseChildren (bool selectAll)
-        {
-            ChooseChildren.Items.Clear();
-
-            foreach (Member child in SourceFamily.Members.Values)
-            {
-                ChooseChildren.Items.Add(child, selectAll);
-            }
-        }
-
-        private void KnownDeathDateOnChange(object sender, EventArgs e)
-        {
-            DeathDate.Enabled = KnownDeathDate.Checked;
+            DeathDate.MaxDate = DateTime.Now;
+            BirthDate.MaxDate = DateTime.Now;
         }
 
         private void MemberSaveOnClick(object sender, EventArgs e)
         {
-            try
+            if (!ValidateInputs()) {
+                return;
+            };
+
+            OutMember = new Member(BirthFullName.Text, BirthDate.Value);
+            if (DeathDate.Checked)
             {
-                SourceMember = new Member(BirthFullName.Text, BirthDate.Value);
-                if (KnownDeathDate.Checked)
-                {
-                    SourceMember.Died(DeathDate.Value);
-                }
-
-                foreach (int i in ChooseChildren.SelectedIndices)
-                {
-                    SourceMember.HadChild(EnumerableMembers.ElementAt(i));
-                }
-
-
-                DialogResult = DialogResult.OK;
+                OutMember.Died(DeathDate.Value);
             }
-            catch (Exception ex)
-            {
-                if (new ValidationFailedDialog(ex.Message).ShowDialog() == DialogResult.OK)
-                {
-                    UpdateChooseChildren(false);
-                    return;
-                }
-            }
+
+            DialogResult = DialogResult.OK;
         }
 
-        private void ChooseChildrenAllOnChange(object sender, EventArgs e)
+        private bool ValidateInputs()
         {
-            UpdateChooseChildren(ChooseChildrenAll.Checked);
+            if (string.IsNullOrEmpty(BirthFullName.Text))
+            {
+                BirthFullName.Focus();
+                return false;
+            }
+
+            if (DeathDate.Checked && BirthDate.Value >= DeathDate.Value)
+            {
+                DeathDate.Focus();
+                return false;
+            }
+
+            return true;
         }
     }
 }

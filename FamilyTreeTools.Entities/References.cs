@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using FamilyTreeTools.Entities.Exceptions;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,17 +10,16 @@ namespace FamilyTreeTools.Entities
     [JsonObject(MemberSerialization.OptIn)]
     public class References
     {
-        protected void Initialize()
+        protected void Initialize(Member source)
         {
             Partner = new PropHistory<Member>();
             Children = new Dictionary<Guid, Member>();
+            Source = source ?? throw new NullReferenceException("Trying to set null source.");
         }
 
         public References(Member source)
         {
-            Initialize();
-
-            Source = source ?? throw new NullReferenceException("Trying to set null source.");
+            Initialize(source);
             ChildrenIds = new HashSet<Guid>();
             PartnerId = new PropHistory<Guid?>().AddChange(null, Source.BirthDate);
             Partner.AddChange(null, Source.BirthDate);
@@ -114,6 +114,36 @@ namespace FamilyTreeTools.Entities
             return this;
         }
 
+        public References ClearPartnersHistory()
+        {
+            IEnumerable<DateTime> records = Partner.Changes.Keys.Where(
+                ch => ch != Source.BirthDate
+            ).ToArray();
+
+            foreach (DateTime since in records)
+            {
+                if (Partner.Changes[since] != null)
+                {
+                    Partner.Changes[since].Refs.Partner.Changes.Remove(since);
+                    Partner.Changes[since].Status.Changes.Remove(since);
+                }
+
+                Source.Status.Changes.Remove(since);
+                Partner.Changes.Remove(since);
+            }
+
+            IEnumerable<DateTime> statusRecords = Source.Status.Changes.Keys.Where(
+                ch => ch != Source.BirthDate
+            ).ToArray();
+
+            foreach (DateTime since in statusRecords)
+            {
+                Source.Status.Changes.Remove(since);
+            }
+
+            return this;
+        }
+
         public Member Parent { get; private set; }
 
         public Dictionary<Guid, Member> Children { get; private set; }
@@ -137,10 +167,9 @@ namespace FamilyTreeTools.Entities
         /// <summary>
         /// This method is used only after serialization.
         /// </summary>
-        internal References Repair(Func<Guid, Member> mapper)
+        internal References Repair(Member source, Func<Guid, Member> mapper)
         {
-            Initialize();
-
+            Initialize(source);
             if (Partner.Changes.Count() > 0 ||
                 Parent != null ||
                 Children.Count() > 0)

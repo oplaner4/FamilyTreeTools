@@ -1,7 +1,7 @@
 ﻿
 namespace FamilyTreeTools
 {
-    partial class UnsavedConfirmDialog
+    partial class DestructiveConfirmDialog
     {
         /// <summary>
         /// Required designer variable.
@@ -40,9 +40,9 @@ namespace FamilyTreeTools
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.Location = new System.Drawing.Point(7, 24);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(358, 17);
+            this.label1.Size = new System.Drawing.Size(325, 17);
             this.label1.TabIndex = 0;
-            this.label1.Text = "There are unsaved changes. Are you sure to continue?";
+            this.label1.Text = "This cannot be undone. Are you sure to continue?";
             // 
             // button1
             // 
@@ -64,7 +64,7 @@ namespace FamilyTreeTools
             this.button2.Text = "Ok";
             this.button2.UseVisualStyleBackColor = true;
             // 
-            // UnsavedConfirmDialog
+            // DestructiveConfirmDialog
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -72,8 +72,8 @@ namespace FamilyTreeTools
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.label1);
-            this.Name = "UnsavedConfirmDialog";
-            this.Text = "Confirm unsaved changes";
+            this.Name = "DestructiveConfirmDialog";
+            this.Text = "Confirm destructive action";
             this.ResumeLayout(false);
             this.PerformLayout();
 

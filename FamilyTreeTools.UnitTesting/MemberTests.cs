@@ -105,6 +105,31 @@ namespace FamilyTreeTools.UnitTesting
                     Member Jazmyn = new Member(JazmynWhite, JazmynWhiteBirthDate);
                     new Member(ShylaBoyce, ShylaBoyceBirthDate).HadChild(Jazmyn);
                     new Member(HuzaifaMscgrath, HuzaifaMscgrathBirthDate).HadChild(Jazmyn);
+                },
+
+                () => { /* 17 */
+                    Member Jazmyn = new Member(JazmynWhite, JazmynWhiteBirthDate);
+                    Jazmyn.HadChild(Jazmyn);
+                },
+
+                () => { /* 18 */
+                    Member Jazmyn = new Member(JazmynWhite, JazmynWhiteBirthDate);
+                    Jazmyn.WithPartner(Jazmyn, DateTime.Now);
+                },
+
+                () => { /* 19 */
+                    Member Huzaifa = new Member(HuzaifaMscgrath, HuzaifaMscgrathBirthDate);
+                    new Member(JazmynWhite, JazmynWhiteBirthDate)
+                    .GotMarried(DateTime.Now.AddYears(-5), Huzaifa)
+                    .GotMarried(DateTime.Now, Huzaifa);
+                },
+
+                () => { /* 20 */
+                    Member Huzaifa = new Member(HuzaifaMscgrath, HuzaifaMscgrathBirthDate);
+                    Member Shyla = new Member(ShylaBoyce, ShylaBoyceBirthDate);
+                    new Member(JazmynWhite, JazmynWhiteBirthDate)
+                    .GotMarried(DateTime.Now.AddYears(-5), Huzaifa)
+                    .GotMarried(DateTime.Now, Shyla);
                 }
             })
             {
