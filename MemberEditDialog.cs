@@ -2,12 +2,8 @@
 using FamilyTreeTools.Properties;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace FamilyTreeTools
@@ -21,7 +17,6 @@ namespace FamilyTreeTools
         private IEnumerable<Member> EnumerablePartners { get; set; }
         private IEnumerable<KeyValuePair<DateTime, Human.StatusOptions>> EnumerableStatusesHistory { get; set; }
         private IEnumerable<KeyValuePair<DateTime, Member>> EnumerablePartnersHistory { get; set; }
-
         private IEnumerable<KeyValuePair<DateTime, string>> EnumerableFullNamesHistory { get; set; }
 
         public DateTime SinceDateTime { get; set; }
@@ -59,7 +54,10 @@ namespace FamilyTreeTools
 
             EnumerableOwnChildren = SourceFamily.GetEnumerableMembers().Where(m => m.Refs.ParentId == SourceMember.Id);
             EnumerableChildren = SourceFamily.GetEnumerableMembers().Where(
-                m => m.Id != SourceMember.Id && m.BirthDate >= SourceMember.BirthDate && m.Refs.Parent == null
+                m => m.Id != SourceMember.Id
+                    && m.BirthDate >= SourceMember.BirthDate
+                    && m.Refs.Parent == null
+                    && !SourceMember.Refs.Partner.Changes.Values.Any(p => p != null && p.Id == m.Id)
             );
 
             if (EnumerableChildren.Any() || EnumerableOwnChildren.Any())
@@ -171,26 +169,29 @@ namespace FamilyTreeTools
 
         private void WithPartnerBtnOnClick(object sender, EventArgs e)
         {
-            if (PartnersComboBox.SelectedIndex > 0)
+            if (PartnersComboBox.SelectedIndex < 1)
             {
-                try
+                PartnersComboBox.Focus();
+            }
+
+            try
+            {
+                SourceMember.WithPartner(
+                    EnumerablePartners.ElementAt(PartnersComboBox.SelectedIndex),
+                    SinceDateTimePicker.Value
+                );
+                UpdatePartnersListBox();
+                UpdatePartnersComboBox();
+                SinceDateTimePicker.Focus();
+            }
+            catch (Exception ex)
+            {
+                if (new ValidationFailedDialog(ex.Message).ShowDialog() == DialogResult.OK)
                 {
-                    SourceMember.WithPartner(
-                        EnumerablePartners.ElementAt(PartnersComboBox.SelectedIndex),
-                        SinceDateTimePicker.Value
-                    );
-                    UpdatePartnersListBox();
-                    UpdatePartnersComboBox();
-                    SinceDateTimePicker.Focus();
-                }
-                catch (Exception ex)
-                {
-                    if (new ValidationFailedDialog(ex.Message).ShowDialog() == DialogResult.OK)
-                    {
-                        PartnersComboBox.Focus();
-                    }
+                    PartnersComboBox.Focus();
                 }
             }
+            
         }
 
         private void ChangedFullNameBtnOnClick(object sender, EventArgs e)
@@ -284,6 +285,8 @@ namespace FamilyTreeTools
         {
             if (EnumerableChildren.Any() || EnumerableOwnChildren.Any())
             {
+                EnumerableOwnChildren = EnumerableOwnChildren.ToArray();
+
                 for (int i = 0; i < EnumerableOwnChildren.Count(); i++)
                 {
                     if (!ChooseChildren.CheckedIndices.Contains(i))

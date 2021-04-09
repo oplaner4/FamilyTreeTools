@@ -32,6 +32,7 @@ namespace FamilyTreeTools
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainWindow));
             this.MainMenu = new System.Windows.Forms.MenuStrip();
             this.FileMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.FileMenuItemNew = new System.Windows.Forms.ToolStripMenuItem();
             this.FileMenuItemOpen = new System.Windows.Forms.ToolStripMenuItem();
             this.FileMenuItemSave = new System.Windows.Forms.ToolStripMenuItem();
             this.FileMenuItemSaveAs = new System.Windows.Forms.ToolStripMenuItem();
@@ -68,7 +69,6 @@ namespace FamilyTreeTools
             this.RemoveSelectedBtn = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.ExportTreeDialog = new System.Windows.Forms.SaveFileDialog();
-            this.FileMenuItemNew = new System.Windows.Forms.ToolStripMenuItem();
             this.MainMenu.SuspendLayout();
             this.MainStatus.SuspendLayout();
             this.MainToolbar.SuspendLayout();
@@ -98,11 +98,19 @@ namespace FamilyTreeTools
             this.FileMenuItem.Size = new System.Drawing.Size(37, 20);
             this.FileMenuItem.Text = "File";
             // 
+            // FileMenuItemNew
+            // 
+            this.FileMenuItemNew.Name = "FileMenuItemNew";
+            this.FileMenuItemNew.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
+            this.FileMenuItemNew.Size = new System.Drawing.Size(146, 22);
+            this.FileMenuItemNew.Text = "New";
+            this.FileMenuItemNew.Click += new System.EventHandler(this.FileMenuItemNewOnClick);
+            // 
             // FileMenuItemOpen
             // 
             this.FileMenuItemOpen.Name = "FileMenuItemOpen";
             this.FileMenuItemOpen.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-            this.FileMenuItemOpen.Size = new System.Drawing.Size(180, 22);
+            this.FileMenuItemOpen.Size = new System.Drawing.Size(146, 22);
             this.FileMenuItemOpen.Text = "Open";
             this.FileMenuItemOpen.Click += new System.EventHandler(this.FileMenuItemOpenOnClick);
             // 
@@ -111,7 +119,7 @@ namespace FamilyTreeTools
             this.FileMenuItemSave.Enabled = false;
             this.FileMenuItemSave.Name = "FileMenuItemSave";
             this.FileMenuItemSave.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.FileMenuItemSave.Size = new System.Drawing.Size(180, 22);
+            this.FileMenuItemSave.Size = new System.Drawing.Size(146, 22);
             this.FileMenuItemSave.Text = "Save";
             this.FileMenuItemSave.Click += new System.EventHandler(this.FileMenuItemSaveOnClick);
             // 
@@ -119,7 +127,7 @@ namespace FamilyTreeTools
             // 
             this.FileMenuItemSaveAs.Enabled = false;
             this.FileMenuItemSaveAs.Name = "FileMenuItemSaveAs";
-            this.FileMenuItemSaveAs.Size = new System.Drawing.Size(180, 22);
+            this.FileMenuItemSaveAs.Size = new System.Drawing.Size(146, 22);
             this.FileMenuItemSaveAs.Text = "Save as";
             this.FileMenuItemSaveAs.Click += new System.EventHandler(this.FileMenuItemSaveAsOnClick);
             // 
@@ -151,21 +159,22 @@ namespace FamilyTreeTools
             // TreeMenuItemExport
             // 
             this.TreeMenuItemExport.Name = "TreeMenuItemExport";
-            this.TreeMenuItemExport.Size = new System.Drawing.Size(130, 22);
+            this.TreeMenuItemExport.Size = new System.Drawing.Size(180, 22);
             this.TreeMenuItemExport.Text = "Export";
             this.TreeMenuItemExport.Click += new System.EventHandler(this.TreeMenuItemExportOnClick);
             // 
             // animationToolStripMenuItem
             // 
             this.animationToolStripMenuItem.Name = "animationToolStripMenuItem";
-            this.animationToolStripMenuItem.Size = new System.Drawing.Size(130, 22);
+            this.animationToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.animationToolStripMenuItem.Text = "Animation";
             // 
             // displayToolStripMenuItem
             // 
             this.displayToolStripMenuItem.Name = "displayToolStripMenuItem";
-            this.displayToolStripMenuItem.Size = new System.Drawing.Size(130, 22);
+            this.displayToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.displayToolStripMenuItem.Text = "Display";
+            this.displayToolStripMenuItem.Click += new System.EventHandler(this.TreeMenuItemDisplayOnClick);
             // 
             // SettingsMenuItem
             // 
@@ -388,14 +397,6 @@ namespace FamilyTreeTools
             this.label1.Size = new System.Drawing.Size(51, 18);
             this.label1.TabIndex = 8;
             this.label1.Text = "Family";
-            // 
-            // FileMenuItemNew
-            // 
-            this.FileMenuItemNew.Name = "FileMenuItemNew";
-            this.FileMenuItemNew.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
-            this.FileMenuItemNew.Size = new System.Drawing.Size(180, 22);
-            this.FileMenuItemNew.Text = "New";
-            this.FileMenuItemNew.Click += new System.EventHandler(this.FileMenuItemNewOnClick);
             // 
             // MainWindow
             // 

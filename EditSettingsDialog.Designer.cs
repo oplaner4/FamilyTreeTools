@@ -119,7 +119,7 @@ namespace FamilyTreeTools
             // CanBeIllegitimateRelativeValue
             // 
             this.CanBeIllegitimateRelativeValue.AutoSize = true;
-            this.CanBeIllegitimateRelativeValue.Location = new System.Drawing.Point(261, 147);
+            this.CanBeIllegitimateRelativeValue.Location = new System.Drawing.Point(260, 147);
             this.CanBeIllegitimateRelativeValue.Name = "CanBeIllegitimateRelativeValue";
             this.CanBeIllegitimateRelativeValue.Size = new System.Drawing.Size(15, 14);
             this.CanBeIllegitimateRelativeValue.TabIndex = 9;
@@ -228,6 +228,7 @@ namespace FamilyTreeTools
             this.Controls.Add(this.CanBeDeadValue);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Name = "EditSettingsDialog";
             this.Text = "Family tree tools - edit settings";
             this.ResumeLayout(false);

@@ -91,7 +91,12 @@ namespace FamilyTreeTools.Entities
 
             if (child.Refs.ParentId.HasValue)
             {
-                throw new HistoryViolationException("Child has already the parent. Spouse must be set to add common children.");
+                throw new HistoryViolationException("Child has already the parent.");
+            }
+
+            if (Refs.Partner.Changes.Values.Any(p => p != null && p.Id == child.Id))
+            {
+                throw new HistoryViolationException("Trying to set partner as a child.");
             }
 
             Refs.AddChild(child);

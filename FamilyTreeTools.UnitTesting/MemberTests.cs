@@ -128,8 +128,15 @@ namespace FamilyTreeTools.UnitTesting
                     Member Huzaifa = new Member(HuzaifaMscgrath, HuzaifaMscgrathBirthDate);
                     Member Shyla = new Member(ShylaBoyce, ShylaBoyceBirthDate);
                     new Member(JazmynWhite, JazmynWhiteBirthDate)
-                    .GotMarried(DateTime.Now.AddYears(-5), Huzaifa)
+                    .GotMarried(DateTime.Now.AddYears(-6), Huzaifa)
                     .GotMarried(DateTime.Now, Shyla);
+                },
+
+                () => { /* 21 */
+                    Member Huzaifa = new Member(HuzaifaMscgrath, HuzaifaMscgrathBirthDate);
+                    new Member(JohnSmith, JohnSmithBirthDate)
+                    .WithPartner(Huzaifa, DateTime.Now.AddYears(-7))
+                    .HadChild(Huzaifa);
                 }
             })
             {

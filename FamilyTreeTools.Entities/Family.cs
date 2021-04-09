@@ -25,6 +25,7 @@ namespace FamilyTreeTools.Entities
 
         private string _Name { get; set; }
 
+        [JsonProperty]
         public string Name {
             get {
                 return _Name;

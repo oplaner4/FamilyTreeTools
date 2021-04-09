@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using FamilyTreeTools.Utilities.Generators;
+using System.IO;
 
 namespace FamilyTreeTools
 {
@@ -93,15 +94,22 @@ namespace FamilyTreeTools
 
         private void FileMenuItemOpenOnClick(object sender, EventArgs e)
         {
-            if (HandleUnsavedChanges())
+            if (HandleUnsavedChanges() && OpenFileDialog.ShowDialog() == DialogResult.OK)
             {
-                if (OpenFileDialog.ShowDialog() == DialogResult.OK)
+                FileFullName = OpenFileDialog.FileName;
+
+                Family loadedFamily = new FamilySerializeHelper(FileFullName).Load();
+
+                if (loadedFamily == null)
                 {
-                    FileFullName = OpenFileDialog.FileName;
-                    SourceFamily = new FamilySerializeHelper(FileFullName).Load();
+                    new ValidationFailedDialog("Unable to load family. The file might be damaged.").ShowDialog();
+                }
+                else
+                {
+                    SourceFamily = loadedFamily;
                     UpdateUI();
                     UnsavedChanges = false;
-                };
+                }
             }
         }
 
@@ -127,6 +135,7 @@ namespace FamilyTreeTools
         {
             if (SaveAsFileDialog.ShowDialog() == DialogResult.OK)
             {
+                SourceFamily.Name = Path.GetFileNameWithoutExtension(SaveAsFileDialog.FileName);
                 new FamilySerializeHelper(SaveAsFileDialog.FileName).Save(SourceFamily);
                 UnsavedChanges = false;
                 UpdateUI();
@@ -211,6 +220,7 @@ namespace FamilyTreeTools
                 if (editDialog.ShowDialog() == DialogResult.OK)
                 {
                     UnsavedChanges = true;
+                    RemoveSelectedBtn.Enabled = SourceFamily.CanBeRemoved(m);
                 }
             });
         }
@@ -268,7 +278,7 @@ namespace FamilyTreeTools
             if (ExportTreeDialog.ShowDialog() == DialogResult.OK)
             {
                 new TreeSerializeHelper(ExportTreeDialog.FileName).Save(
-                    new Tree(SourceFamily, UseSettings)
+                    new Tree(SourceFamily, UseSettings).Build()
                 );
             };
         }
@@ -282,6 +292,17 @@ namespace FamilyTreeTools
                 FileFullName = SaveAsFileDialog.FileName;
                 UnsavedChanges = false;
                 UpdateUI();
+            };
+        }
+
+        private void TreeMenuItemDisplayOnClick(object sender, EventArgs e)
+        {
+            TreeDisplayDialog dialog = new TreeDisplayDialog(
+                new Tree(SourceFamily, UseSettings).Build()
+            );
+
+            if (dialog.ShowDialog() == DialogResult.OK) {
+
             };
         }
     }

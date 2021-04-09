@@ -195,7 +195,7 @@ namespace FamilyTreeTools.Entities
                 "{0}, *{1}{3} ({2})",
                 FullName.Value(BirthDate),
                 BirthDate.ToString("dd/MM/yyyy"),
-                GetAge(),
+                GetAge(DeathDate.HasValue ? DeathDate : null),
                 DeathDate.HasValue ?
                     string.Format(
                         ", +{0}",

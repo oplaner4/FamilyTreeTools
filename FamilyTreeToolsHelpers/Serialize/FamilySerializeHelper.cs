@@ -21,9 +21,16 @@ namespace FamilyTreeTools.Utilities.Serialize
 
         public Family Load()
         {
-            return JsonConvert.DeserializeObject<Family>(
-                File.ReadAllText(FullFileName)
-            ).Repair();
+            try
+            {
+                return JsonConvert.DeserializeObject<Family>(
+                    File.ReadAllText(FullFileName)
+                ).Repair();
+            }
+            catch (JsonSerializationException)
+            {
+                return null;
+            }
         }
     }
 }

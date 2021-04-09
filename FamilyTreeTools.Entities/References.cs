@@ -125,11 +125,13 @@ namespace FamilyTreeTools.Entities
                 if (Partner.Changes[since] != null)
                 {
                     Partner.Changes[since].Refs.Partner.Changes.Remove(since);
+                    Partner.Changes[since].Refs.PartnerId.Changes.Remove(since);
                     Partner.Changes[since].Status.Changes.Remove(since);
                 }
 
                 Source.Status.Changes.Remove(since);
                 Partner.Changes.Remove(since);
+                PartnerId.Changes.Remove(since);
             }
 
             IEnumerable<DateTime> statusRecords = Source.Status.Changes.Keys.Where(

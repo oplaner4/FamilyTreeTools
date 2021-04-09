@@ -1,7 +1,7 @@
 ﻿
 namespace FamilyTreeTools
 {
-    partial class ValidationFailedDialog
+    partial class TreeDisplayDialog
     {
         /// <summary>
         /// Required designer variable.
@@ -30,49 +30,32 @@ namespace FamilyTreeTools
         private void InitializeComponent()
         {
             this.button2 = new System.Windows.Forms.Button();
-            this.MessageBox = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // button2
             // 
+            this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.button2.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.button2.Location = new System.Drawing.Point(320, 96);
+            this.button2.Location = new System.Drawing.Point(713, 415);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 3;
+            this.button2.TabIndex = 5;
             this.button2.Text = "Ok";
             this.button2.UseVisualStyleBackColor = true;
             // 
-            // MessageBox
-            // 
-            this.MessageBox.BackColor = System.Drawing.Color.LightCoral;
-            this.MessageBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.MessageBox.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.MessageBox.Location = new System.Drawing.Point(12, 12);
-            this.MessageBox.Multiline = true;
-            this.MessageBox.Name = "MessageBox";
-            this.MessageBox.ReadOnly = true;
-            this.MessageBox.Size = new System.Drawing.Size(383, 78);
-            this.MessageBox.TabIndex = 4;
-            this.MessageBox.Text = "Text changes at runtime";
-            // 
-            // ValidationFailedDialog
+            // TreeDisplayDialog
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(407, 131);
-            this.Controls.Add(this.MessageBox);
+            this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.button2);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-            this.Name = "ValidationFailedDialog";
-            this.Text = "Validation failed";
+            this.Name = "TreeDisplayDialog";
+            this.Text = "Family tree tools - display tree";
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
         private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.TextBox MessageBox;
     }
 }

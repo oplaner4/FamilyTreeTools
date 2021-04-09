@@ -134,6 +134,9 @@ namespace FamilyTreeTools
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.MaximumSize = new System.Drawing.Size(378, 239);
+            this.MinimumSize = new System.Drawing.Size(378, 239);
             this.Name = "MemberAddDialog";
             this.Text = "Family tree tools - add member";
             this.ResumeLayout(false);

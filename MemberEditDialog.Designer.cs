@@ -55,6 +55,7 @@ namespace FamilyTreeTools
             this.label3 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // PartnerListBox
@@ -313,11 +314,21 @@ namespace FamilyTreeTools
             this.label8.TabIndex = 46;
             this.label8.Text = "Status change:";
             // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(9, 438);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(216, 13);
+            this.label9.TabIndex = 47;
+            this.label9.Text = "(Spouse/common children are set implicitely)";
+            // 
             // MemberEditDialog
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(942, 516);
+            this.Controls.Add(this.label9);
             this.Controls.Add(this.label8);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.label3);
@@ -344,6 +355,7 @@ namespace FamilyTreeTools
             this.Controls.Add(this.label1);
             this.Controls.Add(this.StatusListBox);
             this.Controls.Add(this.PartnerListBox);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Name = "MemberEditDialog";
             this.Text = "Family tree tools - edit member";
             this.ResumeLayout(false);
@@ -379,5 +391,6 @@ namespace FamilyTreeTools
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label label9;
     }
 }
