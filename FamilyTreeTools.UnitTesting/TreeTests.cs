@@ -15,7 +15,7 @@ namespace FamilyTreeTools.UnitTesting
             Tree atHenriettaWeddingDate = new Tree(fieldFamily, new SearchSettings()
             {
                 At = FamilyGenerator.HenriettaWeddingDate,
-                IncludePartnerOtherTime = true
+                CanBePartnerOtherTime = true
             }).Build();
 
             Node HenriettaNode = atHenriettaWeddingDate.Root.Children[FamilyGenerator.Kaleb.Id]

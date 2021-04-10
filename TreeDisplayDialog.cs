@@ -4,7 +4,7 @@ using FamilyTreeTools.Entities;
 using Microsoft.Msagl.Drawing;
 using Microsoft.Msagl.GraphViewerGdi;
 using System;
-using System.Collections.Generic;
+using System.Linq;
 
 namespace FamilyTreeTools
 {
@@ -18,15 +18,27 @@ namespace FamilyTreeTools
 
             Initialize();
         }
+        private void InitializeGraph()
+        {
+            TreeGraph = new Graph("tree chart")
+            {
+                Directed = true
+            };
+            TreeGraph.Attr.AspectRatio = 16 / 10;
+
+            Microsoft.Msagl.Drawing.Node root = TreeGraph.AddNode(SourceTree.Root.Key.ToString());
+            InitializeData(SourceTree.Root);
+            SetNode(SourceTree.Root);
+
+            root.Attr.FillColor = Color.SaddleBrown;
+            root.Attr.Shape = Shape.Box;
+            root.Attr.LabelMargin = 10;
+        }
 
         private void Initialize()
         {
-            TreeGraph = new Graph("graph") {
-                Directed = true
-            };
-            TreeGraph.Attr.AspectRatio = 16 / 9;
+            InitializeGraph();
 
-            InitializeData(SourceTree.Root, 0);
             TreeViewer = new GViewer()
             {
                 Dock = DockStyle.Fill,
@@ -37,54 +49,108 @@ namespace FamilyTreeTools
                 CurrentLayoutMethod = LayoutMethod.UseSettingsOfTheGraph
             };
 
-            SuspendLayout();
             Controls.Add(TreeViewer);
-            ResumeLayout();
+            Size = TreeViewer.Size;
+        }
+
+        private Edge CreateEdge(Guid source, Guid target, string labelText)
+        {
+            Edge result = TreeGraph.AddEdge(source.ToString(), string.Empty, target.ToString());
+            result.LabelText = WithLabelsCheckbox.Checked ? labelText : string.Empty;
+            result.Label.FontSize = 8;
+            return result;
         }
 
         public Tree SourceTree { get; private set; }
         private Graph TreeGraph { get; set; }
         private GViewer TreeViewer { get; set; }
 
-        public void InitializeData(Entities.Node node, int level)
+        public void SetNode(Entities.Node node)
         {
-            if (node.Partner != null)
+            Microsoft.Msagl.Drawing.Node createdNode = TreeGraph.FindNode(node.Key.ToString());
+            createdNode.LabelText = node.Value;
+            createdNode.Label.FontColor = Color.White;
+
+            if (node.PartnerReference != null && node.Children.Count() == 0)
             {
-                Edge e = TreeGraph.AddEdge(node.Key.ToString(), node.Partner.Key.ToString());
-                e.Attr.Color = Color.DarkGreen;
-                InitializeData(node.Partner, level);
+                createdNode.Attr.FillColor = Color.SeaGreen;
+            }
+            else
+            {
+                createdNode.Attr.FillColor = Color.ForestGreen;
             }
 
-            if (node.PartnerReference != null)
-            {
-                Edge e = TreeGraph.AddEdge(node.Key.ToString(), node.PartnerReference.Value.ToString());
-                e.Attr.Color = Color.DarkGreen;
-            }
+            createdNode.Attr.Shape = Shape.Ellipse;
+        } 
 
+        public void InitializeData(Entities.Node node)
+        {
+            InitializeDataPartners(node);
+            InitializeDataChildren(node);
+        }
+
+        private void InitializeDataChildren(Entities.Node node)
+        {
             foreach (Entities.Node childNode in node.Children.Values)
             {
-                Edge e = TreeGraph.AddEdge(node.Key.ToString(), childNode.Key.ToString());
+                Edge e = CreateEdge(
+                    node.Key, childNode.Key,
+                    node.Key == SourceTree.Root.Key ? string.Empty : "child"
+                );
                 e.Attr.Color = Color.SaddleBrown;
-                InitializeData(childNode, level + 1);
+                e.Label.FontColor = Color.SaddleBrown;
+                e.Attr.ArrowheadAtTarget = node.Key == SourceTree.Root.Key ? ArrowStyle.None : ArrowStyle.Generalization;
+                
+                InitializeData(childNode);
+                SetNode(childNode);
             }
 
             if (node.CommonChildren != null)
             {
                 foreach (Guid commonChildId in node.CommonChildren)
                 {
-                    Edge e = TreeGraph.AddEdge(node.Key.ToString(), commonChildId.ToString());
-                    e.Attr.Color = Color.SaddleBrown;
+                    Edge e = CreateEdge(
+                        node.Key, commonChildId, "child"
+                    );
+                    e.Attr.Color = Color.SandyBrown;
+                    e.Label.FontColor = Color.SandyBrown;
+                    e.Attr.ArrowheadAtTarget = ArrowStyle.Generalization;
                 }
             }
+        }
 
-            Microsoft.Msagl.Drawing.Node createdNode = TreeGraph.FindNode(node.Key.ToString());
-            if (createdNode != null)
+        private void InitializeDataPartners(Entities.Node node)
+        {
+            string labelText = "partner";
+            Color useColor = Color.DarkGreen;
+
+            if (node.Partner != null)
             {
-                createdNode.LabelText = node.Value;
-                createdNode.Attr.FillColor = node.Key == Guid.Empty ? Color.SaddleBrown : Color.SeaGreen;
-                createdNode.Attr.Shape = Shape.Ellipse;
-                createdNode.Label.FontColor = Color.White;
+                Edge e = CreateEdge(node.Key, node.Partner.Key, labelText);
+                e.Attr.Color = useColor;
+                e.Label.FontColor = e.Attr.Color;
+
+                InitializeData(node.Partner);
+                SetNode(node.Partner);
             }
+
+            if (node.PartnerReference != null)
+            {
+                Edge e = CreateEdge(node.Key, node.PartnerReference.Value, labelText);
+                e.Attr.Color = useColor;
+                e.Label.FontColor = e.Attr.Color;
+            }
+        }
+
+        private void UpdateGraph()
+        {
+            InitializeGraph();
+            TreeViewer.Graph = TreeGraph;
+        }
+
+        private void WithLabelsCheckboxOnChange(object sender, EventArgs e)
+        {
+            UpdateGraph();
         }
     }
 }

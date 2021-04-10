@@ -237,7 +237,7 @@ namespace FamilyTreeTools.Entities
             {
                 At = settings.At,
                 CanBeDead = settings.CanBeDead,
-                IncludePartnerOtherTime = settings.IncludePartnerOtherTime,
+                CanBePartnerOtherTime = settings.CanBePartnerOtherTime,
                 CanBeIllegitimateRelative = true,
                 CanBeFromFartherGeneration = false
             };
@@ -254,7 +254,7 @@ namespace FamilyTreeTools.Entities
                 return !value.Refs.GetAncestors(useSettings).Any();
             }
 
-            return useSettings.IncludePartnerOtherTime || !Source.HadAnyPartner();
+            return useSettings.CanBePartnerOtherTime || !Source.HadAnyPartner();
         }
 
         public bool TryGetPartner(out Member value, DateTime at, bool canBeDead = false)
@@ -313,7 +313,7 @@ namespace FamilyTreeTools.Entities
                     {
                         At = settings.At,
                         CanBeDead = settings.CanBeDead,
-                        IncludePartnerOtherTime = settings.IncludePartnerOtherTime,
+                        CanBePartnerOtherTime = settings.CanBePartnerOtherTime,
                         CanBeIllegitimateRelative = settings.CanBeIllegitimateRelative,
                         CanBeFromFartherGeneration = false
                     }

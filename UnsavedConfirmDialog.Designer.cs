@@ -74,6 +74,7 @@ namespace FamilyTreeTools
             this.Controls.Add(this.label1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Name = "UnsavedConfirmDialog";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Confirm unsaved changes";
             this.ResumeLayout(false);
             this.PerformLayout();

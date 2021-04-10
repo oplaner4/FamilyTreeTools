@@ -161,8 +161,10 @@ namespace FamilyTreeTools
         {
             WithoutPartnerBtn.Enabled = SourceMember.HadPartner(SinceDateTime);
             GotUnmarriedBtn.Enabled = SourceMember.WasMarried(SinceDateTime);
-            GotMarriedBtn.Enabled = !GotUnmarriedBtn.Enabled;
-            WithPartnerBtn.Enabled = !WithoutPartnerBtn.Enabled;
+            GotMarriedBtn.Enabled = !GotUnmarriedBtn.Enabled && (
+                EnumerablePartners.Any() || SourceMember.HadPartner(SinceDateTime)
+            );
+            WithPartnerBtn.Enabled = !WithoutPartnerBtn.Enabled && EnumerablePartners.Any();
             ClearPartnersHistoryBtn.Enabled = EnumerablePartnersHistory.Count() > 1;
             RemoveSelectedFullNameBtn.Enabled = FullNamesListBox.SelectedIndex > 0;
         }
@@ -172,16 +174,18 @@ namespace FamilyTreeTools
             if (PartnersComboBox.SelectedIndex < 1)
             {
                 PartnersComboBox.Focus();
+                return;
             }
 
             try
             {
                 SourceMember.WithPartner(
-                    EnumerablePartners.ElementAt(PartnersComboBox.SelectedIndex),
+                    EnumerablePartners.ElementAt(PartnersComboBox.SelectedIndex - 1),
                     SinceDateTimePicker.Value
                 );
                 UpdatePartnersListBox();
                 UpdatePartnersComboBox();
+                UpdateButtons();
                 SinceDateTimePicker.Focus();
             }
             catch (Exception ex)
@@ -232,23 +236,29 @@ namespace FamilyTreeTools
 
         private void GotMarriedBtnOnClick(object sender, EventArgs e)
         {
+            if (PartnersComboBox.SelectedIndex == -1 || (
+                PartnersComboBox.SelectedIndex == 0 
+                    && !SourceMember.HadPartner(SinceDateTime)
+            ))
+            {
+                PartnersComboBox.Focus();
+                return;
+            }
+
             try
             {
-                if (PartnersComboBox.SelectedIndex > -1)
-                {
-                    SourceMember.GotMarried(
-                        SinceDateTimePicker.Value,
-                        PartnersComboBox.SelectedIndex > 0 ?
-                            EnumerablePartners.ElementAt(PartnersComboBox.SelectedIndex)
-                            :
-                            null
-                    );
-                }
+                SourceMember.GotMarried(
+                    SinceDateTimePicker.Value,
+                    PartnersComboBox.SelectedIndex > 0 ?
+                        EnumerablePartners.ElementAt(PartnersComboBox.SelectedIndex - 1)
+                        :
+                        null
+                );
 
                 UpdatePartnersListBox();
                 UpdateStatusesListBox();
-                UpdateButtons();
                 UpdatePartnersComboBox();
+                UpdateButtons();
                 SinceDateTimePicker.Focus();
             }
             catch (Exception ex)

@@ -6,11 +6,11 @@ namespace FamilyTreeTools
     static class Program
     {
         [STAThread]
-        static void Main()
+        static void Main(string[] args)
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MainWindow());
+            Application.Run(new MainWindow(args.Length > 0 ? args[0] : null));
         }
     }
 }

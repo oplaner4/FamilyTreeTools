@@ -67,7 +67,7 @@ namespace FamilyTreeTools
             this.MembersListBox = new System.Windows.Forms.ListBox();
             this.EditSelectedBtn = new System.Windows.Forms.Button();
             this.RemoveSelectedBtn = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
+            this.FamilyNameLabel = new System.Windows.Forms.Label();
             this.ExportTreeDialog = new System.Windows.Forms.SaveFileDialog();
             this.MainMenu.SuspendLayout();
             this.MainStatus.SuspendLayout();
@@ -159,20 +159,20 @@ namespace FamilyTreeTools
             // TreeMenuItemExport
             // 
             this.TreeMenuItemExport.Name = "TreeMenuItemExport";
-            this.TreeMenuItemExport.Size = new System.Drawing.Size(180, 22);
+            this.TreeMenuItemExport.Size = new System.Drawing.Size(130, 22);
             this.TreeMenuItemExport.Text = "Export";
             this.TreeMenuItemExport.Click += new System.EventHandler(this.TreeMenuItemExportOnClick);
             // 
             // animationToolStripMenuItem
             // 
             this.animationToolStripMenuItem.Name = "animationToolStripMenuItem";
-            this.animationToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.animationToolStripMenuItem.Size = new System.Drawing.Size(130, 22);
             this.animationToolStripMenuItem.Text = "Animation";
             // 
             // displayToolStripMenuItem
             // 
             this.displayToolStripMenuItem.Name = "displayToolStripMenuItem";
-            this.displayToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.displayToolStripMenuItem.Size = new System.Drawing.Size(130, 22);
             this.displayToolStripMenuItem.Text = "Display";
             this.displayToolStripMenuItem.Click += new System.EventHandler(this.TreeMenuItemDisplayOnClick);
             // 
@@ -388,22 +388,22 @@ namespace FamilyTreeTools
             this.RemoveSelectedBtn.UseVisualStyleBackColor = true;
             this.RemoveSelectedBtn.Click += new System.EventHandler(this.RemoveSelectedBtnOnClick);
             // 
-            // label1
+            // FamilyNameLabel
             // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(9, 63);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(51, 18);
-            this.label1.TabIndex = 8;
-            this.label1.Text = "Family";
+            this.FamilyNameLabel.AutoSize = true;
+            this.FamilyNameLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.FamilyNameLabel.Location = new System.Drawing.Point(9, 63);
+            this.FamilyNameLabel.Name = "FamilyNameLabel";
+            this.FamilyNameLabel.Size = new System.Drawing.Size(136, 18);
+            this.FamilyNameLabel.TabIndex = 8;
+            this.FamilyNameLabel.Text = "Changes at runtime";
             // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(809, 479);
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.FamilyNameLabel);
             this.Controls.Add(this.RemoveSelectedBtn);
             this.Controls.Add(this.EditSelectedBtn);
             this.Controls.Add(this.MembersListBox);
@@ -412,9 +412,9 @@ namespace FamilyTreeTools
             this.Controls.Add(this.MainMenu);
             this.MainMenuStrip = this.MainMenu;
             this.Name = "MainWindow";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Family tree tools";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainWindowOnClose);
-            this.Load += new System.EventHandler(this.MainWindowOnLoad);
             this.MainMenu.ResumeLayout(false);
             this.MainMenu.PerformLayout();
             this.MainStatus.ResumeLayout(false);
@@ -460,7 +460,7 @@ namespace FamilyTreeTools
         private System.Windows.Forms.ToolStripStatusLabel DateAtValue;
         private System.Windows.Forms.Button EditSelectedBtn;
         private System.Windows.Forms.Button RemoveSelectedBtn;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label FamilyNameLabel;
         private System.Windows.Forms.ToolStripButton ToolbarSettingsEdit;
         private System.Windows.Forms.ToolStripButton ToolbarSaveFile;
         private System.Windows.Forms.ToolStripButton ToolBarAddMember;

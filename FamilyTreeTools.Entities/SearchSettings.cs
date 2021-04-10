@@ -11,8 +11,8 @@ namespace FamilyTreeTools.Entities
         public SearchSettings ()
         {
             CanBeDead = true;
-            IncludePartnerOtherTime = false;
-            CanBeFromFartherGeneration = false;
+            CanBePartnerOtherTime = false;
+            CanBeFromFartherGeneration = true;
             CanBeIllegitimateRelative = false;
             At = DateTime.Now;
         }
@@ -24,12 +24,12 @@ namespace FamilyTreeTools.Entities
         public bool CanBeDead { get; set; }
 
         /// <summary>
-        /// include also members who are partners
-        /// at another time, and are not connected to
-        /// other relatives that time.
+        /// Look also for members who are partners
+        /// at another time and do not have any
+        /// ancestor that time.
         /// </summary>
         [JsonProperty]
-        public bool IncludePartnerOtherTime { get; set; }
+        public bool CanBePartnerOtherTime { get; set; }
 
         /// <summary>
         /// Date which is used to look for relatives.

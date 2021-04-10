@@ -27,7 +27,7 @@ namespace FamilyTreeTools.UnitTesting
                 { /* 1 */
                     new SearchSettings() {
                         At = FamilyGenerator.Kaleb.BirthDate.AddYears(-10),
-                        IncludePartnerOtherTime = true,
+                        CanBePartnerOtherTime = true,
                         CanBeDead = true
                     },
                     new HashSet<Member>() {}
@@ -35,7 +35,7 @@ namespace FamilyTreeTools.UnitTesting
                 { /* 2 */
                     new SearchSettings() {
                         At = FamilyGenerator.Kaleb.BirthDate,
-                        IncludePartnerOtherTime = false,
+                        CanBePartnerOtherTime = false,
                         CanBeDead = true
                     },
                     new HashSet<Member>() {}
@@ -43,7 +43,7 @@ namespace FamilyTreeTools.UnitTesting
                 { /* 3 */
                     new SearchSettings() {
                         At = FamilyGenerator.Kaleb.BirthDate,
-                        IncludePartnerOtherTime = true,
+                        CanBePartnerOtherTime = true,
                         CanBeDead = true
                     },
                     new HashSet<Member>() {
@@ -53,7 +53,7 @@ namespace FamilyTreeTools.UnitTesting
                 { /* 4 */
                     new SearchSettings() {
                         At = FamilyGenerator.Karishma.BirthDate,
-                        IncludePartnerOtherTime = true,
+                        CanBePartnerOtherTime = true,
                         CanBeDead = true
                     },
                     new HashSet<Member>() {
@@ -64,7 +64,7 @@ namespace FamilyTreeTools.UnitTesting
                 { /* 5 */
                     new SearchSettings() {
                         At = FamilyGenerator.KalebWeddingDate,
-                        IncludePartnerOtherTime = false,
+                        CanBePartnerOtherTime = false,
                         CanBeDead = true
                     },
                     new HashSet<Member>() {
@@ -75,7 +75,7 @@ namespace FamilyTreeTools.UnitTesting
                 { /* 6 */
                     new SearchSettings() {
                         At = FamilyGenerator.KalebWeddingDate,
-                        IncludePartnerOtherTime = true,
+                        CanBePartnerOtherTime = true,
                         CanBeDead = true
                     },
                     new HashSet<Member>() {
@@ -89,7 +89,7 @@ namespace FamilyTreeTools.UnitTesting
                 { /* 7 */
                     new SearchSettings() {
                         At = FamilyGenerator.SebastianWithKarishmaDate,
-                        IncludePartnerOtherTime = true,
+                        CanBePartnerOtherTime = true,
                         CanBeDead = true
                     },
                     new HashSet<Member>() {
@@ -103,7 +103,7 @@ namespace FamilyTreeTools.UnitTesting
                 { /* 8 */
                     new SearchSettings() {
                         At = FamilyGenerator.SebastianWithKarishmaDate,
-                        IncludePartnerOtherTime = false,
+                        CanBePartnerOtherTime = false,
                         CanBeDead = true
                     },
                     new HashSet<Member>() {
@@ -114,7 +114,7 @@ namespace FamilyTreeTools.UnitTesting
                 { /* 9 */
                     new SearchSettings() {
                         At = FamilyGenerator.RumaysaWeddingDate,
-                        IncludePartnerOtherTime = true,
+                        CanBePartnerOtherTime = true,
                         CanBeDead = true
                     },
                     new HashSet<Member>() {
@@ -127,7 +127,7 @@ namespace FamilyTreeTools.UnitTesting
                 { /* 10 */
                     new SearchSettings() {
                         At = FamilyGenerator.RumaysaWeddingDate,
-                        IncludePartnerOtherTime = false,
+                        CanBePartnerOtherTime = false,
                         CanBeDead = true
                     },
                     new HashSet<Member>() {
@@ -138,7 +138,7 @@ namespace FamilyTreeTools.UnitTesting
                 { /* 11 */
                     new SearchSettings() {
                         At = FamilyGenerator.HenriettaWeddingDate,
-                        IncludePartnerOtherTime = true,
+                        CanBePartnerOtherTime = true,
                         CanBeDead = true
                     },
                     new HashSet<Member>() {
@@ -154,7 +154,7 @@ namespace FamilyTreeTools.UnitTesting
                 { /* 12 */
                     new SearchSettings() {
                         At = FamilyGenerator.HenriettaWeddingDate,
-                        IncludePartnerOtherTime = false,
+                        CanBePartnerOtherTime = false,
                         CanBeDead = true
                     },
                     new HashSet<Member>() {
@@ -167,7 +167,7 @@ namespace FamilyTreeTools.UnitTesting
                 { /* 13 */
                     new SearchSettings() {
                         At = FamilyGenerator.HenriettaWeddingDate,
-                        IncludePartnerOtherTime = false,
+                        CanBePartnerOtherTime = false,
                         CanBeDead = false
                     },
                     new HashSet<Member>() {
@@ -181,7 +181,7 @@ namespace FamilyTreeTools.UnitTesting
                 { /* 14 */
                     new SearchSettings() {
                         At = FamilyGenerator.HenriettaWeddingDate,
-                        IncludePartnerOtherTime = true,
+                        CanBePartnerOtherTime = true,
                         CanBeDead = false
                     },
                     new HashSet<Member>() {
@@ -198,7 +198,7 @@ namespace FamilyTreeTools.UnitTesting
                 },
                 { /* 15 */
                     new SearchSettings() {
-                        IncludePartnerOtherTime = false,
+                        CanBePartnerOtherTime = false,
                         CanBeDead = true
                     },
                     new HashSet<Member>() {
@@ -210,7 +210,7 @@ namespace FamilyTreeTools.UnitTesting
                 },
                 { /* 16 */
                     new SearchSettings() {
-                        IncludePartnerOtherTime = false,
+                        CanBePartnerOtherTime = false,
                         CanBeDead = false
                     },
                     new HashSet<Member>() {
@@ -223,7 +223,7 @@ namespace FamilyTreeTools.UnitTesting
                 },
                 { /* 17 */
                     new SearchSettings() {
-                        IncludePartnerOtherTime = true,
+                        CanBePartnerOtherTime = true,
                         CanBeDead = true
                     },
                     new HashSet<Member>() {

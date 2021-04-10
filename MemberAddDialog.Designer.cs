@@ -138,6 +138,7 @@ namespace FamilyTreeTools
             this.MaximumSize = new System.Drawing.Size(378, 239);
             this.MinimumSize = new System.Drawing.Size(378, 239);
             this.Name = "MemberAddDialog";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Family tree tools - add member";
             this.ResumeLayout(false);
             this.PerformLayout();

@@ -5,7 +5,6 @@ using FamilyTreeTools.Utilities.Serialize;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using FamilyTreeTools.Utilities.Generators;
 using System.IO;
 
 namespace FamilyTreeTools
@@ -15,14 +14,10 @@ namespace FamilyTreeTools
         public Family SourceFamily { get; set; }
 
         public SearchSettings UseSettings { get; set; }
-
         public string FileFullName { get; set; }
-
         public bool UnsavedChanges { get; set; }
-
         public IEnumerable<Member> EnumerableMembers { get; set; }
-
-        public MainWindow()
+        public MainWindow(string openedFileName = null)
         {
             Icon = Resources.favicon;
             InitializeComponent();
@@ -37,30 +32,23 @@ namespace FamilyTreeTools
                 TreeSerializeHelper.StandardExtension
             );
 
-            // SourceFamily = new Family("family");
-            SourceFamily = FamilyGenerator.GetData();
+            SourceFamily = new Family("Unsaved family");
             UseSettings = new SearchSettings();
+
+            FileFullName = openedFileName;
+
+            if (openedFileName != null)
+            {
+                LoadFamily();
+            }
+
             UpdateUI();
-        }
+            UpdateUIMembersListBox();
 
-        private void MainWindowOnLoad(object sender, EventArgs e)
-        {
-            /*Family fieldFamily = FamilyGenerator.GetData();
-            Tree fieldFamilyTree = new Tree(fieldFamily);
-
-            familyTree.BeginUpdate();
-            familyTree.Nodes.Add("Parent");
-            familyTree.Nodes[0].Nodes.Add("Child 1");
-            familyTree.Nodes[0].Nodes.Add("Child 2");
-            familyTree.Nodes[0].Nodes[1].Nodes.Add("Grandchild");
-            familyTree.Nodes[0].Nodes[1].Nodes[0].Nodes.Add("Great Grandchild");
-            familyTree.EndUpdate();*/
         }
 
         private void UpdateUI()
         {
-            UpdateUIMembersListBox();
-
             if (SourceFamily != null)
             {
                 FileMenuItemSaveAs.Enabled = true;
@@ -68,6 +56,12 @@ namespace FamilyTreeTools
 
                 DateAtValue.Text = UseSettings.At.ToString("dd/MM/yyyy");
             }
+
+            FamilyNameLabel.Text = SourceFamily.Name;
+            Text = string.Format("Family tree tools - {0}{1}",
+                UnsavedChanges ? "*" : string.Empty,
+                SourceFamily.Name
+            );
         }
 
         private void UpdateUIMembersListBox()
@@ -92,24 +86,29 @@ namespace FamilyTreeTools
             RemoveSelectedBtn.Enabled = false;
         }
 
+        private void LoadFamily()
+        {
+            Family loadedFamily = new FamilySerializeHelper(FileFullName).Load();
+
+            if (loadedFamily == null)
+            {
+                new ValidationFailedDialog("Unable to load family. The file might be damaged.").ShowDialog();
+            }
+            else
+            {
+                SourceFamily = loadedFamily;
+                UnsavedChanges = false;
+                UpdateUI();
+                UpdateUIMembersListBox();
+            }
+        }
+
         private void FileMenuItemOpenOnClick(object sender, EventArgs e)
         {
             if (HandleUnsavedChanges() && OpenFileDialog.ShowDialog() == DialogResult.OK)
             {
                 FileFullName = OpenFileDialog.FileName;
-
-                Family loadedFamily = new FamilySerializeHelper(FileFullName).Load();
-
-                if (loadedFamily == null)
-                {
-                    new ValidationFailedDialog("Unable to load family. The file might be damaged.").ShowDialog();
-                }
-                else
-                {
-                    SourceFamily = loadedFamily;
-                    UpdateUI();
-                    UnsavedChanges = false;
-                }
+                LoadFamily();
             }
         }
 
@@ -123,6 +122,7 @@ namespace FamilyTreeTools
             {
                 new FamilySerializeHelper(FileFullName).Save(SourceFamily);
                 UnsavedChanges = false;
+                UpdateUI();
             }
         }
 
@@ -135,8 +135,22 @@ namespace FamilyTreeTools
         {
             if (SaveAsFileDialog.ShowDialog() == DialogResult.OK)
             {
-                SourceFamily.Name = Path.GetFileNameWithoutExtension(SaveAsFileDialog.FileName);
+                string sourceFamilyNameBefore = SourceFamily.Name;
+                SourceFamily.Name = Path.GetFileNameWithoutExtension(
+                    SaveAsFileDialog.FileName
+                );
                 new FamilySerializeHelper(SaveAsFileDialog.FileName).Save(SourceFamily);
+                if (FileFullName == null)
+                {
+                    SourceFamily.Name = Path.GetFileNameWithoutExtension(
+                        SaveAsFileDialog.FileName
+                    );
+                }
+                else
+                {
+                    SourceFamily.Name = sourceFamilyNameBefore;
+                }
+
                 UnsavedChanges = false;
                 UpdateUI();
             };
@@ -150,6 +164,7 @@ namespace FamilyTreeTools
                 SourceFamily.AddMember(dialog.OutMember);
                 UnsavedChanges = true;
                 UpdateUI();
+                UpdateUIMembersListBox();
             };
         }
 
@@ -209,7 +224,7 @@ namespace FamilyTreeTools
             };
         }
 
-        private void EditMember()
+        private void EditSelectedMember()
         {
             UsingSelectedMember(m =>
             {
@@ -221,18 +236,19 @@ namespace FamilyTreeTools
                 {
                     UnsavedChanges = true;
                     RemoveSelectedBtn.Enabled = SourceFamily.CanBeRemoved(m);
+                    UpdateUI();
                 }
             });
         }
 
         private void MembersListBoxOnDoubleClick(object sender, EventArgs e)
         {
-            EditMember();
+            EditSelectedMember();
         }
 
         private void EditSelectedBtnOnClick(object sender, EventArgs e)
         {
-            EditMember();
+            EditSelectedMember();
         }
 
         private void RemoveSelectedBtnOnClick(object sender, EventArgs e)
@@ -249,6 +265,7 @@ namespace FamilyTreeTools
                     SourceFamily.RemoveMember(m);
                     UnsavedChanges = true;
                     UpdateUI();
+                    UpdateUIMembersListBox();
                 }
             });
         }
@@ -269,7 +286,7 @@ namespace FamilyTreeTools
             }
             else if (e.KeyCode == Keys.Enter)
             {
-                EditMember();
+                EditSelectedMember();
             }
         }
 
@@ -287,11 +304,14 @@ namespace FamilyTreeTools
         {
             if (SaveAsFileDialog.ShowDialog() == DialogResult.OK)
             {
-                SourceFamily = new Family("family");
+                SourceFamily = new Family(
+                    Path.GetFileNameWithoutExtension(SaveAsFileDialog.FileName)
+                );
                 new FamilySerializeHelper(SaveAsFileDialog.FileName).Save(SourceFamily);
                 FileFullName = SaveAsFileDialog.FileName;
                 UnsavedChanges = false;
                 UpdateUI();
+                UpdateUIMembersListBox();
             };
         }
 

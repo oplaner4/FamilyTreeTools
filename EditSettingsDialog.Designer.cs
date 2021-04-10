@@ -91,7 +91,7 @@ namespace FamilyTreeTools
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(45, 112);
+            this.label2.Location = new System.Drawing.Point(45, 117);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(187, 16);
             this.label2.TabIndex = 8;
@@ -100,7 +100,7 @@ namespace FamilyTreeTools
             // CanBeFromFartherGenerationValue
             // 
             this.CanBeFromFartherGenerationValue.AutoSize = true;
-            this.CanBeFromFartherGenerationValue.Location = new System.Drawing.Point(260, 114);
+            this.CanBeFromFartherGenerationValue.Location = new System.Drawing.Point(260, 119);
             this.CanBeFromFartherGenerationValue.Name = "CanBeFromFartherGenerationValue";
             this.CanBeFromFartherGenerationValue.Size = new System.Drawing.Size(15, 14);
             this.CanBeFromFartherGenerationValue.TabIndex = 7;
@@ -110,7 +110,7 @@ namespace FamilyTreeTools
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(49, 144);
+            this.label3.Location = new System.Drawing.Point(45, 152);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(183, 16);
             this.label3.TabIndex = 10;
@@ -119,7 +119,7 @@ namespace FamilyTreeTools
             // CanBeIllegitimateRelativeValue
             // 
             this.CanBeIllegitimateRelativeValue.AutoSize = true;
-            this.CanBeIllegitimateRelativeValue.Location = new System.Drawing.Point(260, 147);
+            this.CanBeIllegitimateRelativeValue.Location = new System.Drawing.Point(260, 152);
             this.CanBeIllegitimateRelativeValue.Name = "CanBeIllegitimateRelativeValue";
             this.CanBeIllegitimateRelativeValue.Size = new System.Drawing.Size(15, 14);
             this.CanBeIllegitimateRelativeValue.TabIndex = 9;
@@ -139,16 +139,16 @@ namespace FamilyTreeTools
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(54, 175);
+            this.label5.Location = new System.Drawing.Point(42, 186);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(178, 16);
+            this.label5.Size = new System.Drawing.Size(186, 16);
             this.label5.TabIndex = 14;
-            this.label5.Text = "Include partners at other time";
+            this.label5.Text = "Can be partner at another time";
             // 
             // IncludePartnersOtherTimeValue
             // 
             this.IncludePartnersOtherTimeValue.AutoSize = true;
-            this.IncludePartnersOtherTimeValue.Location = new System.Drawing.Point(260, 177);
+            this.IncludePartnersOtherTimeValue.Location = new System.Drawing.Point(260, 185);
             this.IncludePartnersOtherTimeValue.Name = "IncludePartnersOtherTimeValue";
             this.IncludePartnersOtherTimeValue.Size = new System.Drawing.Size(15, 14);
             this.IncludePartnersOtherTimeValue.TabIndex = 13;
@@ -173,7 +173,7 @@ namespace FamilyTreeTools
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(282, 115);
+            this.label7.Location = new System.Drawing.Point(282, 120);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(238, 13);
             this.label7.TabIndex = 17;
@@ -182,7 +182,7 @@ namespace FamilyTreeTools
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(282, 147);
+            this.label8.Location = new System.Drawing.Point(282, 152);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(209, 13);
             this.label8.TabIndex = 18;
@@ -200,11 +200,11 @@ namespace FamilyTreeTools
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(282, 178);
+            this.label10.Location = new System.Drawing.Point(282, 186);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(163, 13);
+            this.label10.Size = new System.Drawing.Size(111, 13);
             this.label10.TabIndex = 20;
-            this.label10.Text = "(not connected to other relatives)";
+            this.label10.Text = "(without any ancestor)";
             // 
             // EditSettingsDialog
             // 
@@ -230,6 +230,7 @@ namespace FamilyTreeTools
             this.Controls.Add(this.button1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Name = "EditSettingsDialog";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Family tree tools - edit settings";
             this.ResumeLayout(false);
             this.PerformLayout();

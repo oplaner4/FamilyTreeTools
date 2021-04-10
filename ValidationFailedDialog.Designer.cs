@@ -65,6 +65,7 @@ namespace FamilyTreeTools
             this.Controls.Add(this.button2);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Name = "ValidationFailedDialog";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Validation failed";
             this.ResumeLayout(false);
             this.PerformLayout();

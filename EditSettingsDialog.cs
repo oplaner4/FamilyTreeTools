@@ -24,7 +24,7 @@ namespace FamilyTreeTools
             CanBeFromFartherGenerationValue.Checked = Settings.CanBeFromFartherGeneration;
             CanBeIllegitimateRelativeValue.Checked = Settings.CanBeIllegitimateRelative;
             AtDatetimePicker.Value = Settings.At;
-            IncludePartnersOtherTimeValue.Checked = Settings.IncludePartnerOtherTime;
+            IncludePartnersOtherTimeValue.Checked = Settings.CanBePartnerOtherTime;
         }
 
         private void SaveOnClick(object sender, EventArgs e)
@@ -33,7 +33,7 @@ namespace FamilyTreeTools
             Settings.CanBeDead = CanBeDeadValue.Checked;
             Settings.CanBeFromFartherGeneration = CanBeFromFartherGenerationValue.Checked;
             Settings.CanBeIllegitimateRelative = CanBeIllegitimateRelativeValue.Checked;
-            Settings.IncludePartnerOtherTime = IncludePartnersOtherTimeValue.Checked;
+            Settings.CanBePartnerOtherTime = IncludePartnersOtherTimeValue.Checked;
 
             DialogResult = DialogResult.OK;
         }

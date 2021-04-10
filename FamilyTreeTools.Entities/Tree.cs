@@ -16,10 +16,17 @@ namespace FamilyTreeTools.Entities
 
         private IEnumerable<Member> UseChildren(Node node)
         {
-            return node.Key == Root.Key ?
+            bool canBeFromFartherGeneration = Settings.CanBeFromFartherGeneration;
+            Settings.CanBeFromFartherGeneration = false;
+
+            IEnumerable<Member> result = node.Key == Root.Key ?
                 Family.GetRootAncestors(Settings)
                 :
                 Family.Members[node.Key].Refs.GetDescendants(Settings);
+
+            Settings.CanBeFromFartherGeneration = canBeFromFartherGeneration;
+
+            return result;
         }
 
         private Tree UpdatePartner(Node node)
@@ -44,14 +51,10 @@ namespace FamilyTreeTools.Entities
 
         public Tree Build()
         {
-            bool canBeFromFartherGeneration = Settings.CanBeFromFartherGeneration;
-            Settings.CanBeFromFartherGeneration = false;
-
             Seen = new HashSet<Guid>();
             Root = new Node(Guid.Empty, Family.Name);
             BuildRecurrent(Root);
 
-            Settings.CanBeFromFartherGeneration = canBeFromFartherGeneration;
             return this;
         }
 
@@ -73,7 +76,11 @@ namespace FamilyTreeTools.Entities
                     );
                     actual.AddChild(childNode);
                     Seen.Add(child.Id);
-                    BuildRecurrent(childNode).UpdatePartner(childNode);
+                    
+                    if (Settings.CanBeFromFartherGeneration)
+                    {
+                        BuildRecurrent(childNode).UpdatePartner(childNode);
+                    }
                 }
             }
 

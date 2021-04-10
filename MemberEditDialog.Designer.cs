@@ -90,7 +90,7 @@ namespace FamilyTreeTools
             // PartnersComboBox
             // 
             this.PartnersComboBox.FormattingEnabled = true;
-            this.PartnersComboBox.Location = new System.Drawing.Point(669, 316);
+            this.PartnersComboBox.Location = new System.Drawing.Point(669, 313);
             this.PartnersComboBox.Name = "PartnersComboBox";
             this.PartnersComboBox.Size = new System.Drawing.Size(189, 21);
             this.PartnersComboBox.TabIndex = 4;
@@ -357,6 +357,7 @@ namespace FamilyTreeTools
             this.Controls.Add(this.PartnerListBox);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Name = "MemberEditDialog";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Family tree tools - edit member";
             this.ResumeLayout(false);
             this.PerformLayout();
