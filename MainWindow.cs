@@ -318,10 +318,23 @@ namespace FamilyTreeTools
         private void TreeMenuItemDisplayOnClick(object sender, EventArgs e)
         {
             TreeDisplayDialog dialog = new TreeDisplayDialog(
-                new Tree(SourceFamily, UseSettings).Build()
+                SourceFamily, UseSettings
             );
 
             if (dialog.ShowDialog() == DialogResult.OK) {
+
+            };
+        }
+
+        private void TreeMenuItemAnimationOnClick(object sender, EventArgs e)
+        {
+            TreeDisplayDialog dialog = new TreeDisplayDialog(
+                SourceFamily, UseSettings,
+                true
+            );
+
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
 
             };
         }

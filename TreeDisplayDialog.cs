@@ -10,16 +10,66 @@ namespace FamilyTreeTools
 {
     public partial class TreeDisplayDialog : Form
     {
-        public TreeDisplayDialog(Tree sourceTree)
+        public bool Animation { get; private set; }
+
+        public DateTime AnimationEndDateTime { get; private set; }
+
+        private Timer GraphUpdateTimer { get; set; }
+
+        public TreeDisplayDialog(Family sourceFamily, SearchSettings sourceSettings, bool animation = false)
         {
             InitializeComponent();
             Icon = Resources.favicon;
-            SourceTree = sourceTree;
+
+            SourceFamily = sourceFamily;
+            Animation = animation;
+            SourceSettings = sourceSettings;
 
             Initialize();
+
+            if (Animation)
+            {
+                SourceSettings = new SearchSettings()
+                {
+                    CanBeDead = sourceSettings.CanBeDead,
+                    CanBeFromFartherGeneration = sourceSettings.CanBeFromFartherGeneration,
+                    CanBeIllegitimateRelative = sourceSettings.CanBeIllegitimateRelative,
+                    CanBePartnerOtherTime = sourceSettings.CanBePartnerOtherTime,
+                    At = sourceSettings.At,
+                };
+
+                GraphUpdateTimer = new Timer();
+                GraphUpdateTimer.Tick += new EventHandler(OnGraphUpdateIntervalElapsed);
+                GraphUpdateTimer.Interval = (int)AnimationInterval.Value * 1000;
+
+                AnimationEndDateTime = DateTime.Now;
+                GraphUpdateTimer.Start();
+            }
         }
+
+        private void OnGraphUpdateIntervalElapsed(Object _, EventArgs __)
+        {
+            DateTime newAt = SourceSettings.At.Add(new TimeSpan((int)AnimationAddDays.Value, 0, 0, 0));
+
+            if (newAt > AnimationEndDateTime)
+            {
+                SourceSettings.At = AnimationEndDateTime;
+                Animation = false;
+                GraphUpdateTimer.Stop();
+            }
+            else
+            {
+                SourceSettings.At = newAt;
+            }
+
+            UpdateUI();
+            UpdateGraph();
+        }
+
         private void InitializeGraph()
         {
+            SourceTree = new Tree(SourceFamily, SourceSettings).Build();
+
             TreeGraph = new Graph("tree chart")
             {
                 Directed = true
@@ -33,6 +83,11 @@ namespace FamilyTreeTools
             root.Attr.FillColor = Color.SaddleBrown;
             root.Attr.Shape = Shape.Box;
             root.Attr.LabelMargin = 10;
+        }
+
+        private void UpdateUI()
+        {
+            AtLabelValue.Text = SourceSettings.At.ToString("dd/MM/yyyy");
         }
 
         private void Initialize()
@@ -51,6 +106,7 @@ namespace FamilyTreeTools
 
             Controls.Add(TreeViewer);
             Size = TreeViewer.Size;
+            UpdateUI();
         }
 
         private Edge CreateEdge(Guid source, Guid target, string labelText)
@@ -64,6 +120,8 @@ namespace FamilyTreeTools
         public Tree SourceTree { get; private set; }
         private Graph TreeGraph { get; set; }
         private GViewer TreeViewer { get; set; }
+        public Family SourceFamily { get; private set; }
+        public SearchSettings SourceSettings { get; private set; }
 
         public void SetNode(Entities.Node node)
         {
@@ -151,6 +209,19 @@ namespace FamilyTreeTools
         private void WithLabelsCheckboxOnChange(object sender, EventArgs e)
         {
             UpdateGraph();
+        }
+
+        private void TreeDisplayDialogOnClose(object sender, FormClosedEventArgs e)
+        {
+            if (Animation)
+            {
+                GraphUpdateTimer.Dispose();
+            }
+        }
+
+        private void AnimationIntervalOnChange(object sender, EventArgs e)
+        {
+            GraphUpdateTimer.Interval = (int)AnimationInterval.Value * 1000;
         }
     }
 }

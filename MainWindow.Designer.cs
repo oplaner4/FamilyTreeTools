@@ -40,7 +40,7 @@ namespace FamilyTreeTools
             this.MembersMenuItemAdd = new System.Windows.Forms.ToolStripMenuItem();
             this.TreeMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.TreeMenuItemExport = new System.Windows.Forms.ToolStripMenuItem();
-            this.animationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.TreeMenuItemAnimation = new System.Windows.Forms.ToolStripMenuItem();
             this.displayToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.SettingsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.SettingsMenuItemEdit = new System.Windows.Forms.ToolStripMenuItem();
@@ -150,7 +150,7 @@ namespace FamilyTreeTools
             // 
             this.TreeMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.TreeMenuItemExport,
-            this.animationToolStripMenuItem,
+            this.TreeMenuItemAnimation,
             this.displayToolStripMenuItem});
             this.TreeMenuItem.Name = "TreeMenuItem";
             this.TreeMenuItem.Size = new System.Drawing.Size(40, 20);
@@ -159,20 +159,21 @@ namespace FamilyTreeTools
             // TreeMenuItemExport
             // 
             this.TreeMenuItemExport.Name = "TreeMenuItemExport";
-            this.TreeMenuItemExport.Size = new System.Drawing.Size(130, 22);
+            this.TreeMenuItemExport.Size = new System.Drawing.Size(180, 22);
             this.TreeMenuItemExport.Text = "Export";
             this.TreeMenuItemExport.Click += new System.EventHandler(this.TreeMenuItemExportOnClick);
             // 
-            // animationToolStripMenuItem
+            // TreeMenuItemAnimation
             // 
-            this.animationToolStripMenuItem.Name = "animationToolStripMenuItem";
-            this.animationToolStripMenuItem.Size = new System.Drawing.Size(130, 22);
-            this.animationToolStripMenuItem.Text = "Animation";
+            this.TreeMenuItemAnimation.Name = "TreeMenuItemAnimation";
+            this.TreeMenuItemAnimation.Size = new System.Drawing.Size(180, 22);
+            this.TreeMenuItemAnimation.Text = "Animation";
+            this.TreeMenuItemAnimation.Click += new System.EventHandler(this.TreeMenuItemAnimationOnClick);
             // 
             // displayToolStripMenuItem
             // 
             this.displayToolStripMenuItem.Name = "displayToolStripMenuItem";
-            this.displayToolStripMenuItem.Size = new System.Drawing.Size(130, 22);
+            this.displayToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.displayToolStripMenuItem.Text = "Display";
             this.displayToolStripMenuItem.Click += new System.EventHandler(this.TreeMenuItemDisplayOnClick);
             // 
@@ -438,7 +439,7 @@ namespace FamilyTreeTools
         private System.Windows.Forms.ToolStripMenuItem TreeMenuItemExport;
         private System.Windows.Forms.OpenFileDialog OpenFileDialog;
         private System.Windows.Forms.SaveFileDialog SaveAsFileDialog;
-        private System.Windows.Forms.ToolStripMenuItem animationToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem TreeMenuItemAnimation;
         private System.Windows.Forms.StatusStrip MainStatus;
         private System.Windows.Forms.ToolStrip MainToolbar;
         private System.Windows.Forms.ToolStripMenuItem displayToolStripMenuItem;
