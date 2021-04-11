@@ -13,7 +13,7 @@
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
     <IsWebBootstrapper>false</IsWebBootstrapper>
-    <PublishUrl>C:\Users\oplan\Documents\škola\FI\c#NET\samostatnyProjekt\FamilyTreeTools\Releases\</PublishUrl>
+    <PublishUrl>C:\Users\oplan\Documents\škola\FI\c#NET\samostatnyProjekt\FamilyTreeTools\Releases\1.0\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
     <UpdateEnabled>false</UpdateEnabled>
@@ -71,7 +71,7 @@
     <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>40F77F56C30141E1CB9908F3CDE1F51EF2ED5A61</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>21EB6FC01B80DAD31B82ED6B52DAFCED4008ABA9</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestKeyFile>
