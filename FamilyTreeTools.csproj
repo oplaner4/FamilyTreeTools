@@ -117,16 +117,16 @@
     <Compile Include="MainWindow.Designer.cs">
       <DependentUpon>MainWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="MemberAddDialog.cs">
+    <Compile Include="Member\MemberAddDialog.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MemberAddDialog.Designer.cs">
+    <Compile Include="Member\MemberAddDialog.Designer.cs">
       <DependentUpon>MemberAddDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="MemberEditDialog.cs">
+    <Compile Include="Member\MemberEditDialog.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MemberEditDialog.Designer.cs">
+    <Compile Include="Member\MemberEditDialog.Designer.cs">
       <DependentUpon>MemberEditDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
@@ -161,10 +161,10 @@
     <EmbeddedResource Include="MainWindow.resx">
       <DependentUpon>MainWindow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="MemberAddDialog.resx">
+    <EmbeddedResource Include="Member\MemberAddDialog.resx">
       <DependentUpon>MemberAddDialog.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="MemberEditDialog.resx">
+    <EmbeddedResource Include="Member\MemberEditDialog.resx">
       <DependentUpon>MemberEditDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
