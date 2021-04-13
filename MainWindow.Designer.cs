@@ -38,17 +38,17 @@ namespace FamilyTreeTools
             this.FileMenuItemSaveAs = new System.Windows.Forms.ToolStripMenuItem();
             this.MembersMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MembersMenuItemAdd = new System.Windows.Forms.ToolStripMenuItem();
-            this.TreeMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.TreeMenuItemExport = new System.Windows.Forms.ToolStripMenuItem();
-            this.TreeMenuItemAnimation = new System.Windows.Forms.ToolStripMenuItem();
-            this.displayToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.SettingsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.SettingsMenuItemEdit = new System.Windows.Forms.ToolStripMenuItem();
+            this.TreeMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.TreeMenuItemExport = new System.Windows.Forms.ToolStripMenuItem();
+            this.TreeMenuItemAnimate = new System.Windows.Forms.ToolStripMenuItem();
+            this.displayToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.OpenFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.SaveAsFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.MainStatus = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
-            this.toolStripStatusLabel3 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.TotalMembersValue = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabel7 = new System.Windows.Forms.ToolStripStatusLabel();
             this.DateAtValue = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabel5 = new System.Windows.Forms.ToolStripStatusLabel();
@@ -64,11 +64,14 @@ namespace FamilyTreeTools
             this.ToolbarSettingsEdit = new System.Windows.Forms.ToolStripButton();
             this.ToolbarSaveFile = new System.Windows.Forms.ToolStripButton();
             this.ToolBarAddMember = new System.Windows.Forms.ToolStripButton();
+            this.ToolBarDisplayTree = new System.Windows.Forms.ToolStripButton();
             this.MembersListBox = new System.Windows.Forms.ListBox();
             this.EditSelectedBtn = new System.Windows.Forms.Button();
             this.RemoveSelectedBtn = new System.Windows.Forms.Button();
             this.FamilyNameLabel = new System.Windows.Forms.Label();
             this.ExportTreeDialog = new System.Windows.Forms.SaveFileDialog();
+            this.toolStripStatusLabel3 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.SiblingsCountValue = new System.Windows.Forms.ToolStripStatusLabel();
             this.MainMenu.SuspendLayout();
             this.MainStatus.SuspendLayout();
             this.MainToolbar.SuspendLayout();
@@ -79,8 +82,8 @@ namespace FamilyTreeTools
             this.MainMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.FileMenuItem,
             this.MembersMenuItem,
-            this.TreeMenuItem,
-            this.SettingsMenuItem});
+            this.SettingsMenuItem,
+            this.TreeMenuItem});
             this.MainMenu.Location = new System.Drawing.Point(0, 0);
             this.MainMenu.Name = "MainMenu";
             this.MainMenu.Size = new System.Drawing.Size(809, 24);
@@ -146,37 +149,6 @@ namespace FamilyTreeTools
             this.MembersMenuItemAdd.Text = "Add";
             this.MembersMenuItemAdd.Click += new System.EventHandler(this.MembersMenuItemAddOnClick);
             // 
-            // TreeMenuItem
-            // 
-            this.TreeMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.TreeMenuItemExport,
-            this.TreeMenuItemAnimation,
-            this.displayToolStripMenuItem});
-            this.TreeMenuItem.Name = "TreeMenuItem";
-            this.TreeMenuItem.Size = new System.Drawing.Size(40, 20);
-            this.TreeMenuItem.Text = "Tree";
-            // 
-            // TreeMenuItemExport
-            // 
-            this.TreeMenuItemExport.Name = "TreeMenuItemExport";
-            this.TreeMenuItemExport.Size = new System.Drawing.Size(180, 22);
-            this.TreeMenuItemExport.Text = "Export";
-            this.TreeMenuItemExport.Click += new System.EventHandler(this.TreeMenuItemExportOnClick);
-            // 
-            // TreeMenuItemAnimation
-            // 
-            this.TreeMenuItemAnimation.Name = "TreeMenuItemAnimation";
-            this.TreeMenuItemAnimation.Size = new System.Drawing.Size(180, 22);
-            this.TreeMenuItemAnimation.Text = "Animation";
-            this.TreeMenuItemAnimation.Click += new System.EventHandler(this.TreeMenuItemAnimationOnClick);
-            // 
-            // displayToolStripMenuItem
-            // 
-            this.displayToolStripMenuItem.Name = "displayToolStripMenuItem";
-            this.displayToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.displayToolStripMenuItem.Text = "Display";
-            this.displayToolStripMenuItem.Click += new System.EventHandler(this.TreeMenuItemDisplayOnClick);
-            // 
             // SettingsMenuItem
             // 
             this.SettingsMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -192,11 +164,42 @@ namespace FamilyTreeTools
             this.SettingsMenuItemEdit.Text = "Edit";
             this.SettingsMenuItemEdit.Click += new System.EventHandler(this.SettingsMenuItemEditOnClick);
             // 
+            // TreeMenuItem
+            // 
+            this.TreeMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.TreeMenuItemExport,
+            this.TreeMenuItemAnimate,
+            this.displayToolStripMenuItem});
+            this.TreeMenuItem.Name = "TreeMenuItem";
+            this.TreeMenuItem.Size = new System.Drawing.Size(40, 20);
+            this.TreeMenuItem.Text = "Tree";
+            // 
+            // TreeMenuItemExport
+            // 
+            this.TreeMenuItemExport.Name = "TreeMenuItemExport";
+            this.TreeMenuItemExport.Size = new System.Drawing.Size(119, 22);
+            this.TreeMenuItemExport.Text = "Export";
+            this.TreeMenuItemExport.Click += new System.EventHandler(this.TreeMenuItemExportOnClick);
+            // 
+            // TreeMenuItemAnimate
+            // 
+            this.TreeMenuItemAnimate.Name = "TreeMenuItemAnimate";
+            this.TreeMenuItemAnimate.Size = new System.Drawing.Size(119, 22);
+            this.TreeMenuItemAnimate.Text = "Animate";
+            this.TreeMenuItemAnimate.Click += new System.EventHandler(this.TreeMenuItemAnimateOnClick);
+            // 
+            // displayToolStripMenuItem
+            // 
+            this.displayToolStripMenuItem.Name = "displayToolStripMenuItem";
+            this.displayToolStripMenuItem.Size = new System.Drawing.Size(119, 22);
+            this.displayToolStripMenuItem.Text = "Display";
+            this.displayToolStripMenuItem.Click += new System.EventHandler(this.TreeMenuItemDisplayOnClick);
+            // 
             // MainStatus
             // 
             this.MainStatus.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabel1,
-            this.toolStripStatusLabel3,
+            this.TotalMembersValue,
             this.toolStripStatusLabel7,
             this.DateAtValue,
             this.toolStripStatusLabel5,
@@ -207,7 +210,9 @@ namespace FamilyTreeTools
             this.toolStripStatusLabel6,
             this.AncestorsCountValue,
             this.toolStripStatusLabel8,
-            this.DescendantsCountValue});
+            this.DescendantsCountValue,
+            this.toolStripStatusLabel3,
+            this.SiblingsCountValue});
             this.MainStatus.Location = new System.Drawing.Point(0, 455);
             this.MainStatus.Name = "MainStatus";
             this.MainStatus.Size = new System.Drawing.Size(809, 24);
@@ -218,29 +223,29 @@ namespace FamilyTreeTools
             // 
             this.toolStripStatusLabel1.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-            this.toolStripStatusLabel1.Size = new System.Drawing.Size(102, 19);
-            this.toolStripStatusLabel1.Text = "Total members:";
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(41, 19);
+            this.toolStripStatusLabel1.Text = "Total:";
             // 
-            // toolStripStatusLabel3
+            // TotalMembersValue
             // 
-            this.toolStripStatusLabel3.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.toolStripStatusLabel3.Name = "toolStripStatusLabel3";
-            this.toolStripStatusLabel3.Size = new System.Drawing.Size(14, 19);
-            this.toolStripStatusLabel3.Text = "0";
+            this.TotalMembersValue.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.TotalMembersValue.Name = "TotalMembersValue";
+            this.TotalMembersValue.Size = new System.Drawing.Size(14, 19);
+            this.TotalMembersValue.Text = "0";
             // 
             // toolStripStatusLabel7
             // 
             this.toolStripStatusLabel7.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.toolStripStatusLabel7.Name = "toolStripStatusLabel7";
-            this.toolStripStatusLabel7.Size = new System.Drawing.Size(57, 19);
-            this.toolStripStatusLabel7.Text = "    Date:";
+            this.toolStripStatusLabel7.Size = new System.Drawing.Size(73, 19);
+            this.toolStripStatusLabel7.Text = "    Date at:";
             // 
             // DateAtValue
             // 
             this.DateAtValue.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.DateAtValue.Name = "DateAtValue";
-            this.DateAtValue.Size = new System.Drawing.Size(68, 19);
-            this.DateAtValue.Text = "At runtime";
+            this.DateAtValue.Size = new System.Drawing.Size(69, 19);
+            this.DateAtValue.Text = "00.00.0000";
             // 
             // toolStripStatusLabel5
             // 
@@ -265,8 +270,8 @@ namespace FamilyTreeTools
             // toolStripStatusLabel2
             // 
             this.toolStripStatusLabel2.Name = "toolStripStatusLabel2";
-            this.toolStripStatusLabel2.Size = new System.Drawing.Size(89, 19);
-            this.toolStripStatusLabel2.Text = "Children count:";
+            this.toolStripStatusLabel2.Size = new System.Drawing.Size(55, 19);
+            this.toolStripStatusLabel2.Text = "Children:";
             // 
             // ChildrenCountValue
             // 
@@ -279,8 +284,8 @@ namespace FamilyTreeTools
             // toolStripStatusLabel6
             // 
             this.toolStripStatusLabel6.Name = "toolStripStatusLabel6";
-            this.toolStripStatusLabel6.Size = new System.Drawing.Size(93, 19);
-            this.toolStripStatusLabel6.Text = "Ancestors count";
+            this.toolStripStatusLabel6.Size = new System.Drawing.Size(62, 19);
+            this.toolStripStatusLabel6.Text = "Ancestors:";
             // 
             // AncestorsCountValue
             // 
@@ -293,8 +298,8 @@ namespace FamilyTreeTools
             // toolStripStatusLabel8
             // 
             this.toolStripStatusLabel8.Name = "toolStripStatusLabel8";
-            this.toolStripStatusLabel8.Size = new System.Drawing.Size(108, 19);
-            this.toolStripStatusLabel8.Text = "Descendants count";
+            this.toolStripStatusLabel8.Size = new System.Drawing.Size(77, 19);
+            this.toolStripStatusLabel8.Text = "Descendants:";
             // 
             // DescendantsCountValue
             // 
@@ -309,7 +314,8 @@ namespace FamilyTreeTools
             this.MainToolbar.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.ToolbarSettingsEdit,
             this.ToolbarSaveFile,
-            this.ToolBarAddMember});
+            this.ToolBarAddMember,
+            this.ToolBarDisplayTree});
             this.MainToolbar.Location = new System.Drawing.Point(0, 24);
             this.MainToolbar.Name = "MainToolbar";
             this.MainToolbar.Size = new System.Drawing.Size(809, 25);
@@ -348,6 +354,16 @@ namespace FamilyTreeTools
             this.ToolBarAddMember.Text = "toolStripButton1";
             this.ToolBarAddMember.ToolTipText = "Add member";
             this.ToolBarAddMember.Click += new System.EventHandler(this.MembersMenuItemAddOnClick);
+            // 
+            // ToolBarDisplayTree
+            // 
+            this.ToolBarDisplayTree.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.ToolBarDisplayTree.Image = ((System.Drawing.Image)(resources.GetObject("ToolBarDisplayTree.Image")));
+            this.ToolBarDisplayTree.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.ToolBarDisplayTree.Name = "ToolBarDisplayTree";
+            this.ToolBarDisplayTree.Size = new System.Drawing.Size(23, 22);
+            this.ToolBarDisplayTree.Text = "Display tree";
+            this.ToolBarDisplayTree.Click += new System.EventHandler(this.TreeMenuItemDisplayOnClick);
             // 
             // MembersListBox
             // 
@@ -399,6 +415,20 @@ namespace FamilyTreeTools
             this.FamilyNameLabel.TabIndex = 8;
             this.FamilyNameLabel.Text = "Changes at runtime";
             // 
+            // toolStripStatusLabel3
+            // 
+            this.toolStripStatusLabel3.Name = "toolStripStatusLabel3";
+            this.toolStripStatusLabel3.Size = new System.Drawing.Size(51, 19);
+            this.toolStripStatusLabel3.Text = "Siblings:";
+            // 
+            // SiblingsCountValue
+            // 
+            this.SiblingsCountValue.Enabled = false;
+            this.SiblingsCountValue.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.SiblingsCountValue.Name = "SiblingsCountValue";
+            this.SiblingsCountValue.Size = new System.Drawing.Size(12, 19);
+            this.SiblingsCountValue.Text = "-";
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -439,14 +469,14 @@ namespace FamilyTreeTools
         private System.Windows.Forms.ToolStripMenuItem TreeMenuItemExport;
         private System.Windows.Forms.OpenFileDialog OpenFileDialog;
         private System.Windows.Forms.SaveFileDialog SaveAsFileDialog;
-        private System.Windows.Forms.ToolStripMenuItem TreeMenuItemAnimation;
+        private System.Windows.Forms.ToolStripMenuItem TreeMenuItemAnimate;
         private System.Windows.Forms.StatusStrip MainStatus;
         private System.Windows.Forms.ToolStrip MainToolbar;
         private System.Windows.Forms.ToolStripMenuItem displayToolStripMenuItem;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
         private System.Windows.Forms.ToolStripStatusLabel ChildrenCountValue;
         private System.Windows.Forms.ListBox MembersListBox;
-        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel3;
+        private System.Windows.Forms.ToolStripStatusLabel TotalMembersValue;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel2;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel6;
         private System.Windows.Forms.ToolStripStatusLabel AncestorsCountValue;
@@ -467,6 +497,9 @@ namespace FamilyTreeTools
         private System.Windows.Forms.ToolStripButton ToolBarAddMember;
         private System.Windows.Forms.SaveFileDialog ExportTreeDialog;
         private System.Windows.Forms.ToolStripMenuItem FileMenuItemNew;
+        private System.Windows.Forms.ToolStripButton ToolBarDisplayTree;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel3;
+        private System.Windows.Forms.ToolStripStatusLabel SiblingsCountValue;
     }
 }
 

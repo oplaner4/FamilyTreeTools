@@ -10,7 +10,7 @@ namespace FamilyTreeTools
 {
     public partial class TreeDisplayDialog : Form
     {
-        public bool Animation { get; private set; }
+        public DateTime AnimationStartDateTime { get; private set; }
 
         public DateTime AnimationEndDateTime { get; private set; }
 
@@ -22,12 +22,11 @@ namespace FamilyTreeTools
             Icon = Resources.favicon;
 
             SourceFamily = sourceFamily;
-            Animation = animation;
             SourceSettings = sourceSettings;
 
             Initialize();
 
-            if (Animation)
+            if (animation)
             {
                 SourceSettings = new SearchSettings()
                 {
@@ -38,24 +37,27 @@ namespace FamilyTreeTools
                     At = sourceSettings.At,
                 };
 
+
+
                 GraphUpdateTimer = new Timer();
                 GraphUpdateTimer.Tick += new EventHandler(OnGraphUpdateIntervalElapsed);
                 GraphUpdateTimer.Interval = (int)AnimationInterval.Value * 1000;
 
+                AnimationStartDateTime = sourceSettings.At;
                 AnimationEndDateTime = DateTime.Now;
-                GraphUpdateTimer.Start();
+
+                AnimationRunningValue.Checked = true;
             }
         }
 
-        private void OnGraphUpdateIntervalElapsed(Object _, EventArgs __)
+        private void OnGraphUpdateIntervalElapsed(object sender, EventArgs e)
         {
             DateTime newAt = SourceSettings.At.Add(new TimeSpan((int)AnimationAddDays.Value, 0, 0, 0));
 
             if (newAt > AnimationEndDateTime)
             {
-                SourceSettings.At = AnimationEndDateTime;
-                Animation = false;
-                GraphUpdateTimer.Stop();
+                SourceSettings.At = AnimationStartDateTime;
+                AnimationRunningValue.Checked = false;
             }
             else
             {
@@ -75,8 +77,11 @@ namespace FamilyTreeTools
                 Directed = true
             };
             TreeGraph.Attr.AspectRatio = 16 / 10;
+            TreeGraph.CreateGeometryGraph();
 
             Microsoft.Msagl.Drawing.Node root = TreeGraph.AddNode(SourceTree.Root.Key.ToString());
+            TreeGraph.Attr.LayerDirection = LayerDirection.TB;
+
             InitializeData(SourceTree.Root);
             SetNode(SourceTree.Root);
 
@@ -98,11 +103,9 @@ namespace FamilyTreeTools
             {
                 Dock = DockStyle.Fill,
                 Graph = TreeGraph,
-                SaveAsMsaglEnabled = false,
-                BackwardEnabled = false,
-                ForwardEnabled = false,
-                CurrentLayoutMethod = LayoutMethod.UseSettingsOfTheGraph
+                CurrentLayoutMethod = LayoutMethod.UseSettingsOfTheGraph,
             };
+
 
             Controls.Add(TreeViewer);
             Size = TreeViewer.Size;
@@ -167,7 +170,7 @@ namespace FamilyTreeTools
             {
                 foreach (Guid commonChildId in node.CommonChildren)
                 {
-                    Edge e = CreateEdge(
+                    Microsoft.Msagl.Drawing.Edge e = CreateEdge(
                         node.Key, commonChildId, "child"
                     );
                     e.Attr.Color = Color.SandyBrown;
@@ -213,7 +216,7 @@ namespace FamilyTreeTools
 
         private void TreeDisplayDialogOnClose(object sender, FormClosedEventArgs e)
         {
-            if (Animation)
+            if (AnimationRunningValue.Checked)
             {
                 GraphUpdateTimer.Dispose();
             }
@@ -222,6 +225,18 @@ namespace FamilyTreeTools
         private void AnimationIntervalOnChange(object sender, EventArgs e)
         {
             GraphUpdateTimer.Interval = (int)AnimationInterval.Value * 1000;
+        }
+
+        private void AnimationRunningValueOnChange(object sender, EventArgs e)
+        {
+            if (AnimationRunningValue.Checked)
+            {
+                GraphUpdateTimer.Start();
+            }
+            else
+            {
+                GraphUpdateTimer.Stop();
+            }
         }
     }
 }

@@ -25,6 +25,8 @@ namespace FamilyTreeTools
             CanBeIllegitimateRelativeValue.Checked = Settings.CanBeIllegitimateRelative;
             AtDatetimePicker.Value = Settings.At;
             IncludePartnersOtherTimeValue.Checked = Settings.CanBePartnerOtherTime;
+
+            DateUnitComboBox.SelectedIndex = 0;
         }
 
         private void SaveOnClick(object sender, EventArgs e)
@@ -36,6 +38,35 @@ namespace FamilyTreeTools
             Settings.CanBePartnerOtherTime = IncludePartnersOtherTimeValue.Checked;
 
             DialogResult = DialogResult.OK;
+        }
+
+        private DateTime GetNewDateAt (int addVal)
+        {
+            return (DateTime)AtDatetimePicker.Value.GetType().GetMethod(
+                string.Format("Add{0}s", DateUnitComboBox.Items[DateUnitComboBox.SelectedIndex])
+            ).Invoke(AtDatetimePicker.Value, new object[] { addVal });
+        }
+
+        private void DateIncreaseBtnOnClick(object sender, EventArgs e)
+        {
+            DateTime newDate = GetNewDateAt((int)DateChange.Value);
+
+            if (newDate <= AtDatetimePicker.MaxDate)
+            {
+                AtDatetimePicker.Value = newDate;
+            }
+        }
+
+        private void DateDecreaseBtnOnClick(object sender, EventArgs e)
+        {
+
+
+            DateTime newDate = GetNewDateAt(-(int)DateChange.Value);
+
+            if (newDate >= AtDatetimePicker.MinDate)
+            {
+                AtDatetimePicker.Value = newDate;
+            }
         }
     }
 }

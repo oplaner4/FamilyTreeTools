@@ -33,7 +33,7 @@ namespace FamilyTreeTools.Entities
         {
             Member partner = Family.Members[node.Key].Refs.Partner.Value(Settings.At);
 
-            if (partner != null && Seen.Add(partner.Id))
+            if (partner != null && partner.Refs.Parent == null && Seen.Add(partner.Id))
             {
                 node.Partner = new Node(
                     partner.Id,

@@ -307,12 +307,14 @@ namespace FamilyTreeTools
 
                 try
                 {
+                    EnumerableChildren = EnumerableChildren.ToArray();
+
                     foreach (int i in ChooseChildren.CheckedIndices)
                     {
                         if (i >= EnumerableOwnChildren.Count()) {
                             SourceMember.HadChild(EnumerableChildren.ElementAt(
-                                i - EnumerableOwnChildren.Count())
-                            );
+                                i - EnumerableOwnChildren.Count()
+                            ));
                         }
                     }
                 }
@@ -332,6 +334,7 @@ namespace FamilyTreeTools
         private void ChooseChildrenAllOnChange(object sender, EventArgs e)
         {
             UpdateChooseChildren(ChooseChildrenAll.Checked);
+            ChooseChildrenSaveChangesBtn.Enabled = true;
             UpdateButtons();
         }
 

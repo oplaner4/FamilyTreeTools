@@ -319,9 +319,9 @@ namespace FamilyTreeTools
             this.label9.AutoSize = true;
             this.label9.Location = new System.Drawing.Point(9, 438);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(216, 13);
+            this.label9.Size = new System.Drawing.Size(171, 13);
             this.label9.TabIndex = 47;
-            this.label9.Text = "(Spouse/common children are set implicitely)";
+            this.label9.Text = "(Spouse children are set implicitely)";
             // 
             // MemberEditDialog
             // 

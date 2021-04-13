@@ -84,6 +84,7 @@ namespace FamilyTreeTools
 
             EditSelectedBtn.Enabled = false;
             RemoveSelectedBtn.Enabled = false;
+            TotalMembersValue.Text = EnumerableMembers.Count().ToString();
         }
 
         private void LoadFamily()
@@ -192,10 +193,12 @@ namespace FamilyTreeTools
                     DescendantsCountValue.Enabled = true;
                     AncestorsCountValue.Enabled = true;
                     ChildrenCountValue.Enabled = true;
+                    SiblingsCountValue.Enabled = true;
 
                     DescendantsCountValue.Text = m.Refs.GetDescendants(UseSettings).Count().ToString();
                     AncestorsCountValue.Text = m.Refs.GetAncestors(UseSettings).Count().ToString();
                     ChildrenCountValue.Text = m.Refs.Children.Count().ToString();
+                    SiblingsCountValue.Text = m.Refs.GetSiblings(UseSettings).Count().ToString();
                 }
                 else
                 {
@@ -207,6 +210,7 @@ namespace FamilyTreeTools
                     DescendantsCountValue.Text = "-";
                     AncestorsCountValue.Text = "-";
                     ChildrenCountValue.Text = "-";
+                    SiblingsCountValue.Text = "-";
                 }
 
                 RemoveSelectedBtn.Enabled = SourceFamily.CanBeRemoved(selectedMember);
@@ -326,7 +330,7 @@ namespace FamilyTreeTools
             };
         }
 
-        private void TreeMenuItemAnimationOnClick(object sender, EventArgs e)
+        private void TreeMenuItemAnimateOnClick(object sender, EventArgs e)
         {
             TreeDisplayDialog dialog = new TreeDisplayDialog(
                 SourceFamily, UseSettings,
