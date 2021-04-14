@@ -213,7 +213,7 @@ namespace FamilyTreeTools
             // 
             // DateIncreaseBtn
             // 
-            this.DateIncreaseBtn.Location = new System.Drawing.Point(551, 22);
+            this.DateIncreaseBtn.Location = new System.Drawing.Point(551, 53);
             this.DateIncreaseBtn.Name = "DateIncreaseBtn";
             this.DateIncreaseBtn.Size = new System.Drawing.Size(20, 20);
             this.DateIncreaseBtn.TabIndex = 21;
@@ -223,7 +223,7 @@ namespace FamilyTreeTools
             // 
             // DateDecreaseBtn
             // 
-            this.DateDecreaseBtn.Location = new System.Drawing.Point(551, 42);
+            this.DateDecreaseBtn.Location = new System.Drawing.Point(551, 33);
             this.DateDecreaseBtn.Name = "DateDecreaseBtn";
             this.DateDecreaseBtn.Size = new System.Drawing.Size(20, 20);
             this.DateDecreaseBtn.TabIndex = 22;
@@ -233,7 +233,7 @@ namespace FamilyTreeTools
             // 
             // DateChange
             // 
-            this.DateChange.Location = new System.Drawing.Point(446, 34);
+            this.DateChange.Location = new System.Drawing.Point(450, 34);
             this.DateChange.Maximum = new decimal(new int[] {
             10,
             0,

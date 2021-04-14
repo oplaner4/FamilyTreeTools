@@ -60,6 +60,8 @@ namespace FamilyTreeTools
             this.AncestorsCountValue = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabel8 = new System.Windows.Forms.ToolStripStatusLabel();
             this.DescendantsCountValue = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripStatusLabel3 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.SiblingsCountValue = new System.Windows.Forms.ToolStripStatusLabel();
             this.MainToolbar = new System.Windows.Forms.ToolStrip();
             this.ToolbarSettingsEdit = new System.Windows.Forms.ToolStripButton();
             this.ToolbarSaveFile = new System.Windows.Forms.ToolStripButton();
@@ -70,8 +72,6 @@ namespace FamilyTreeTools
             this.RemoveSelectedBtn = new System.Windows.Forms.Button();
             this.FamilyNameLabel = new System.Windows.Forms.Label();
             this.ExportTreeDialog = new System.Windows.Forms.SaveFileDialog();
-            this.toolStripStatusLabel3 = new System.Windows.Forms.ToolStripStatusLabel();
-            this.SiblingsCountValue = new System.Windows.Forms.ToolStripStatusLabel();
             this.MainMenu.SuspendLayout();
             this.MainStatus.SuspendLayout();
             this.MainToolbar.SuspendLayout();
@@ -160,7 +160,7 @@ namespace FamilyTreeTools
             // SettingsMenuItemEdit
             // 
             this.SettingsMenuItemEdit.Name = "SettingsMenuItemEdit";
-            this.SettingsMenuItemEdit.Size = new System.Drawing.Size(94, 22);
+            this.SettingsMenuItemEdit.Size = new System.Drawing.Size(180, 22);
             this.SettingsMenuItemEdit.Text = "Edit";
             this.SettingsMenuItemEdit.Click += new System.EventHandler(this.SettingsMenuItemEditOnClick);
             // 
@@ -177,21 +177,23 @@ namespace FamilyTreeTools
             // TreeMenuItemExport
             // 
             this.TreeMenuItemExport.Name = "TreeMenuItemExport";
-            this.TreeMenuItemExport.Size = new System.Drawing.Size(119, 22);
+            this.TreeMenuItemExport.Size = new System.Drawing.Size(180, 22);
             this.TreeMenuItemExport.Text = "Export";
+            this.TreeMenuItemExport.ToolTipText = "in JSON format";
             this.TreeMenuItemExport.Click += new System.EventHandler(this.TreeMenuItemExportOnClick);
             // 
             // TreeMenuItemAnimate
             // 
             this.TreeMenuItemAnimate.Name = "TreeMenuItemAnimate";
-            this.TreeMenuItemAnimate.Size = new System.Drawing.Size(119, 22);
+            this.TreeMenuItemAnimate.Size = new System.Drawing.Size(180, 22);
             this.TreeMenuItemAnimate.Text = "Animate";
+            this.TreeMenuItemAnimate.ToolTipText = "from the date determined by settings";
             this.TreeMenuItemAnimate.Click += new System.EventHandler(this.TreeMenuItemAnimateOnClick);
             // 
             // displayToolStripMenuItem
             // 
             this.displayToolStripMenuItem.Name = "displayToolStripMenuItem";
-            this.displayToolStripMenuItem.Size = new System.Drawing.Size(119, 22);
+            this.displayToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.displayToolStripMenuItem.Text = "Display";
             this.displayToolStripMenuItem.Click += new System.EventHandler(this.TreeMenuItemDisplayOnClick);
             // 
@@ -309,6 +311,20 @@ namespace FamilyTreeTools
             this.DescendantsCountValue.Size = new System.Drawing.Size(12, 19);
             this.DescendantsCountValue.Text = "-";
             // 
+            // toolStripStatusLabel3
+            // 
+            this.toolStripStatusLabel3.Name = "toolStripStatusLabel3";
+            this.toolStripStatusLabel3.Size = new System.Drawing.Size(51, 19);
+            this.toolStripStatusLabel3.Text = "Siblings:";
+            // 
+            // SiblingsCountValue
+            // 
+            this.SiblingsCountValue.Enabled = false;
+            this.SiblingsCountValue.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.SiblingsCountValue.Name = "SiblingsCountValue";
+            this.SiblingsCountValue.Size = new System.Drawing.Size(12, 19);
+            this.SiblingsCountValue.Text = "-";
+            // 
             // MainToolbar
             // 
             this.MainToolbar.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -414,20 +430,6 @@ namespace FamilyTreeTools
             this.FamilyNameLabel.Size = new System.Drawing.Size(136, 18);
             this.FamilyNameLabel.TabIndex = 8;
             this.FamilyNameLabel.Text = "Changes at runtime";
-            // 
-            // toolStripStatusLabel3
-            // 
-            this.toolStripStatusLabel3.Name = "toolStripStatusLabel3";
-            this.toolStripStatusLabel3.Size = new System.Drawing.Size(51, 19);
-            this.toolStripStatusLabel3.Text = "Siblings:";
-            // 
-            // SiblingsCountValue
-            // 
-            this.SiblingsCountValue.Enabled = false;
-            this.SiblingsCountValue.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.SiblingsCountValue.Name = "SiblingsCountValue";
-            this.SiblingsCountValue.Size = new System.Drawing.Size(12, 19);
-            this.SiblingsCountValue.Text = "-";
             // 
             // MainWindow
             // 

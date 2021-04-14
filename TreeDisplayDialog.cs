@@ -10,6 +10,8 @@ namespace FamilyTreeTools
 {
     public partial class TreeDisplayDialog : Form
     {
+        public static readonly int ControlPanelHeight = 35;
+
         public DateTime AnimationStartDateTime { get; private set; }
 
         public DateTime AnimationEndDateTime { get; private set; }
@@ -66,6 +68,7 @@ namespace FamilyTreeTools
 
             UpdateUI();
             UpdateGraph();
+            UpdateEventsListBox();
         }
 
         private void InitializeGraph()
@@ -76,8 +79,8 @@ namespace FamilyTreeTools
             {
                 Directed = true
             };
-            TreeGraph.Attr.AspectRatio = 16 / 10;
-            TreeGraph.CreateGeometryGraph();
+
+            TreeGraph.Attr.AspectRatio = 4 / 3;
 
             Microsoft.Msagl.Drawing.Node root = TreeGraph.AddNode(SourceTree.Root.Key.ToString());
             TreeGraph.Attr.LayerDirection = LayerDirection.TB;
@@ -88,6 +91,43 @@ namespace FamilyTreeTools
             root.Attr.FillColor = Color.SaddleBrown;
             root.Attr.Shape = Shape.Box;
             root.Attr.LabelMargin = 10;
+        }
+
+        private void UpdateEventsListBox()
+        {
+            EventsListBox.Items.Clear();
+
+            foreach (Member m in SourceFamily.Members.Values)
+            {
+                if (m.BirthDate.Date == SourceSettings.At.Date)
+                {
+                    EventsListBox.Items.Add(string.Format("{0} was born.", m));
+                }
+                else if (m.Status.Changes.ContainsKey(SourceSettings.At.Date))
+                {
+                    if (m.Refs.TryGetPartner(
+                        out Member value, SourceSettings.At, SourceSettings.CanBeDead)
+                    )
+                    {
+                        EventsListBox.Items.Add(string.Format("{0} got married with {1}.", m, value));
+                    }
+                    else
+                    {
+                        EventsListBox.Items.Add(string.Format("{0} got unmarried.", m));
+                    }
+
+                }
+
+                if (m.DeathDate.HasValue && m.DeathDate.Value.Date == SourceSettings.At.Date)
+                {
+                    EventsListBox.Items.Add(string.Format("{0} died.", m));
+                }
+            }
+
+            if (EventsListBox.Items.Count == 0)
+            {
+                EventsListBox.Items.Add("No events happened that day.");
+            }
         }
 
         private void UpdateUI()
@@ -104,12 +144,13 @@ namespace FamilyTreeTools
                 Dock = DockStyle.Fill,
                 Graph = TreeGraph,
                 CurrentLayoutMethod = LayoutMethod.UseSettingsOfTheGraph,
+                Padding = new Padding(0, ControlPanelHeight, 0, EventsListBox.Height),
             };
 
-
             Controls.Add(TreeViewer);
-            Size = TreeViewer.Size;
+
             UpdateUI();
+            UpdateEventsListBox();
         }
 
         private Edge CreateEdge(Guid source, Guid target, string labelText)
@@ -170,7 +211,7 @@ namespace FamilyTreeTools
             {
                 foreach (Guid commonChildId in node.CommonChildren)
                 {
-                    Microsoft.Msagl.Drawing.Edge e = CreateEdge(
+                    Edge e = CreateEdge(
                         node.Key, commonChildId, "child"
                     );
                     e.Attr.Color = Color.SandyBrown;
