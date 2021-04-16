@@ -45,8 +45,6 @@ namespace FamilyTreeTools
             // 
             this.WithLabelsCheckbox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.WithLabelsCheckbox.AutoSize = true;
-            this.WithLabelsCheckbox.Checked = true;
-            this.WithLabelsCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
             this.WithLabelsCheckbox.Location = new System.Drawing.Point(768, 11);
             this.WithLabelsCheckbox.Name = "WithLabelsCheckbox";
             this.WithLabelsCheckbox.Size = new System.Drawing.Size(78, 17);

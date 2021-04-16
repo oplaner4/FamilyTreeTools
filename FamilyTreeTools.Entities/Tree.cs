@@ -29,21 +29,29 @@ namespace FamilyTreeTools.Entities
             return result;
         }
 
-        private Tree UpdatePartner(Node node)
+        private Tree UpdatePartner(Node node, bool fartherChild)
         {
-            Member partner = Family.Members[node.Key].Refs.Partner.Value(Settings.At);
-
-            if (partner != null && partner.Refs.Parent == null && Seen.Add(partner.Id))
-            {
-                node.Partner = new Node(
-                    partner.Id,
-                    partner.FullName.Value(Settings.At)
-                )
+            if (Family.Members[node.Key].Refs.TryGetPartner(
+                out Member partner, Settings.At, Settings.CanBeDead
+            )) {
+                if (fartherChild && (
+                    partner.Refs.Parent == null || !partner.Refs.Parent.IsBorn(Settings.At, Settings.CanBeDead)
+                ) && Seen.Add(partner.Id))
                 {
-                    PartnerReference = node.Key
-                };
+                    node.Partner = new Node(
+                        partner.Id,
+                        partner.FullName.Value(Settings.At)
+                    )
+                    {
+                        PartnerReference = node.Key
+                    };
 
-                BuildRecurrent(node.Partner);
+                    BuildRecurrent(node.Partner);
+                }
+                else
+                {
+                    node.PartnerReference = partner.Id;
+                }
             }
 
             return this;
@@ -54,7 +62,6 @@ namespace FamilyTreeTools.Entities
             Seen = new HashSet<Guid>();
             Root = new Node(Guid.Empty, Family.Name);
             BuildRecurrent(Root);
-
             return this;
         }
 
@@ -62,25 +69,23 @@ namespace FamilyTreeTools.Entities
         {
             foreach (Member child in UseChildren(actual))
             {
-                if (Seen.Contains(child.Id))
-                {
-                    if (Root.Key != actual.Key)
-                    {
-                        actual.AddCommonChild(child.Id);
-                    }
-                }
-                else
+                if (Seen.Add(child.Id))
                 {
                     Node childNode = new Node(
                         child.Id, child.FullName.Value(Settings.At)
                     );
                     actual.AddChild(childNode);
-                    Seen.Add(child.Id);
-                    
+
                     if (Settings.CanBeFromFartherGeneration)
                     {
-                        BuildRecurrent(childNode).UpdatePartner(childNode);
+                        BuildRecurrent(childNode).UpdatePartner(
+                            childNode, actual.Key != Root.Key
+                        );
                     }
+                }
+                else
+                {
+                    actual.AddCommonChild(child.Id);
                 }
             }
 

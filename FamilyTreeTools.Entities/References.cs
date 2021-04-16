@@ -198,12 +198,11 @@ namespace FamilyTreeTools.Entities
         {
             HashSet<Member> result = new HashSet<Member>();
 
-            if (noncycle &&
-                TryGetPartner(
-                    out Member value, settings.At, settings.CanBeDead
-                ) && (
+            if (noncycle && (
                     settings.CanBeIllegitimateRelative ||
                     Source.WasMarried(settings.At)
+                ) && TryGetPartner(
+                    out Member value, settings.At, settings.CanBeDead
                 )
             )
             {
@@ -238,7 +237,7 @@ namespace FamilyTreeTools.Entities
                 At = settings.At,
                 CanBeDead = settings.CanBeDead,
                 CanBePartnerOtherTime = settings.CanBePartnerOtherTime,
-                CanBeIllegitimateRelative = true,
+                CanBeIllegitimateRelative = false,
                 CanBeFromFartherGeneration = false
             };
 
@@ -276,12 +275,11 @@ namespace FamilyTreeTools.Entities
                     result.UnionWith(Parent.Refs.GetAncestors(settings, true));
                 }
 
-                if (noncycle &&
-                    Parent.Refs.TryGetPartner(
-                        out Member value, Source.BirthDate, settings.CanBeDead
-                    ) && (
+                if (noncycle && (
                         settings.CanBeIllegitimateRelative ||
                         Parent.WasMarried(Source.BirthDate)
+                    ) && Parent.Refs.TryGetPartner(
+                        out Member value, Source.BirthDate, settings.CanBeDead
                     )
                 )
                 {

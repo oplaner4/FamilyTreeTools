@@ -5,6 +5,8 @@ using Microsoft.Msagl.Drawing;
 using Microsoft.Msagl.GraphViewerGdi;
 using System;
 using System.Linq;
+using DrawingNode = Microsoft.Msagl.Drawing.Node;
+using Microsoft.Msagl.Core.Geometry.Curves;
 
 namespace FamilyTreeTools
 {
@@ -38,8 +40,6 @@ namespace FamilyTreeTools
                     CanBePartnerOtherTime = sourceSettings.CanBePartnerOtherTime,
                     At = sourceSettings.At,
                 };
-
-
 
                 GraphUpdateTimer = new Timer();
                 GraphUpdateTimer.Tick += new EventHandler(OnGraphUpdateIntervalElapsed);
@@ -77,16 +77,14 @@ namespace FamilyTreeTools
 
             TreeGraph = new Graph("tree chart")
             {
-                Directed = true
+                Directed = true,
+                
             };
 
-            TreeGraph.Attr.AspectRatio = 4 / 3;
-
-            Microsoft.Msagl.Drawing.Node root = TreeGraph.AddNode(SourceTree.Root.Key.ToString());
+            DrawingNode root = TreeGraph.AddNode(SourceTree.Root.Key.ToString());
             TreeGraph.Attr.LayerDirection = LayerDirection.TB;
 
             InitializeData(SourceTree.Root);
-            SetNode(SourceTree.Root);
 
             root.Attr.FillColor = Color.SaddleBrown;
             root.Attr.Shape = Shape.Box;
@@ -158,6 +156,7 @@ namespace FamilyTreeTools
             Edge result = TreeGraph.AddEdge(source.ToString(), string.Empty, target.ToString());
             result.LabelText = WithLabelsCheckbox.Checked ? labelText : string.Empty;
             result.Label.FontSize = 8;
+            result.Attr.Separation = 3;
             return result;
         }
 
@@ -167,13 +166,25 @@ namespace FamilyTreeTools
         public Family SourceFamily { get; private set; }
         public SearchSettings SourceSettings { get; private set; }
 
-        public void SetNode(Entities.Node node)
+        public void InitializeNode(Entities.Node node)
         {
-            Microsoft.Msagl.Drawing.Node createdNode = TreeGraph.FindNode(node.Key.ToString());
+            DrawingNode createdNode = TreeGraph.FindNode(node.Key.ToString());
             createdNode.LabelText = node.Value;
             createdNode.Label.FontColor = Color.White;
+            createdNode.Attr.Padding = 18;
+            
+            if (node.Key == SourceTree.Root.Key)
+            {
+                return;
+            }
 
-            if (node.PartnerReference != null && node.Children.Count() == 0)
+            if (SourceFamily.Members[node.Key].IsDead(SourceSettings.At))
+            {
+                createdNode.Attr.FillColor = Color.DarkGreen;
+            }
+            else if (node.PartnerReference != null
+                && node.Children.Count() == 0 && node.CommonChildren == null
+            )
             {
                 createdNode.Attr.FillColor = Color.SeaGreen;
             }
@@ -181,7 +192,7 @@ namespace FamilyTreeTools
             {
                 createdNode.Attr.FillColor = Color.ForestGreen;
             }
-
+            
             createdNode.Attr.Shape = Shape.Ellipse;
         } 
 
@@ -189,24 +200,12 @@ namespace FamilyTreeTools
         {
             InitializeDataPartners(node);
             InitializeDataChildren(node);
+            InitializeDataCommonChildren(node);
+            InitializeNode(node);
         }
 
-        private void InitializeDataChildren(Entities.Node node)
+        private void InitializeDataCommonChildren(Entities.Node node)
         {
-            foreach (Entities.Node childNode in node.Children.Values)
-            {
-                Edge e = CreateEdge(
-                    node.Key, childNode.Key,
-                    node.Key == SourceTree.Root.Key ? string.Empty : "child"
-                );
-                e.Attr.Color = Color.SaddleBrown;
-                e.Label.FontColor = Color.SaddleBrown;
-                e.Attr.ArrowheadAtTarget = node.Key == SourceTree.Root.Key ? ArrowStyle.None : ArrowStyle.Generalization;
-                
-                InitializeData(childNode);
-                SetNode(childNode);
-            }
-
             if (node.CommonChildren != null)
             {
                 foreach (Guid commonChildId in node.CommonChildren)
@@ -221,26 +220,79 @@ namespace FamilyTreeTools
             }
         }
 
+        private void InitializeDataChildConstraints(Edge nodeEdge, Edge prevNodeEdge = null)
+        {
+            TreeGraph.LayerConstraints.AddUpDownConstraint(
+                nodeEdge.SourceNode, nodeEdge.TargetNode
+            );
+
+            if (prevNodeEdge != null)
+            {
+                if (prevNodeEdge.TargetNode.UserData == null)
+                {
+                    TreeGraph.LayerConstraints.AddSameLayerNeighbors(
+                        nodeEdge.TargetNode, prevNodeEdge.TargetNode
+                    );
+                }
+                else
+                {
+                    TreeGraph.LayerConstraints.AddSameLayerNeighbors(
+                        nodeEdge.TargetNode, (DrawingNode)prevNodeEdge.TargetNode.UserData
+                    );
+                }
+
+
+            }
+        }
+
+        private void InitializeDataChildren(Entities.Node node)
+        {
+            Edge prevEdge = null;
+
+            foreach (Entities.Node childNode in node.Children.Values)
+            {
+                Edge edge = CreateEdge(
+                    node.Key, childNode.Key,
+                    node.Key == SourceTree.Root.Key ? string.Empty : "child"
+                );
+                edge.Attr.Color = Color.SaddleBrown;
+                edge.Label.FontColor = Color.SaddleBrown;
+                edge.Attr.ArrowheadAtTarget = node.Key == SourceTree.Root.Key ? ArrowStyle.None : ArrowStyle.Generalization;
+
+                InitializeData(childNode);
+                InitializeDataChildConstraints(edge, prevEdge);
+                prevEdge = edge;
+            }
+        }
+
         private void InitializeDataPartners(Entities.Node node)
         {
-            string labelText = "partner";
-            Color useColor = Color.DarkGreen;
+            if (node.Partner == null && node.PartnerReference == null)
+            {
+                return;
+            }
+
+            Edge e = CreateEdge(
+                node.Key,
+                node.Partner == null ? node.PartnerReference.Value : node.Partner.Key,
+                "partner"
+            );
+
+            e.Attr.Color = Color.DarkGreen;
+            e.Label.FontColor = e.Attr.Color;
+
+            if (e.TargetNode.UserData == null)
+            {
+                TreeGraph.LayerConstraints.AddSameLayerNeighbors(
+                    e.SourceNode, e.TargetNode
+                );
+
+                e.SourceNode.UserData = e.TargetNode;
+            }
 
             if (node.Partner != null)
             {
-                Edge e = CreateEdge(node.Key, node.Partner.Key, labelText);
-                e.Attr.Color = useColor;
-                e.Label.FontColor = e.Attr.Color;
-
                 InitializeData(node.Partner);
-                SetNode(node.Partner);
-            }
-
-            if (node.PartnerReference != null)
-            {
-                Edge e = CreateEdge(node.Key, node.PartnerReference.Value, labelText);
-                e.Attr.Color = useColor;
-                e.Label.FontColor = e.Attr.Color;
             }
         }
 
