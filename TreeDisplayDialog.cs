@@ -156,7 +156,6 @@ namespace FamilyTreeTools
             Edge result = TreeGraph.AddEdge(source.ToString(), string.Empty, target.ToString());
             result.LabelText = WithLabelsCheckbox.Checked ? labelText : string.Empty;
             result.Label.FontSize = 8;
-            result.Attr.Separation = 3;
             return result;
         }
 
