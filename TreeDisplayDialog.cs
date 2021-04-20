@@ -6,7 +6,6 @@ using Microsoft.Msagl.GraphViewerGdi;
 using System;
 using System.Linq;
 using DrawingNode = Microsoft.Msagl.Drawing.Node;
-using Microsoft.Msagl.Core.Geometry.Curves;
 
 namespace FamilyTreeTools
 {
@@ -50,6 +49,10 @@ namespace FamilyTreeTools
 
                 AnimationRunningValue.Checked = true;
             }
+            else
+            {
+                AnimationRunningValue.Enabled = false;
+            }
         }
 
         private void OnGraphUpdateIntervalElapsed(object sender, EventArgs e)
@@ -74,21 +77,17 @@ namespace FamilyTreeTools
         private void InitializeGraph()
         {
             SourceTree = new Tree(SourceFamily, SourceSettings).Build();
-
-            TreeGraph = new Graph("tree chart")
-            {
-                Directed = true,
-                
-            };
+            TreeGraph = new Graph("tree chart");
 
             DrawingNode root = TreeGraph.AddNode(SourceTree.Root.Key.ToString());
-            TreeGraph.Attr.LayerDirection = LayerDirection.TB;
 
             InitializeData(SourceTree.Root);
 
             root.Attr.FillColor = Color.SaddleBrown;
             root.Attr.Shape = Shape.Box;
             root.Attr.LabelMargin = 10;
+
+            
         }
 
         private void UpdateEventsListBox()
@@ -159,6 +158,32 @@ namespace FamilyTreeTools
             return result;
         }
 
+        private Edge CreateParentChildEdge(Guid source, Guid target)
+        {
+            Edge edge = CreateEdge(
+                source, target,
+                source == SourceTree.Root.Key ? string.Empty : "child"
+            );
+
+            TreeGraph.LayerConstraints.AddUpDownConstraint(
+                edge.SourceNode, edge.TargetNode
+            );
+
+            if (edge.SourceNode.UserData == null)
+            {
+                edge.Attr.Color = Color.SaddleBrown;
+                edge.Label.FontColor = Color.SaddleBrown;
+            }
+            else
+            {
+                edge.Attr.Color = Color.SandyBrown;
+                edge.Label.FontColor = Color.SandyBrown;
+
+            }
+
+            return edge;
+        }
+
         public Tree SourceTree { get; private set; }
         private Graph TreeGraph { get; set; }
         private GViewer TreeViewer { get; set; }
@@ -182,7 +207,7 @@ namespace FamilyTreeTools
                 createdNode.Attr.FillColor = Color.DarkGreen;
             }
             else if (node.PartnerReference != null
-                && node.Children.Count() == 0 && node.CommonChildren == null
+                && node.Children.Count() == 0 && node.ChildrenReference == null
             )
             {
                 createdNode.Attr.FillColor = Color.SeaGreen;
@@ -199,48 +224,27 @@ namespace FamilyTreeTools
         {
             InitializeDataPartners(node);
             InitializeDataChildren(node);
-            InitializeDataCommonChildren(node);
             InitializeNode(node);
         }
 
-        private void InitializeDataCommonChildren(Entities.Node node)
+        private void InitializeDataChildConstraints(Edge nodeEdge, Edge prevNodeEdge)
         {
-            if (node.CommonChildren != null)
+            if (prevNodeEdge == null)
             {
-                foreach (Guid commonChildId in node.CommonChildren)
-                {
-                    Edge e = CreateEdge(
-                        node.Key, commonChildId, "child"
-                    );
-                    e.Attr.Color = Color.SandyBrown;
-                    e.Label.FontColor = Color.SandyBrown;
-                    e.Attr.ArrowheadAtTarget = ArrowStyle.Generalization;
-                }
+                return;
             }
-        }
 
-        private void InitializeDataChildConstraints(Edge nodeEdge, Edge prevNodeEdge = null)
-        {
-            TreeGraph.LayerConstraints.AddUpDownConstraint(
-                nodeEdge.SourceNode, nodeEdge.TargetNode
-            );
-
-            if (prevNodeEdge != null)
+            if (prevNodeEdge.TargetNode.UserData == null)
             {
-                if (prevNodeEdge.TargetNode.UserData == null)
-                {
-                    TreeGraph.LayerConstraints.AddSameLayerNeighbors(
-                        nodeEdge.TargetNode, prevNodeEdge.TargetNode
-                    );
-                }
-                else
-                {
-                    TreeGraph.LayerConstraints.AddSameLayerNeighbors(
-                        nodeEdge.TargetNode, (DrawingNode)prevNodeEdge.TargetNode.UserData
-                    );
-                }
-
-
+                TreeGraph.LayerConstraints.AddSameLayerNeighbors(
+                    prevNodeEdge.TargetNode, nodeEdge.TargetNode
+                );
+            }
+            else
+            {
+                TreeGraph.LayerConstraints.AddSameLayerNeighbors(
+                    (DrawingNode)prevNodeEdge.TargetNode.UserData, nodeEdge.TargetNode
+                );
             }
         }
 
@@ -250,17 +254,21 @@ namespace FamilyTreeTools
 
             foreach (Entities.Node childNode in node.Children.Values)
             {
-                Edge edge = CreateEdge(
-                    node.Key, childNode.Key,
-                    node.Key == SourceTree.Root.Key ? string.Empty : "child"
-                );
-                edge.Attr.Color = Color.SaddleBrown;
-                edge.Label.FontColor = Color.SaddleBrown;
+                Edge edge = CreateParentChildEdge(node.Key, childNode.Key);
                 edge.Attr.ArrowheadAtTarget = node.Key == SourceTree.Root.Key ? ArrowStyle.None : ArrowStyle.Generalization;
 
-                InitializeData(childNode);
                 InitializeDataChildConstraints(edge, prevEdge);
+                InitializeData(childNode);
                 prevEdge = edge;
+            }
+
+            if (node.ChildrenReference != null)
+            {
+                foreach (Guid childId in node.ChildrenReference)
+                {
+                    Edge e = CreateParentChildEdge(node.Key, childId);
+                    e.Attr.ArrowheadAtTarget = ArrowStyle.Generalization;
+                }
             }
         }
 

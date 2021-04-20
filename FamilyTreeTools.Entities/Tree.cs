@@ -29,14 +29,12 @@ namespace FamilyTreeTools.Entities
             return result;
         }
 
-        private Tree UpdatePartner(Node node, bool fartherChild)
+        private Tree BuildPartner(Node node, bool fartherChild)
         {
             if (Family.Members[node.Key].Refs.TryGetPartner(
                 out Member partner, Settings.At, Settings.CanBeDead
             )) {
-                if (fartherChild && (
-                    partner.Refs.Parent == null || !partner.Refs.Parent.IsBorn(Settings.At, Settings.CanBeDead)
-                ) && Seen.Add(partner.Id))
+                if (fartherChild && Seen.Add(partner.Id))
                 {
                     node.Partner = new Node(
                         partner.Id,
@@ -78,14 +76,14 @@ namespace FamilyTreeTools.Entities
 
                     if (Settings.CanBeFromFartherGeneration)
                     {
-                        BuildRecurrent(childNode).UpdatePartner(
+                        BuildRecurrent(childNode).BuildPartner(
                             childNode, actual.Key != Root.Key
                         );
                     }
                 }
                 else
                 {
-                    actual.AddCommonChild(child.Id);
+                    actual.AddChildReference(child.Id);
                 }
             }
 
