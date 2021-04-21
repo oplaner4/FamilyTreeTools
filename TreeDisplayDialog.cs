@@ -1,10 +1,10 @@
-﻿using FamilyTreeTools.Properties;
-using System.Windows.Forms;
-using FamilyTreeTools.Entities;
+﻿using FamilyTreeTools.Entities;
+using FamilyTreeTools.Properties;
 using Microsoft.Msagl.Drawing;
 using Microsoft.Msagl.GraphViewerGdi;
 using System;
 using System.Linq;
+using System.Windows.Forms;
 using DrawingNode = Microsoft.Msagl.Drawing.Node;
 
 namespace FamilyTreeTools
@@ -193,7 +193,7 @@ namespace FamilyTreeTools
             createdNode.LabelText = node.Value;
             createdNode.Label.FontColor = Color.White;
             createdNode.Attr.Padding = 18;
-            
+
             if (node.Key == SourceTree.Root.Key)
             {
                 return;
@@ -213,9 +213,9 @@ namespace FamilyTreeTools
             {
                 createdNode.Attr.FillColor = Color.ForestGreen;
             }
-            
+
             createdNode.Attr.Shape = Shape.Ellipse;
-        } 
+        }
 
         public void InitializeData(Entities.Node node)
         {

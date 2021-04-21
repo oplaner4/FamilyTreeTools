@@ -1,10 +1,10 @@
 ﻿using FamilyTreeTools.Entities;
+using FamilyTreeTools.Entities.Exceptions;
 using FamilyTreeTools.Utilities.Generators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Linq;
 using System;
 using System.Collections.Generic;
-using FamilyTreeTools.Entities.Exceptions;
+using System.Linq;
 
 namespace FamilyTreeTools.UnitTesting
 {
@@ -262,7 +262,7 @@ namespace FamilyTreeTools.UnitTesting
 
         }
 
-        public static void CheckFieldFamilyReferences (Family f)
+        public static void CheckFieldFamilyReferences(Family f)
         {
             Assert.AreEqual(
                 f.Members[FamilyGenerator.Kaleb.Id].Refs.Partner.Value(FamilyGenerator.KalebWeddingDate).Id,

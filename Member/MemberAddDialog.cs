@@ -1,7 +1,7 @@
-﻿using System;
-using System.Windows.Forms;
-using FamilyTreeTools.Entities;
+﻿using FamilyTreeTools.Entities;
 using FamilyTreeTools.Properties;
+using System;
+using System.Windows.Forms;
 
 namespace FamilyTreeTools
 {
@@ -22,7 +22,8 @@ namespace FamilyTreeTools
 
         private void MemberSaveOnClick(object sender, EventArgs e)
         {
-            if (!ValidateInputs()) {
+            if (!ValidateInputs())
+            {
                 return;
             };
 

@@ -1,11 +1,11 @@
-﻿using FamilyTreeTools.Properties;
-using System.Windows.Forms;
-using FamilyTreeTools.Entities;
+﻿using FamilyTreeTools.Entities;
+using FamilyTreeTools.Properties;
 using FamilyTreeTools.Utilities.Serialize;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.IO;
+using System.Linq;
+using System.Windows.Forms;
 
 namespace FamilyTreeTools
 {
@@ -325,7 +325,8 @@ namespace FamilyTreeTools
                 SourceFamily, UseSettings
             );
 
-            if (dialog.ShowDialog() == DialogResult.OK) {
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
 
             };
         }
@@ -341,6 +342,11 @@ namespace FamilyTreeTools
             {
 
             };
+        }
+
+        private void FileExitMenuItemOnClick(object sender, EventArgs e)
+        {
+            Close();
         }
     }
 }

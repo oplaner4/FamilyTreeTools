@@ -1,6 +1,6 @@
-﻿using System;
-using FamilyTreeTools.Entities.Exceptions;
+﻿using FamilyTreeTools.Entities.Exceptions;
 using Newtonsoft.Json;
+using System;
 
 namespace FamilyTreeTools.Entities
 {
@@ -8,7 +8,7 @@ namespace FamilyTreeTools.Entities
     [JsonObject(MemberSerialization.OptIn)]
     public class SearchSettings
     {
-        public SearchSettings ()
+        public SearchSettings()
         {
             CanBeDead = true;
             CanBePartnerOtherTime = false;
@@ -37,11 +37,14 @@ namespace FamilyTreeTools.Entities
         private DateTime _At { get; set; }
 
         [JsonProperty]
-        public DateTime At {
-            get {
+        public DateTime At
+        {
+            get
+            {
                 return _At;
             }
-            set {
+            set
+            {
                 if (value > DateTime.Now)
                 {
                     throw new HistoryViolationException("Trying to search in the future.");

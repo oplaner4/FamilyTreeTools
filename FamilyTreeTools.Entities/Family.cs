@@ -26,11 +26,14 @@ namespace FamilyTreeTools.Entities
         private string _Name { get; set; }
 
         [JsonProperty]
-        public string Name {
-            get {
+        public string Name
+        {
+            get
+            {
                 return _Name;
             }
-            set {
+            set
+            {
                 if (string.IsNullOrEmpty(value))
                 {
                     throw new NullReferenceException("Trying to set null name.");

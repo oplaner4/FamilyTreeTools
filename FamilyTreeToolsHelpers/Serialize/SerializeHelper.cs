@@ -1,6 +1,4 @@
-﻿using System.Text.RegularExpressions;
-
-namespace FamilyTreeTools.Utilities.Serialize
+﻿namespace FamilyTreeTools.Utilities.Serialize
 {
     public abstract class SerializeHelper
     {

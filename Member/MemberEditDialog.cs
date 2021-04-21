@@ -85,7 +85,7 @@ namespace FamilyTreeTools
                 && m.BirthDate <= SinceDateTime
                 && (m.DeathDate == null || SinceDateTime <= m.DeathDate)
                 && !m.Refs.PartnerId.Value(SinceDateTime).HasValue
-            );
+            ).OrderBy(m => m.BirthDate - SourceMember.BirthDate);
 
             PartnersComboBox.Items.Clear();
 
@@ -195,7 +195,7 @@ namespace FamilyTreeTools
                     PartnersComboBox.Focus();
                 }
             }
-            
+
         }
 
         private void ChangedFullNameBtnOnClick(object sender, EventArgs e)
@@ -237,7 +237,7 @@ namespace FamilyTreeTools
         private void GotMarriedBtnOnClick(object sender, EventArgs e)
         {
             if (PartnersComboBox.SelectedIndex == -1 || (
-                PartnersComboBox.SelectedIndex == 0 
+                PartnersComboBox.SelectedIndex == 0
                     && !SourceMember.HadPartner(SinceDateTime)
             ))
             {
@@ -275,7 +275,7 @@ namespace FamilyTreeTools
             SourceMember.FullName.Changes.Remove(
                 EnumerableFullNamesHistory.ElementAt(FullNamesListBox.SelectedIndex).Key
             );
-            
+
             UpdateFullNamesListBox();
         }
 
@@ -311,7 +311,8 @@ namespace FamilyTreeTools
 
                     foreach (int i in ChooseChildren.CheckedIndices)
                     {
-                        if (i >= EnumerableOwnChildren.Count()) {
+                        if (i >= EnumerableOwnChildren.Count())
+                        {
                             SourceMember.HadChild(EnumerableChildren.ElementAt(
                                 i - EnumerableOwnChildren.Count()
                             ));

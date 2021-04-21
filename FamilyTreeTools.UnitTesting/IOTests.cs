@@ -1,10 +1,10 @@
 ﻿using FamilyTreeTools.Entities;
+using FamilyTreeTools.Utilities.Generators;
+using FamilyTreeTools.Utilities.Serialize;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using FamilyTreeTools.Utilities.Generators;
-using FamilyTreeTools.Utilities.Serialize;
 
 namespace FamilyTreeTools.UnitTesting
 {

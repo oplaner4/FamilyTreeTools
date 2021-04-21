@@ -36,6 +36,8 @@ namespace FamilyTreeTools
             this.FileMenuItemOpen = new System.Windows.Forms.ToolStripMenuItem();
             this.FileMenuItemSave = new System.Windows.Forms.ToolStripMenuItem();
             this.FileMenuItemSaveAs = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.FileExitMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MembersMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MembersMenuItemAdd = new System.Windows.Forms.ToolStripMenuItem();
             this.SettingsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -63,10 +65,10 @@ namespace FamilyTreeTools
             this.toolStripStatusLabel3 = new System.Windows.Forms.ToolStripStatusLabel();
             this.SiblingsCountValue = new System.Windows.Forms.ToolStripStatusLabel();
             this.MainToolbar = new System.Windows.Forms.ToolStrip();
-            this.ToolbarSettingsEdit = new System.Windows.Forms.ToolStripButton();
-            this.ToolbarSaveFile = new System.Windows.Forms.ToolStripButton();
             this.ToolBarAddMember = new System.Windows.Forms.ToolStripButton();
+            this.ToolbarSettingsEdit = new System.Windows.Forms.ToolStripButton();
             this.ToolBarDisplayTree = new System.Windows.Forms.ToolStripButton();
+            this.ToolbarSaveFile = new System.Windows.Forms.ToolStripButton();
             this.MembersListBox = new System.Windows.Forms.ListBox();
             this.EditSelectedBtn = new System.Windows.Forms.Button();
             this.RemoveSelectedBtn = new System.Windows.Forms.Button();
@@ -96,7 +98,9 @@ namespace FamilyTreeTools
             this.FileMenuItemNew,
             this.FileMenuItemOpen,
             this.FileMenuItemSave,
-            this.FileMenuItemSaveAs});
+            this.FileMenuItemSaveAs,
+            this.toolStripSeparator1,
+            this.FileExitMenuItem});
             this.FileMenuItem.Name = "FileMenuItem";
             this.FileMenuItem.Size = new System.Drawing.Size(37, 20);
             this.FileMenuItem.Text = "File";
@@ -105,7 +109,7 @@ namespace FamilyTreeTools
             // 
             this.FileMenuItemNew.Name = "FileMenuItemNew";
             this.FileMenuItemNew.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
-            this.FileMenuItemNew.Size = new System.Drawing.Size(146, 22);
+            this.FileMenuItemNew.Size = new System.Drawing.Size(180, 22);
             this.FileMenuItemNew.Text = "New";
             this.FileMenuItemNew.Click += new System.EventHandler(this.FileMenuItemNewOnClick);
             // 
@@ -113,7 +117,7 @@ namespace FamilyTreeTools
             // 
             this.FileMenuItemOpen.Name = "FileMenuItemOpen";
             this.FileMenuItemOpen.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-            this.FileMenuItemOpen.Size = new System.Drawing.Size(146, 22);
+            this.FileMenuItemOpen.Size = new System.Drawing.Size(180, 22);
             this.FileMenuItemOpen.Text = "Open";
             this.FileMenuItemOpen.Click += new System.EventHandler(this.FileMenuItemOpenOnClick);
             // 
@@ -122,7 +126,7 @@ namespace FamilyTreeTools
             this.FileMenuItemSave.Enabled = false;
             this.FileMenuItemSave.Name = "FileMenuItemSave";
             this.FileMenuItemSave.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.FileMenuItemSave.Size = new System.Drawing.Size(146, 22);
+            this.FileMenuItemSave.Size = new System.Drawing.Size(180, 22);
             this.FileMenuItemSave.Text = "Save";
             this.FileMenuItemSave.Click += new System.EventHandler(this.FileMenuItemSaveOnClick);
             // 
@@ -130,9 +134,21 @@ namespace FamilyTreeTools
             // 
             this.FileMenuItemSaveAs.Enabled = false;
             this.FileMenuItemSaveAs.Name = "FileMenuItemSaveAs";
-            this.FileMenuItemSaveAs.Size = new System.Drawing.Size(146, 22);
+            this.FileMenuItemSaveAs.Size = new System.Drawing.Size(180, 22);
             this.FileMenuItemSaveAs.Text = "Save as";
             this.FileMenuItemSaveAs.Click += new System.EventHandler(this.FileMenuItemSaveAsOnClick);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(177, 6);
+            // 
+            // FileExitMenuItem
+            // 
+            this.FileExitMenuItem.Name = "FileExitMenuItem";
+            this.FileExitMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.FileExitMenuItem.Text = "Exit";
+            this.FileExitMenuItem.Click += new System.EventHandler(this.FileExitMenuItemOnClick);
             // 
             // MembersMenuItem
             // 
@@ -338,28 +354,6 @@ namespace FamilyTreeTools
             this.MainToolbar.TabIndex = 4;
             this.MainToolbar.Text = "toolStrip1";
             // 
-            // ToolbarSettingsEdit
-            // 
-            this.ToolbarSettingsEdit.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.ToolbarSettingsEdit.Image = ((System.Drawing.Image)(resources.GetObject("ToolbarSettingsEdit.Image")));
-            this.ToolbarSettingsEdit.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.ToolbarSettingsEdit.Name = "ToolbarSettingsEdit";
-            this.ToolbarSettingsEdit.Size = new System.Drawing.Size(23, 22);
-            this.ToolbarSettingsEdit.Text = "toolStripButton1";
-            this.ToolbarSettingsEdit.ToolTipText = "Edit settings";
-            this.ToolbarSettingsEdit.Click += new System.EventHandler(this.SettingsMenuItemEditOnClick);
-            // 
-            // ToolbarSaveFile
-            // 
-            this.ToolbarSaveFile.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.ToolbarSaveFile.Image = ((System.Drawing.Image)(resources.GetObject("ToolbarSaveFile.Image")));
-            this.ToolbarSaveFile.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.ToolbarSaveFile.Name = "ToolbarSaveFile";
-            this.ToolbarSaveFile.Size = new System.Drawing.Size(23, 22);
-            this.ToolbarSaveFile.Text = "toolStripButton1";
-            this.ToolbarSaveFile.ToolTipText = "Save file";
-            this.ToolbarSaveFile.Click += new System.EventHandler(this.FileMenuItemSaveOnClick);
-            // 
             // ToolBarAddMember
             // 
             this.ToolBarAddMember.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
@@ -371,6 +365,17 @@ namespace FamilyTreeTools
             this.ToolBarAddMember.ToolTipText = "Add member";
             this.ToolBarAddMember.Click += new System.EventHandler(this.MembersMenuItemAddOnClick);
             // 
+            // ToolbarSettingsEdit
+            // 
+            this.ToolbarSettingsEdit.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.ToolbarSettingsEdit.Image = ((System.Drawing.Image)(resources.GetObject("ToolbarSettingsEdit.Image")));
+            this.ToolbarSettingsEdit.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.ToolbarSettingsEdit.Name = "ToolbarSettingsEdit";
+            this.ToolbarSettingsEdit.Size = new System.Drawing.Size(23, 22);
+            this.ToolbarSettingsEdit.Text = "toolStripButton1";
+            this.ToolbarSettingsEdit.ToolTipText = "Edit settings";
+            this.ToolbarSettingsEdit.Click += new System.EventHandler(this.SettingsMenuItemEditOnClick);
+            // 
             // ToolBarDisplayTree
             // 
             this.ToolBarDisplayTree.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
@@ -380,6 +385,17 @@ namespace FamilyTreeTools
             this.ToolBarDisplayTree.Size = new System.Drawing.Size(23, 22);
             this.ToolBarDisplayTree.Text = "Display tree";
             this.ToolBarDisplayTree.Click += new System.EventHandler(this.TreeMenuItemDisplayOnClick);
+            // 
+            // ToolbarSaveFile
+            // 
+            this.ToolbarSaveFile.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.ToolbarSaveFile.Image = ((System.Drawing.Image)(resources.GetObject("ToolbarSaveFile.Image")));
+            this.ToolbarSaveFile.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.ToolbarSaveFile.Name = "ToolbarSaveFile";
+            this.ToolbarSaveFile.Size = new System.Drawing.Size(23, 22);
+            this.ToolbarSaveFile.Text = "toolStripButton1";
+            this.ToolbarSaveFile.ToolTipText = "Save file";
+            this.ToolbarSaveFile.Click += new System.EventHandler(this.FileMenuItemSaveOnClick);
             // 
             // MembersListBox
             // 
@@ -502,6 +518,8 @@ namespace FamilyTreeTools
         private System.Windows.Forms.ToolStripButton ToolBarDisplayTree;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel3;
         private System.Windows.Forms.ToolStripStatusLabel SiblingsCountValue;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripMenuItem FileExitMenuItem;
     }
 }
 

@@ -40,7 +40,7 @@ namespace FamilyTreeTools
             DialogResult = DialogResult.OK;
         }
 
-        private DateTime GetNewDateAt (int addVal)
+        private DateTime GetNewDateAt(int addVal)
         {
             return (DateTime)AtDatetimePicker.Value.GetType().GetMethod(
                 string.Format("Add{0}s", DateUnitComboBox.Items[DateUnitComboBox.SelectedIndex])

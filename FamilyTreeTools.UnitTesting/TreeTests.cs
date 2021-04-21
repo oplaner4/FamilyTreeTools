@@ -1,6 +1,6 @@
 ﻿using FamilyTreeTools.Entities;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using FamilyTreeTools.Utilities.Generators;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace FamilyTreeTools.UnitTesting
 {

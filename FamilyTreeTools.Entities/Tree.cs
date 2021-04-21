@@ -33,7 +33,8 @@ namespace FamilyTreeTools.Entities
         {
             if (Family.Members[node.Key].Refs.TryGetPartner(
                 out Member partner, Settings.At, Settings.CanBeDead
-            )) {
+            ))
+            {
                 if (fartherChild && Seen.Add(partner.Id))
                 {
                     node.Partner = new Node(
