@@ -95,7 +95,7 @@ namespace FamilyTreeTools
             // 
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(491, 10);
+            this.label1.Location = new System.Drawing.Point(491, 11);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(102, 13);
             this.label1.TabIndex = 9;
@@ -151,15 +151,15 @@ namespace FamilyTreeTools
             // 
             this.EventsListBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.EventsListBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.EventsListBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.EventsListBox.FormattingEnabled = true;
-            this.EventsListBox.ItemHeight = 16;
+            this.EventsListBox.ItemHeight = 18;
             this.EventsListBox.Items.AddRange(new object[] {
             "Changes at runtime"});
-            this.EventsListBox.Location = new System.Drawing.Point(0, 734);
+            this.EventsListBox.Location = new System.Drawing.Point(0, 746);
             this.EventsListBox.Name = "EventsListBox";
             this.EventsListBox.ScrollAlwaysVisible = true;
-            this.EventsListBox.Size = new System.Drawing.Size(868, 68);
+            this.EventsListBox.Size = new System.Drawing.Size(868, 58);
             this.EventsListBox.TabIndex = 14;
             // 
             // TreeDisplayDialog

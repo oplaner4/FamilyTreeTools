@@ -46,7 +46,6 @@ namespace FamilyTreeTools
 
                 AnimationStartDateTime = sourceSettings.At;
                 AnimationEndDateTime = DateTime.Now;
-
                 AnimationRunningValue.Checked = true;
             }
             else
@@ -86,8 +85,6 @@ namespace FamilyTreeTools
             root.Attr.FillColor = Color.SaddleBrown;
             root.Attr.Shape = Shape.Box;
             root.Attr.LabelMargin = 10;
-
-            
         }
 
         private void UpdateEventsListBox()
@@ -324,7 +321,10 @@ namespace FamilyTreeTools
 
         private void AnimationIntervalOnChange(object sender, EventArgs e)
         {
-            GraphUpdateTimer.Interval = (int)AnimationInterval.Value * 1000;
+            if (AnimationRunningValue.Checked)
+            {
+                GraphUpdateTimer.Interval = (int)AnimationInterval.Value * 1000;
+            }
         }
 
         private void AnimationRunningValueOnChange(object sender, EventArgs e)
