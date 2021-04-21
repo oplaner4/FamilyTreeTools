@@ -160,7 +160,7 @@ namespace FamilyTreeTools
             // SettingsMenuItemEdit
             // 
             this.SettingsMenuItemEdit.Name = "SettingsMenuItemEdit";
-            this.SettingsMenuItemEdit.Size = new System.Drawing.Size(180, 22);
+            this.SettingsMenuItemEdit.Size = new System.Drawing.Size(94, 22);
             this.SettingsMenuItemEdit.Text = "Edit";
             this.SettingsMenuItemEdit.Click += new System.EventHandler(this.SettingsMenuItemEditOnClick);
             // 
@@ -177,7 +177,7 @@ namespace FamilyTreeTools
             // TreeMenuItemExport
             // 
             this.TreeMenuItemExport.Name = "TreeMenuItemExport";
-            this.TreeMenuItemExport.Size = new System.Drawing.Size(180, 22);
+            this.TreeMenuItemExport.Size = new System.Drawing.Size(119, 22);
             this.TreeMenuItemExport.Text = "Export";
             this.TreeMenuItemExport.ToolTipText = "in JSON format";
             this.TreeMenuItemExport.Click += new System.EventHandler(this.TreeMenuItemExportOnClick);
@@ -185,7 +185,7 @@ namespace FamilyTreeTools
             // TreeMenuItemAnimate
             // 
             this.TreeMenuItemAnimate.Name = "TreeMenuItemAnimate";
-            this.TreeMenuItemAnimate.Size = new System.Drawing.Size(180, 22);
+            this.TreeMenuItemAnimate.Size = new System.Drawing.Size(119, 22);
             this.TreeMenuItemAnimate.Text = "Animate";
             this.TreeMenuItemAnimate.ToolTipText = "from the date determined by settings";
             this.TreeMenuItemAnimate.Click += new System.EventHandler(this.TreeMenuItemAnimateOnClick);
@@ -193,7 +193,7 @@ namespace FamilyTreeTools
             // displayToolStripMenuItem
             // 
             this.displayToolStripMenuItem.Name = "displayToolStripMenuItem";
-            this.displayToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.displayToolStripMenuItem.Size = new System.Drawing.Size(119, 22);
             this.displayToolStripMenuItem.Text = "Display";
             this.displayToolStripMenuItem.Click += new System.EventHandler(this.TreeMenuItemDisplayOnClick);
             // 
@@ -328,10 +328,10 @@ namespace FamilyTreeTools
             // MainToolbar
             // 
             this.MainToolbar.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.ToolbarSettingsEdit,
-            this.ToolbarSaveFile,
             this.ToolBarAddMember,
-            this.ToolBarDisplayTree});
+            this.ToolbarSettingsEdit,
+            this.ToolBarDisplayTree,
+            this.ToolbarSaveFile});
             this.MainToolbar.Location = new System.Drawing.Point(0, 24);
             this.MainToolbar.Name = "MainToolbar";
             this.MainToolbar.Size = new System.Drawing.Size(809, 25);

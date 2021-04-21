@@ -264,7 +264,7 @@ namespace FamilyTreeTools
         {
             UsingSelectedMember(m =>
             {
-                if (new DestructiveConfirmDialog().ShowDialog() == DialogResult.OK)
+                if (SourceFamily.CanBeRemoved(m) && new DestructiveConfirmDialog().ShowDialog() == DialogResult.OK)
                 {
                     SourceFamily.RemoveMember(m);
                     UnsavedChanges = true;
