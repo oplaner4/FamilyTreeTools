@@ -260,7 +260,7 @@ namespace FamilyTreeTools
             "Year",
             "Month",
             "Day"});
-            this.DateUnitComboBox.Location = new System.Drawing.Point(470, 33);
+            this.DateUnitComboBox.Location = new System.Drawing.Point(472, 33);
             this.DateUnitComboBox.Name = "DateUnitComboBox";
             this.DateUnitComboBox.Size = new System.Drawing.Size(54, 21);
             this.DateUnitComboBox.TabIndex = 24;

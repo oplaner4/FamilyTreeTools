@@ -188,7 +188,7 @@ namespace FamilyTreeTools
             // 
             // FullNameTxtBox
             // 
-            this.FullNameTxtBox.Location = new System.Drawing.Point(669, 380);
+            this.FullNameTxtBox.Location = new System.Drawing.Point(669, 381);
             this.FullNameTxtBox.Name = "FullNameTxtBox";
             this.FullNameTxtBox.Size = new System.Drawing.Size(189, 20);
             this.FullNameTxtBox.TabIndex = 24;

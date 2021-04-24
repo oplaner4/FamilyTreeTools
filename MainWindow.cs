@@ -306,7 +306,7 @@ namespace FamilyTreeTools
 
         private void FileMenuItemNewOnClick(object sender, EventArgs e)
         {
-            if (SaveAsFileDialog.ShowDialog() == DialogResult.OK)
+            if (HandleUnsavedChanges() && SaveAsFileDialog.ShowDialog() == DialogResult.OK)
             {
                 SourceFamily = new Family(
                     Path.GetFileNameWithoutExtension(SaveAsFileDialog.FileName)
