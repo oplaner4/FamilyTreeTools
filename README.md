@@ -17,3 +17,6 @@ FamilyTreeTools works on windows 8 and higher.
 2) Go to [releases](https://github.com/oplaner4/FamilyTreeTools/tree/master/Releases/) folder.
 3) Move to the subfolder **1.6** and launch **FamilyTreeTools.exe** there.
 4) Application is really trustful (you can check the code).
+
+### License
+FamilyTreeTools may be freely distributed under the MIT license.
