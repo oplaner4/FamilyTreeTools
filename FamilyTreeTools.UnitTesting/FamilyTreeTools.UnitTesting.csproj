@@ -63,7 +63,7 @@
       <Project>{4af70806-eef9-4c05-b57d-a81fa719236e}</Project>
       <Name>FamilyTreeTools.Entities</Name>
     </ProjectReference>
-    <ProjectReference Include="..\FamilyTreeToolsHelpers\FamilyTreeTools.Utilities.csproj">
+    <ProjectReference Include="..\FamilyTreeTools.Utilities\FamilyTreeTools.Utilities.csproj">
       <Project>{0d581cab-6d61-4753-9e15-1c439b9b134a}</Project>
       <Name>FamilyTreeTools.Utilities</Name>
     </ProjectReference>

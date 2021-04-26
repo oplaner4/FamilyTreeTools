@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FamilyTreeTools", "FamilyTr
 		{0D581CAB-6D61-4753-9E15-1C439B9B134A} = {0D581CAB-6D61-4753-9E15-1C439B9B134A}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FamilyTreeTools.Utilities", "FamilyTreeToolsHelpers\FamilyTreeTools.Utilities.csproj", "{0D581CAB-6D61-4753-9E15-1C439B9B134A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FamilyTreeTools.Utilities", "FamilyTreeTools.Utilities\FamilyTreeTools.Utilities.csproj", "{0D581CAB-6D61-4753-9E15-1C439B9B134A}"
 	ProjectSection(ProjectDependencies) = postProject
 		{4AF70806-EEF9-4C05-B57D-A81FA719236E} = {4AF70806-EEF9-4C05-B57D-A81FA719236E}
 	EndProjectSection

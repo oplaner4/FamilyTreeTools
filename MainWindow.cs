@@ -3,7 +3,6 @@ using FamilyTreeTools.Properties;
 using FamilyTreeTools.Utilities.Serialize;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
