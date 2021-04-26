@@ -75,7 +75,7 @@ namespace FamilyTreeTools
 
         private void InitializeGraph()
         {
-            SourceTree = new Tree(SourceFamily, SourceSettings).Build();
+            SourceTree = new Tree(SourceFamily, SourceSettings);
             TreeGraph = new Graph("tree chart");
 
             DrawingNode root = TreeGraph.AddNode(SourceTree.Root.Key.ToString());

@@ -12,6 +12,7 @@ namespace FamilyTreeTools.Entities
         {
             Settings = settings ?? new SearchSettings();
             Family = family;
+            Build();
         }
 
         private IEnumerable<Member> UseChildren(Node node)
@@ -60,8 +61,7 @@ namespace FamilyTreeTools.Entities
         {
             Seen = new HashSet<Guid>();
             Root = new Node(Guid.Empty, Family.Name);
-            BuildRecurrent(Root);
-            return this;
+            return BuildRecurrent(Root);
         }
 
         private Tree BuildRecurrent(Node actual)
@@ -94,6 +94,10 @@ namespace FamilyTreeTools.Entities
         [JsonProperty]
         public SearchSettings Settings { get; private set; }
 
+        /// <summary>
+        /// Family name is used as a value.
+        /// Children are root ancestors.
+        /// </summary>
         [JsonProperty]
         public Node Root { get; private set; }
 

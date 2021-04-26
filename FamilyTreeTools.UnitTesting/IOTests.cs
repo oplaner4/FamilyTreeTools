@@ -117,7 +117,7 @@ namespace FamilyTreeTools.UnitTesting
                 );
 
                 new TreeSerializeHelper(name).Save(
-                    new Tree(fieldFamily, settings).Build()
+                    new Tree(fieldFamily, settings)
                 );
             }
         }

@@ -305,16 +305,12 @@ namespace FamilyTreeTools.Entities
 
             if (Parent != null)
             {
-                result.UnionWith(
-                    Parent.Refs.GetDescendants(new SearchSettings()
-                    {
-                        At = settings.At,
-                        CanBeDead = settings.CanBeDead,
-                        CanBePartnerOtherTime = settings.CanBePartnerOtherTime,
-                        CanBeIllegitimateRelative = settings.CanBeIllegitimateRelative,
-                        CanBeFromFartherGeneration = false
-                    }
-                ));
+                bool canBeFromFartherGeneration = settings.CanBeFromFartherGeneration;
+                settings.CanBeFromFartherGeneration = false;
+
+                result.UnionWith(Parent.Refs.GetDescendants(settings));
+
+                settings.CanBeFromFartherGeneration = canBeFromFartherGeneration;
             }
 
             result.Remove(Source);

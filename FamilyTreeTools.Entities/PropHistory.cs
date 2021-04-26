@@ -57,8 +57,14 @@ namespace FamilyTreeTools.Entities
         {
             try
             {
-                DateTime useChange = Changes.Keys.Where(since => at >= since).OrderBy(since => at - since).First();
-                return Changes[useChange];
+                if (Changes.ContainsKey(at))
+                {
+                    return Changes[at];
+                }
+
+                return Changes.Where(pair => pair.Key < at).OrderBy(
+                    pair => at - pair.Key
+                ).First().Value;
             }
             catch (InvalidOperationException e)
             {

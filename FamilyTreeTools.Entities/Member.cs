@@ -210,7 +210,7 @@ namespace FamilyTreeTools.Entities
             return this;
         }
 
-        public Member Repair(Func<Guid, Member> mapper)
+        internal Member Repair(Func<Guid, Member> mapper)
         {
             Dictionary<DateTime, StatusOptions> existingChanges = Status.Changes;
             Dictionary<DateTime, string> fullNameChanges = FullName.Changes;

@@ -299,7 +299,7 @@ namespace FamilyTreeTools
             if (ExportTreeDialog.ShowDialog() == DialogResult.OK)
             {
                 new TreeSerializeHelper(ExportTreeDialog.FileName).Save(
-                    new Tree(SourceFamily, UseSettings).Build()
+                    new Tree(SourceFamily, UseSettings)
                 );
             };
         }
