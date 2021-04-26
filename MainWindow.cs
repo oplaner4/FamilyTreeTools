@@ -3,6 +3,7 @@ using FamilyTreeTools.Properties;
 using FamilyTreeTools.Utilities.Serialize;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
@@ -347,6 +348,11 @@ namespace FamilyTreeTools
         private void FileExitMenuItemOnClick(object sender, EventArgs e)
         {
             Close();
+        }
+
+        private void AboutWebsiteMenuItemOnClick(object sender, EventArgs e)
+        {
+            System.Diagnostics.Process.Start(Settings.Default.aboutWebsite);
         }
     }
 }

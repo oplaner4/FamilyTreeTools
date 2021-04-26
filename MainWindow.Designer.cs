@@ -74,6 +74,8 @@ namespace FamilyTreeTools
             this.RemoveSelectedBtn = new System.Windows.Forms.Button();
             this.FamilyNameLabel = new System.Windows.Forms.Label();
             this.ExportTreeDialog = new System.Windows.Forms.SaveFileDialog();
+            this.AboutMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.AboutWebsiteMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MainMenu.SuspendLayout();
             this.MainStatus.SuspendLayout();
             this.MainToolbar.SuspendLayout();
@@ -85,7 +87,8 @@ namespace FamilyTreeTools
             this.FileMenuItem,
             this.MembersMenuItem,
             this.SettingsMenuItem,
-            this.TreeMenuItem});
+            this.TreeMenuItem,
+            this.AboutMenuItem});
             this.MainMenu.Location = new System.Drawing.Point(0, 0);
             this.MainMenu.Name = "MainMenu";
             this.MainMenu.Size = new System.Drawing.Size(809, 24);
@@ -193,7 +196,7 @@ namespace FamilyTreeTools
             // TreeMenuItemExport
             // 
             this.TreeMenuItemExport.Name = "TreeMenuItemExport";
-            this.TreeMenuItemExport.Size = new System.Drawing.Size(119, 22);
+            this.TreeMenuItemExport.Size = new System.Drawing.Size(180, 22);
             this.TreeMenuItemExport.Text = "Export";
             this.TreeMenuItemExport.ToolTipText = "in JSON format";
             this.TreeMenuItemExport.Click += new System.EventHandler(this.TreeMenuItemExportOnClick);
@@ -201,7 +204,7 @@ namespace FamilyTreeTools
             // TreeMenuItemAnimate
             // 
             this.TreeMenuItemAnimate.Name = "TreeMenuItemAnimate";
-            this.TreeMenuItemAnimate.Size = new System.Drawing.Size(119, 22);
+            this.TreeMenuItemAnimate.Size = new System.Drawing.Size(180, 22);
             this.TreeMenuItemAnimate.Text = "Animate";
             this.TreeMenuItemAnimate.ToolTipText = "from the date determined by settings";
             this.TreeMenuItemAnimate.Click += new System.EventHandler(this.TreeMenuItemAnimateOnClick);
@@ -209,7 +212,7 @@ namespace FamilyTreeTools
             // displayToolStripMenuItem
             // 
             this.displayToolStripMenuItem.Name = "displayToolStripMenuItem";
-            this.displayToolStripMenuItem.Size = new System.Drawing.Size(119, 22);
+            this.displayToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.displayToolStripMenuItem.Text = "Display";
             this.displayToolStripMenuItem.Click += new System.EventHandler(this.TreeMenuItemDisplayOnClick);
             // 
@@ -447,6 +450,21 @@ namespace FamilyTreeTools
             this.FamilyNameLabel.TabIndex = 8;
             this.FamilyNameLabel.Text = "Changes at runtime";
             // 
+            // AboutMenuItem
+            // 
+            this.AboutMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.AboutWebsiteMenuItem});
+            this.AboutMenuItem.Name = "AboutMenuItem";
+            this.AboutMenuItem.Size = new System.Drawing.Size(52, 20);
+            this.AboutMenuItem.Text = "About";
+            // 
+            // AboutWebsiteMenuItem
+            // 
+            this.AboutWebsiteMenuItem.Name = "AboutWebsiteMenuItem";
+            this.AboutWebsiteMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.AboutWebsiteMenuItem.Text = "Website";
+            this.AboutWebsiteMenuItem.Click += new System.EventHandler(this.AboutWebsiteMenuItemOnClick);
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -520,6 +538,8 @@ namespace FamilyTreeTools
         private System.Windows.Forms.ToolStripStatusLabel SiblingsCountValue;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem FileExitMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem AboutMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem AboutWebsiteMenuItem;
     }
 }
 
