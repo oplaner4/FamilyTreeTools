@@ -55,13 +55,13 @@ namespace FamilyTreeTools.Entities
 
         public T Value(DateTime at)
         {
+            if (Changes.ContainsKey(at))
+            {
+                return Changes[at];
+            }
+
             try
             {
-                if (Changes.ContainsKey(at))
-                {
-                    return Changes[at];
-                }
-
                 return Changes.Where(pair => pair.Key < at).OrderBy(
                     pair => at - pair.Key
                 ).First().Value;
